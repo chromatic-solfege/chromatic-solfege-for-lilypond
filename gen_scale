@@ -1,0 +1,126 @@
+#!/usr/bin/nodejs
+
+var ch = require( 'chromatic' );
+var fs = require( 'fs' );
+
+function temp( s, o ) {
+	return s.replace(  /\$\{([a-zA-Z0-9_]+)\}/g, function( s0, s1 ) {
+		// console.error( s1 );
+		s1 = s1.trim();
+		if ( s1 in o ) {
+			return o[ s1.trim() ];
+		} else {
+			return '';
+		}
+	});
+}
+
+function gen( notes , trans, postfix, mark_s, mark_e ) {
+	var result = {};
+	var notes_01 = '';
+	var notes_02 = '';
+	var notes_03 = '';
+
+	var lyrics_01 = '';
+	var lyrics_02 = '';
+	var lyrics_03 = '';
+
+	for ( var i=0; i<notes.length; i++ ) {
+		var note1 = notes[i];
+		var note2 = ch.lookup( note1, trans );
+
+		if ( ch.isIrregularAccidental( note2 ) || ch.isDoubleAccidental( note2 ) ) {
+			var rnote1 = ch.respell( note1 );
+			var rnote2 = ch.respell( note2 );
+
+			notes_01  += (  note1 + postfix + mark_s + " " +  note2 + mark_e + " s " );
+			notes_02  += (  note1 + postfix + mark_s + " " + rnote2 + mark_e + " s " );
+			notes_03  += ( rnote1 + postfix + mark_s + " " + rnote2 + mark_e + " s " );
+			lyrics_01 += (  note1 +                    " " +  note2 +          "   " );
+			lyrics_02 += (  note1 +                    " " + rnote2 +          "   " );
+			lyrics_03 += ( rnote1 +                    " " + rnote2 +          "   " );
+		} else {
+			notes_01  += ( note1  + postfix +          " " +  note2 +          " s " );
+			notes_02  += ( note1  + postfix +          " " +  note2 +          " s " );
+			notes_03  += ( note1  + postfix +          " " +  note2 +          " s " );
+			lyrics_01 += ( note1  +                    " " +  note2 +          "   " );
+			lyrics_02 += ( note1  +                    " " +  note2 +          "   " );
+			lyrics_03 += ( note1  +                    " " +  note2 +          "   " );
+		}
+
+		postfix = '';
+	}
+
+	result.CAPTION_01  = '1. Harmonic Spelling';
+	result.NOTES_01    = notes_01;
+	result.LYRICS_01   = lyrics_01;
+
+	result.CAPTION_02  = '2. Enharmonic Spelling with Respecting Horizontal Interval Correctness';
+	result.NOTES_02    = notes_02;
+	result.LYRICS_02   = lyrics_02;
+
+	result.CAPTION_03  = '3. Enharmonic Spelling with Respecting Vertical Interval Correctness';
+	result.NOTES_03    = notes_03;
+	result.LYRICS_03   = lyrics_03;
+
+	return result;
+}
+
+var TAG_START = '\\stau';
+var TAG_STOP = '\\stou';
+function exec( notes, trans, postfix, filename ) {
+	var result = gen( notes, trans, postfix, TAG_START, TAG_STOP );
+	// console.error( result );
+
+	console.error( notes, filename );
+	var template = fs.readFileSync( './template.ly', 'utf8' );
+	var output = temp( template, result );
+	fs.writeFileSync( filename, output, 'utf8' );
+
+	// process.stdout.write(   + '\n' );
+}
+
+function fmt( i, len ) {
+	var s = String(i);
+	while ( s.length < len ) {
+		s ='0' + s; 
+	}
+	return s;
+}
+
+var ASCEND_SHARP  = 'do di re ri mi fa fi sol si la li ti do'.split(' ');
+var DESCEND_FLAT  = 'do ra re me mi fa se sol le la te ti do'.split(' ').reverse()
+var ASCEND_FLAT   = 'do ra re me mi fa se sol le la te ti do'.split(' ');
+var DESCEND_SHARP = 'do di re ri mi fa fi sol si la li ti do'.split(' ').reverse();
+
+function batch() {
+	var batch_pg = [
+		[ 're', "",   ASCEND_SHARP ,  ],
+		[ 're', "'",  DESCEND_FLAT ,  ],
+		[ 're', "",   ASCEND_FLAT  ,  ],
+		[ 're', "'",  DESCEND_SHARP,  ],
+
+		[ 'me', "",   ASCEND_SHARP ,  ],
+		[ 'me', "'",  DESCEND_FLAT ,  ],
+		[ 'me', "",   ASCEND_FLAT  ,  ],
+		[ 'me', "'",  DESCEND_SHARP,  ],
+
+		[ 'mi', "",   ASCEND_SHARP ,  ],
+		[ 'mi', "'",  DESCEND_FLAT ,  ],
+		[ 'mi', "",   ASCEND_FLAT  ,  ],
+		[ 'mi', "'",  DESCEND_SHARP,  ],
+	];
+	var pg=null;
+	for ( var i=0; i<batch_pg.length; i++ ) {
+		pg = batch_pg[i];
+		exec( pg[2] , pg[0], pg[1], 'out/pat_' + fmt(i,2) + '.ly' );
+	}
+}
+
+batch();
+
+
+
+
+// vim: filetype=javascript :
+
