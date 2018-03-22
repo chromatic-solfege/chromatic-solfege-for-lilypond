@@ -1,12 +1,12 @@
 #!/usr/bin/nodejs
 
 
-var translate = require( 'chromatic' ).translate;
+var ch = require( 'chromatic' );
 
 var argv = Array.prototype.slice.call( process.argv );
 argv.shift();
 argv.shift();
-console.error( translate( argv.shift(), argv ).join( ' ' ) );
+console.error( ch.transpose( argv.shift(), argv ).join( ' ' ) );
 
 
 
