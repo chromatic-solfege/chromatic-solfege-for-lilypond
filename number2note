@@ -1,0 +1,9 @@
+#!/usr/bin/nodejs
+
+
+var ch = require( 'chromatic' );
+var argv = Array.prototype.slice.call( process.argv, 2 );
+console.log( ch.number2note( argv.shift(), argv.shift() ) );
+
+
+// vim: filetype=javascript :

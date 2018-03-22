@@ -1,12 +1,12 @@
 #!/usr/bin/nodejs
 
 
-var lookup = require( 'chromatic' ).lookup;
+var translate = require( 'chromatic' ).translate;
 
 var argv = Array.prototype.slice.call( process.argv );
 argv.shift();
 argv.shift();
-console.error( lookup( argv.shift(), argv ).join( ' ' ) );
+console.error( translate( argv.shift(), argv ).join( ' ' ) );
 
 
 
