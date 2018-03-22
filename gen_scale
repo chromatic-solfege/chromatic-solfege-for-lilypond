@@ -3,7 +3,7 @@
 var ch = require( 'chromatic' );
 var fs = require( 'fs' );
 
-function temp( s, o ) {
+function applyTemplate( s, o ) {
 	return s.replace(  /\$\{([a-zA-Z0-9_]+)\}/g, function( s0, s1 ) {
 		// console.error( s1 );
 		s1 = s1.trim();
@@ -15,8 +15,27 @@ function temp( s, o ) {
 	});
 }
 
-function gen( notes , trans, postfix, mark_s, mark_e ) {
-	var result = {};
+function gen_flat( notes , trans, postfix, mark_s, mark_e ) {
+	var notes_str  = "";
+	var lyrics = "";
+	for ( var i=0; i<notes.length; i++ ) {
+		var note1 = notes[i];
+		var note2 = ch.lookup( note1, trans );
+
+		notes_str  += ( note1  + postfix +          " " +  note2 +          " s " );
+		lyrics += ( note1  +                    " " +  note2 +          "   " );
+
+		postfix = '';
+	}
+	return [{
+		caption  : '',
+		notes    : notes_str,
+		lyrics   : lyrics,
+	}];
+}
+
+function gen_sharp( notes , trans, postfix, mark_s, mark_e ) {
+	var result = [];
 	var notes_01 = '';
 	var notes_02 = '';
 	var notes_03 = '';
@@ -51,31 +70,85 @@ function gen( notes , trans, postfix, mark_s, mark_e ) {
 		postfix = '';
 	}
 
-	result.CAPTION_01  = '1. Harmonic Spelling';
-	result.NOTES_01    = notes_01;
-	result.LYRICS_01   = lyrics_01;
-
-	result.CAPTION_02  = '2. Enharmonic Spelling with Respecting Horizontal Interval Correctness';
-	result.NOTES_02    = notes_02;
-	result.LYRICS_02   = lyrics_02;
-
-	result.CAPTION_03  = '3. Enharmonic Spelling with Respecting Vertical Interval Correctness';
-	result.NOTES_03    = notes_03;
-	result.LYRICS_03   = lyrics_03;
-
+	result.push({
+		caption  : '1. Harmonic Spelling',
+		notes    : notes_01,
+		lyrics   : lyrics_01,
+	});
+	result.push({
+		caption  : '2. Enharmonic Spelling with Respecting Horizontal Interval Correctness',
+		notes    : notes_02,
+		lyrics   : lyrics_02,
+	});
+	result.push({
+		caption  : '3. Enharmonic Spelling with Respecting Vertical Interval Correctness',
+		notes    : notes_03,
+		lyrics   : lyrics_03,
+	});
 	return result;
 }
 
+function createTemplate( arr ) {
+	var result = "";
+
+result += `
+\\version "2.18.2"
+\\include "aaron.ly"
+\\include "../chromatic-solfege-gen.ly"
+`;
+
+	function createBlock( caption, notes, lyrics ) {
+		var result =  "";
+		if ( caption ) {
+			result +=
+`
+\\markup \\bold \\italic {
+    ${caption}
+}
+`;
+		}
+
+		result +=
+`
+\\makescore 
+  \\relative do' {
+    ${notes}
+  }
+  \\lyricmode {
+    ${lyrics}
+  }
+`;
+		return result;
+	}
+
+	for ( var i=0; i<arr.length; i++ ) {
+		var e= arr[i];
+		result += createBlock( e.caption, e.notes, e.lyrics );
+	}
+	return result.trim();
+}
+
+
+
+
 var TAG_START = '\\stau';
 var TAG_STOP = '\\stou';
-function exec( notes, trans, postfix, filename ) {
-	var result = gen( notes, trans, postfix, TAG_START, TAG_STOP );
+function exec( notes, trans, isSharp, postfix, filename ) {
+	var result;
+	if ( isSharp ) {
+		result = gen_sharp( notes, trans, postfix, TAG_START, TAG_STOP );
+	} else {
+		result = gen_flat(  notes, trans, postfix, TAG_START, TAG_STOP );
+	}
 	// console.error( result );
 
-	console.error( notes, filename );
-	var template = fs.readFileSync( './template.ly', 'utf8' );
-	var output = temp( template, result );
+	// console.error( notes, filename );
+	// var template = fs.readFileSync( './template.ly', 'utf8' );
+	// var output = applyTemplate( template, result );
+	var output = createTemplate( result );
+
 	fs.writeFileSync( filename, output, 'utf8' );
+	// console.error( filename );
 
 	// process.stdout.write(   + '\n' );
 }
@@ -95,25 +168,28 @@ var DESCEND_SHARP = 'do di re ri mi fa fi sol si la li ti do'.split(' ').reverse
 
 function batch() {
 	var batch_pg = [
-		[ 're', "",   ASCEND_SHARP ,  ],
-		[ 're', "'",  DESCEND_FLAT ,  ],
-		[ 're', "",   ASCEND_FLAT  ,  ],
-		[ 're', "'",  DESCEND_SHARP,  ],
+		[ 're', "",   0, ASCEND_FLAT  ,  ],
+		[ 're', "'",  0, DESCEND_FLAT ,  ],
+		[ 'me', "",   0, ASCEND_FLAT  ,  ],
+		[ 'me', "'",  0, DESCEND_FLAT ,  ],
+		[ 'mi', "",   0, ASCEND_FLAT  ,  ],
+		[ 'mi', "'",  0, DESCEND_FLAT ,  ],
+		[ 'fa', "'",  0, ASCEND_FLAT ,   ],
+		[ 'fa', "'",  0, DESCEND_FLAT ,  ],
 
-		[ 'me', "",   ASCEND_SHARP ,  ],
-		[ 'me', "'",  DESCEND_FLAT ,  ],
-		[ 'me', "",   ASCEND_FLAT  ,  ],
-		[ 'me', "'",  DESCEND_SHARP,  ],
-
-		[ 'mi', "",   ASCEND_SHARP ,  ],
-		[ 'mi', "'",  DESCEND_FLAT ,  ],
-		[ 'mi', "",   ASCEND_FLAT  ,  ],
-		[ 'mi', "'",  DESCEND_SHARP,  ],
+		[ 're', "",   1, ASCEND_SHARP ,  ],
+		[ 're', "'",  1, DESCEND_SHARP,  ],
+		[ 'me', "",   1, ASCEND_SHARP ,  ],
+		[ 'me', "'",  1, DESCEND_SHARP,  ],
+		[ 'mi', "",   1, ASCEND_SHARP ,  ],
+		[ 'mi', "'",  1, DESCEND_SHARP,  ],
+		[ 'fa', "'",  1, ASCEND_SHARP,  ],
+		[ 'fa', "'",  1, DESCEND_SHARP,  ],
 	];
 	var pg=null;
 	for ( var i=0; i<batch_pg.length; i++ ) {
 		pg = batch_pg[i];
-		exec( pg[2] , pg[0], pg[1], 'out/pat_' + fmt(i,2) + '.ly' );
+		exec( pg[3] , pg[0], pg[2], pg[1], 'out/pat_' + fmt(i,2) + '.ly' );
 	}
 }
 
