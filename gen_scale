@@ -242,6 +242,7 @@ function PF_FIRST( index, pos, note ) {
 	else
 		return '';
 }
+
 function PF_INT4( index, pos, note ) {
 	if ( index == 0 ) {
 		if ( pos == 'l' )
@@ -285,6 +286,7 @@ function PF_INTP4FD( index, pos, note ) {
 	}
 }
 
+// Aug 11th
 function PF_INT_S11SU( index, pos, note, type  ) {
 	if ( type == 3 ) {
 		if ( index == 0 ) {
@@ -344,6 +346,7 @@ function PF_INT_S11SD( index, pos, note, type  ) {
 	throw 'NOT HAPPEN';
 }
 
+
 // l0,r0, lcond,lthen,lelse, rcond,rthen,relse
 var PF_INT_S11FU = create_pf3([
 	[  "", "", "", "", "", "", "", "" ],
@@ -357,6 +360,7 @@ var PF_INT_S11FD = create_pf3([
 ]);
 
 
+// Dim 5th
 var PF_INT_D5SU = create_pf3([
 	[  "", "'", "di ri fi si li  ", ",",  "",  "      ", "", "'" ],
 	[  "", "'", "re mi fa fi sol la ti do ", "",   ",", "ti      ", "", "'" ],
@@ -379,27 +383,147 @@ var PF_INT_D5FD = create_pf3([
 ]);
 
 
-
+// Aug 5th
 var PF_INT_S5SU = create_pf3([
 	[  "", "'", "di ri fi si li    ", ",", "",  "      " , "", "'" ],
 	[  "", "'", "                  ", "",  ",", "      ", "'", "'" ],
 	[  "", "'", "re fa sol la te do", ",",  "",  "      ", "",  "'" ],
 ]);
 var PF_INT_S5SD = create_pf3([
-	[  "", "", "", "", "", "", "", "" ],
-	[  "", "", "", "", "", "", "", "" ],
-	[  "", "", "", "", "", "", "", "" ],
+	[  "'", "'",   "", "", ",",   "", "", "'" ],
+	[  "'", "'",   "", "", ",",   "", "", "'" ],
+	[  "'", "'",   "", "", ",",   "", "", "'" ],
 ]);
 var PF_INT_S5FU = create_pf3([
-	[  "", "", "", "", "", "", "", "" ],
-	[  "", "", "", "", "", "", "", "" ],
-	[  "", "", "", "", "", "", "", "" ],
+	[  "", "'",   "ra me fa se le te do", "", ",",   "", "", "'" ],
+	[  "", "'",   "ra me    se le   ",    "", ",",   "", "", "'" ],
+	[  "", "'",   "ra me fe se le de",    "", ",",   "", "", "'" ],
 ]);
+// copy from s5sd
 var PF_INT_S5FD = create_pf3([
-	[  "", "", "", "", "", "", "", "" ],
-	[  "", "", "", "", "", "", "", "" ],
-	[  "", "", "", "", "", "", "", "" ],
+	[  "'", "'",   "", "", ",",   "", "", "'" ],
+	[  "'", "'",   "", "", ",",   "", "", "'" ],
+	[  "'", "'",   "", "", ",",   "", "", "'" ],
 ]);
+
+// Flat 13th
+var PF_INT_F6SU = create_pf3([
+	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
+	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
+	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
+]);
+var PF_INT_F6SD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_F6FU = create_pf3([
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_F6FD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+
+var PF_INT_N6SU = create_pf3([
+	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
+	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
+	[  "", "'",    "        ",  ",",",",   "      ", "", "'" ],
+]);
+var PF_INT_N6SD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_N6FU = create_pf3([
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_N6FD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+
+
+var PF_INT_7SU = create_pf3([
+	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
+	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
+	[  "", "'",    "        ",  ",",",",   "      ", "", "'" ],
+]);
+var PF_INT_7SD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_7FU = create_pf3([
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_7FD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+
+var PF_INT_M7SU = create_pf3([
+	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
+	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
+	[  "", "'",    "        ",  ",",",",   "      ", "", "'" ],
+]);
+var PF_INT_M7SD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_M7FU = create_pf3([
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_M7FD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+
+
+/*
+var PF_INT_M6SU = create_pf3([
+	[  "", "'",    "        ",  ",", "",   "      ", "", "'" ],
+	[  "", "'",    "        ",  "",  ",",  "      ", "'","'" ],
+	[  "", "'",    "        ",  ",", "",   "      ", "", "'" ],
+]);
+var PF_INT_M6SD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_M6FU = create_pf3([
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_M6FD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+*/
+
+
+
+
+
+
+
+
+
 
 
 
@@ -532,10 +656,10 @@ function batch() {
 		// [ 'mi', PF_FIRST,  1, DESCEND_FLAT,   ],
 
 		// Perfect 4th
-		// [ 'fa', PF_INT4,   1, ASCEND_SHARP,   ],
-		// [ 'fa', PF_INT4,   1, DESCEND_SHARP,  ],
-		// [ 'fa', PF_INT4F,     1, ASCEND_FLAT ,   ],
-		// [ 'fa', PF_INTP4FD,    1, DESCEND_FLAT ,  ],
+		[ 'fa', PF_INT4,      1, ASCEND_SHARP,   ],
+		[ 'fa', PF_INT4,      1, DESCEND_SHARP,  ],
+		[ 'fa', PF_INT4F,     1, ASCEND_FLAT ,   ],
+		[ 'fa', PF_INTP4FD,   1, DESCEND_FLAT ,  ],
 
 		// Sharp 11th
 		// [ 'fi', PF_INT_S11SU, 1, ASCEND_SHARP ,  ],
@@ -543,24 +667,47 @@ function batch() {
 		// [ 'fi', PF_INT_S11FU, 1, ASCEND_FLAT ,   ],
 		// [ 'fi', PF_INT_S11FD, 1, DESCEND_FLAT ,  ],
 
-		// Dim 5th
-		[ 'se', PF_INT_D5SU, 1, ASCEND_SHARP ,   ],
-		[ 'se', PF_INT_D5SD, 1, DESCEND_SHARP ,  ],
-		[ 'se', PF_INT_D5FU, 1, ASCEND_FLAT ,    ],
-		[ 'se', PF_INT_D5FD, 1, DESCEND_FLAT ,   ],
+		// // Dim 5th
+		// [ 'se', PF_INT_D5SU, 1, ASCEND_SHARP ,   ],
+		// [ 'se', PF_INT_D5SD, 1, DESCEND_SHARP ,  ],
+		// [ 'se', PF_INT_D5FU, 1, ASCEND_FLAT ,    ],
+		// [ 'se', PF_INT_D5FD, 1, DESCEND_FLAT ,   ],
 
-		// Sharp 5th
-		[ 'si', PF_INT_S5SU, 1, ASCEND_SHARP ,   ],
-		[ 'si', PF_INT_S5SD, 1, DESCEND_SHARP ,  ],
-		[ 'si', PF_INT_S5FU, 1, ASCEND_FLAT ,    ],
-		[ 'si', PF_INT_S5FD, 1, DESCEND_FLAT ,   ],
-
-
-		// Perfect 5th
+		// // Perfect 5th
 		// [ 'sol', PF_INT5U1,     1, ASCEND_SHARP,   ],
 		// [ 'sol', PF_INT5D,    1, DESCEND_SHARP,  ],
 		// [ 'sol', PF_INT5,     1, ASCEND_FLAT ,   ],
 		// [ 'sol', PF_INT5D,    1, DESCEND_FLAT ,  ],
+
+		// // Sharp 5th
+		// [ 'si', PF_INT_S5SU, 1, ASCEND_SHARP ,   ],
+		// [ 'si', PF_INT_S5SD, 1, DESCEND_SHARP ,  ],
+		// [ 'si', PF_INT_S5FU, 1, ASCEND_FLAT ,    ],
+		// [ 'si', PF_INT_S5FD, 1, DESCEND_FLAT ,   ],
+
+		// // Flat 13th
+		// [ 'le', PF_INT_F6SU, 1, ASCEND_SHARP ,   ],
+		// [ 'le', PF_INT_F6SD, 1, DESCEND_SHARP ,  ],
+		// [ 'le', PF_INT_F6FU, 1, ASCEND_FLAT ,    ],
+		// [ 'le', PF_INT_F6FD, 1, DESCEND_FLAT ,   ],
+
+		// // Natural 13th
+		// [ 'la', PF_INT_N6SU, 1, ASCEND_SHARP ,   ],
+		// [ 'la', PF_INT_N6SD, 1, DESCEND_SHARP ,  ],
+		// [ 'la', PF_INT_N6FU, 1, ASCEND_FLAT ,    ],
+		// [ 'la', PF_INT_N6FD, 1, DESCEND_FLAT ,   ],
+
+		// // 7th
+		// [ 'te', PF_INT_7SU, 1, ASCEND_SHARP ,   ],
+		// [ 'te', PF_INT_7SD, 1, DESCEND_SHARP ,  ],
+		// [ 'te', PF_INT_7FU, 1, ASCEND_FLAT ,    ],
+		// [ 'te', PF_INT_7FD, 1, DESCEND_FLAT ,   ],
+
+		// // Maj7th
+		// [ 'te', PF_INT_M7SU, 1, ASCEND_SHARP ,   ],
+		// [ 'te', PF_INT_M7SD, 1, DESCEND_SHARP ,  ],
+		// [ 'te', PF_INT_M7FU, 1, ASCEND_FLAT ,    ],
+		// [ 'te', PF_INT_M7FD, 1, DESCEND_FLAT ,   ],
 	];
 
 	for ( var i=0; i<batch_pg.length; i++ ) {
