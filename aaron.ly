@@ -59,7 +59,7 @@ flatdoubleflat = {
                  (do . ,(ly:make-pitch -1 0 NATURAL))
                  (di . ,(ly:make-pitch -1 0 SHARP))
                  (dai . ,(ly:make-pitch -1 0 DOUBLE-SHARP))
-                 (dier . ,(ly:make-pitch -1 0 TRIPLE-SHARP))
+                 (dia . ,(ly:make-pitch -1 0 TRIPLE-SHARP))
 
                  (rew . ,(ly:make-pitch -1 1 TRIPLE-FLAT))
                  (raw . ,(ly:make-pitch -1 1 DOUBLE-FLAT))
@@ -67,7 +67,7 @@ flatdoubleflat = {
                  (re . ,(ly:make-pitch -1 1 NATURAL))
                  (ri . ,(ly:make-pitch -1 1 SHARP))
                  (rai . ,(ly:make-pitch -1 1 DOUBLE-SHARP))
-                 (rier . ,(ly:make-pitch -1 1 TRIPLE-SHARP))
+                 (ria . ,(ly:make-pitch -1 1 TRIPLE-SHARP))
 
                  (mew . ,(ly:make-pitch -1 2 TRIPLE-FLAT))
                  (maw . ,(ly:make-pitch -1 2 DOUBLE-FLAT))
@@ -75,7 +75,7 @@ flatdoubleflat = {
                  (mi . ,(ly:make-pitch -1 2 NATURAL))
                  (ma . ,(ly:make-pitch -1 2 SHARP))
                  (mai . ,(ly:make-pitch -1 2 DOUBLE-SHARP))
-                 (mier . ,(ly:make-pitch -1 2 TRIPLE-SHARP))
+                 (mia . ,(ly:make-pitch -1 2 TRIPLE-SHARP))
 
                  (few . ,(ly:make-pitch -1 3 TRIPLE-FLAT))
                  (faw . ,(ly:make-pitch -1 3 DOUBLE-FLAT))
@@ -83,7 +83,7 @@ flatdoubleflat = {
                  (fa . ,(ly:make-pitch -1 3 NATURAL))
                  (fi . ,(ly:make-pitch -1 3 SHARP))
                  (fai . ,(ly:make-pitch -1 3 DOUBLE-SHARP))
-                 (fier . ,(ly:make-pitch -1 3 TRIPLE-SHARP))
+                 (fia . ,(ly:make-pitch -1 3 TRIPLE-SHARP))
 
                  (sew . ,(ly:make-pitch -1 4 TRIPLE-FLAT))
                  (saw . ,(ly:make-pitch -1 4 DOUBLE-FLAT))
@@ -91,7 +91,7 @@ flatdoubleflat = {
                  (sol . ,(ly:make-pitch -1 4 NATURAL))
                  (si . ,(ly:make-pitch -1 4 SHARP))
                  (sai . ,(ly:make-pitch -1 4 DOUBLE-SHARP))
-                 (sier . ,(ly:make-pitch -1 4 TRIPLE-SHARP))
+                 (sia . ,(ly:make-pitch -1 4 TRIPLE-SHARP))
 
                  (lew . ,(ly:make-pitch -1 5 TRIPLE-FLAT))
                  (law . ,(ly:make-pitch -1 5 DOUBLE-FLAT))
@@ -99,7 +99,7 @@ flatdoubleflat = {
                  (la . ,(ly:make-pitch -1 5 NATURAL))
                  (li . ,(ly:make-pitch -1 5 SHARP))
                  (lai . ,(ly:make-pitch -1 5 DOUBLE-SHARP))
-                 (lier . ,(ly:make-pitch -1 5 TRIPLE-SHARP))
+                 (lia . ,(ly:make-pitch -1 5 TRIPLE-SHARP))
 
                  (tew . ,(ly:make-pitch -1 6 TRIPLE-FLAT))
                  (taw . ,(ly:make-pitch -1 6 DOUBLE-FLAT))
@@ -107,7 +107,7 @@ flatdoubleflat = {
                  (ti . ,(ly:make-pitch -1 6 NATURAL))
                  (ta . ,(ly:make-pitch -1 6 SHARP))
                  (tai . ,(ly:make-pitch -1 6 DOUBLE-SHARP))                 
-                 (tier . ,(ly:make-pitch -1 6 TRIPLE-SHARP))                 
+                 (tia . ,(ly:make-pitch -1 6 TRIPLE-SHARP))                 
 
                  (だう . ,(ly:make-pitch -1 0 DOUBLE-FLAT))
                  (で . ,(ly:make-pitch -1 0 FLAT))
