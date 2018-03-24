@@ -15,17 +15,22 @@ function applyTemplate( s, o ) {
 	});
 }
 
-function gen_flat( notes , trans, postfix, mark_s, mark_e ) {
+function gen_flat( args ) {
+	var notes    = args.notes;
+	var trans    = args.trans;
+	var postfix  = args.postfix;
+	var mark_s   = args.mark_s;
+	var mark_e   = args.mark_e;
+
 	var notes_str  = "";
 	var lyrics = "";
 	for ( var i=0; i<notes.length; i++ ) {
 		var note1 = notes[i];
-		var note2 = ch.lookup( note1, trans );
+		var note2 = ch.transpose( note1, trans );
 
-		notes_str  += ( note1  + postfix +          " " +  note2 +          " s " );
-		lyrics += ( note1  +                    " " +  note2 +          "   " );
+		notes_str  += ( note1  + postfix( i, 'l',note1 ) +        " " +  note2 + postfix( i, 'r', note2 ) + " s " );
+		lyrics     += ( note1  +                                  " " +  note2 +                            "   " );
 
-		postfix = '';
 	}
 	return [{
 		caption  : '',
@@ -34,7 +39,13 @@ function gen_flat( notes , trans, postfix, mark_s, mark_e ) {
 	}];
 }
 
-function gen_sharp( notes , trans, postfix, mark_s, mark_e ) {
+function gen_sharp( args ) {
+	var notes    = args.notes;
+	var trans    = args.trans;
+	var postfix  = args.postfix;
+	var mark_s   = args.mark_s;
+	var mark_e   = args.mark_e;
+
 	var result = [];
 	var notes_01 = '';
 	var notes_02 = '';
@@ -46,28 +57,27 @@ function gen_sharp( notes , trans, postfix, mark_s, mark_e ) {
 
 	for ( var i=0; i<notes.length; i++ ) {
 		var note1 = notes[i];
-		var note2 = ch.lookup( note1, trans );
+		var note2 = ch.transpose( note1, trans );
 
 		if ( ch.isIrregularAccidental( note2 ) || ch.isDoubleAccidental( note2 ) ) {
 			var rnote1 = ch.respell( note1 );
 			var rnote2 = ch.respell( note2 );
 
-			notes_01  += (  note1 + postfix + mark_s + " " +  note2 + mark_e + " s " );
-			notes_02  += (  note1 + postfix + mark_s + " " + rnote2 + mark_e + " s " );
-			notes_03  += ( rnote1 + postfix + mark_s + " " + rnote2 + mark_e + " s " );
-			lyrics_01 += (  note1 +                    " " +  note2 +          "   " );
-			lyrics_02 += (  note1 +                    " " + rnote2 +          "   " );
-			lyrics_03 += ( rnote1 +                    " " + rnote2 +          "   " );
+			notes_01  += (  note1 + postfix(i,'l', note1, 1 ) + mark_s + " " +  note2 + postfix(i,'r', note2, 1 ) + mark_e + " s " );
+			notes_02  += (  note1 + postfix(i,'l', note1, 2 ) + mark_s + " " + rnote2 + postfix(i,'r',rnote2, 2 ) + mark_e + " s " );
+			notes_03  += ( rnote1 + postfix(i,'l',rnote1, 3 ) + mark_s + " " + rnote2 + postfix(i,'r',rnote2, 3 ) + mark_e + " s " );
+			lyrics_01 += (  note1 +                                   " " +  note2                          +          "   " );
+			lyrics_02 += (  note1 +                                   " " + rnote2                          +          "   " );
+			lyrics_03 += ( rnote1 +                                   " " + rnote2                          +          "   " );
 		} else {
-			notes_01  += ( note1  + postfix +          " " +  note2 +          " s " );
-			notes_02  += ( note1  + postfix +          " " +  note2 +          " s " );
-			notes_03  += ( note1  + postfix +          " " +  note2 +          " s " );
-			lyrics_01 += ( note1  +                    " " +  note2 +          "   " );
-			lyrics_02 += ( note1  +                    " " +  note2 +          "   " );
-			lyrics_03 += ( note1  +                    " " +  note2 +          "   " );
+			notes_01  += ( note1  + postfix(i,'l', note1, 1 ) +          " " +  note2 + postfix(i,'r', note2, 1 ) +          " s " );
+			notes_02  += ( note1  + postfix(i,'l', note1, 2 ) +          " " +  note2 + postfix(i,'r', note2, 2 ) +          " s " );
+			notes_03  += ( note1  + postfix(i,'l', note1, 3 ) +          " " +  note2 + postfix(i,'r', note2, 3 ) +          " s " );
+			lyrics_01 += ( note1  +                                   " " +  note2                          +          "   " );
+			lyrics_02 += ( note1  +                                   " " +  note2                          +          "   " );
+			lyrics_03 += ( note1  +                                   " " +  note2                          +          "   " );
 		}
 
-		postfix = '';
 	}
 
 	result.push({
@@ -76,12 +86,12 @@ function gen_sharp( notes , trans, postfix, mark_s, mark_e ) {
 		lyrics   : lyrics_01,
 	});
 	result.push({
-		caption  : '2. Enharmonic Spelling with Respecting Horizontal Interval Correctness',
+		caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
 		notes    : notes_02,
 		lyrics   : lyrics_02,
 	});
 	result.push({
-		caption  : '3. Enharmonic Spelling with Respecting Vertical Interval Correctness',
+		caption  : '3. Enharmonic Spelling with Vertical Interval Correctness',
 		notes    : notes_03,
 		lyrics   : lyrics_03,
 	});
@@ -94,7 +104,8 @@ function createTemplate( arr ) {
 result += `
 \\version "2.18.2"
 \\include "aaron.ly"
-\\include "../chromatic-solfege-gen.ly"
+\\include "chromatic-solfege-gen.ly"
+\\include "lilypond-book-preamble.ly"
 `;
 
 	function createBlock( caption, notes, lyrics ) {
@@ -133,12 +144,15 @@ result += `
 
 var TAG_START = '\\stau';
 var TAG_STOP = '\\stou';
-function exec( notes, trans, isSharp, postfix, filename ) {
+function exec( args ) {
+	args.mark_s = TAG_START;
+	args.mark_e = TAG_STOP;
+
 	var result;
-	if ( isSharp ) {
-		result = gen_sharp( notes, trans, postfix, TAG_START, TAG_STOP );
+	if ( args.isSharp ) {
+		result = gen_sharp( args );
 	} else {
-		result = gen_flat(  notes, trans, postfix, TAG_START, TAG_STOP );
+		result = gen_flat(  args );
 	}
 	// console.error( result );
 
@@ -147,8 +161,8 @@ function exec( notes, trans, isSharp, postfix, filename ) {
 	// var output = applyTemplate( template, result );
 	var output = createTemplate( result );
 
-	fs.writeFileSync( filename, output, 'utf8' );
-	// console.error( filename );
+	fs.writeFileSync( args.filename, output, 'utf8' );
+	console.error( args.filename );
 
 	// process.stdout.write(   + '\n' );
 }
@@ -161,6 +175,319 @@ function fmt( i, len ) {
 	return s;
 }
 
+function chk( a,b ) {
+	a = a.trim();
+	b = b.trim();
+	var arr = b.split( / +/ );
+	for ( var i=0; i<arr.length; i++ ) {
+		if ( a == arr[i] ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function create_pf( l0,r0, lcond,lthen,lelse, rcond,rthen,relse ) {
+	return function( index, pos, note, type ) {
+		if ( index == 0 ) {
+			return pos == 'l' ? l0 : r0;
+			switch ( pos ) {
+				case 'l' : return l0;
+				case 'r' : return r0;
+				default : throw new Error( "this will not happen" );
+			}
+		} else {
+			switch ( pos ) {
+				case 'l' : return chk( note, lcond ) ? lthen : lelse;
+				case 'r' : return chk( note, rcond ) ? rthen : relse;
+				default : throw new Error( "this will not happen" );
+			}
+		}
+	};
+}
+
+function create_pf3( args ) {
+	var func_arr = [null];
+	for ( var i=0; i<args.length; i++ ) {
+		var o = args[i];
+		if ( Array.isArray( o ) ) {
+			func_arr.push( create_pf.apply( null, o ) );
+		} else {
+			func_arr.push( create_pf(
+				o.l0,
+				o.r0,
+				o.lcond,
+				o.lthen,
+				o.lelse,
+				o.rcond,
+				o.rthen,
+				o.relse
+			));
+		}
+	}
+	return function(index,pos,note,type) {
+		return func_arr[ type ]( index, pos, note, type );
+	};
+}
+
+
+
+function PF_NULL() {
+	return '';
+}
+
+function PF_FIRST( index, pos, note ) {
+	if ( index == 0 && pos == 'l' )
+		return "'";
+	else
+		return '';
+}
+function PF_INT4( index, pos, note ) {
+	if ( index == 0 ) {
+		if ( pos == 'l' )
+			return "'";
+		else
+			return "";
+	} else { 
+		if ( pos == 'l' ) {
+			return ",";
+		}
+		return "";
+	}
+}
+function PF_INT4F( index, pos, note ) {
+	if ( index == 0 ) {
+		if ( pos == 'l' )
+			return "";
+		else
+			return "";
+	} else { 
+		if ( pos == 'l' ) {
+			return "";
+		}
+		return "";
+	}
+}
+function PF_INTP4FD( index, pos, note ) {
+	if ( index == 0 ) {
+		if ( pos == 'l' )
+			return "'";
+		else
+			return "";
+	} else { 
+		if ( pos == 'l' ) {
+			if ( chk( note, 'le ra me se te ' ) )
+				return "";
+			else
+				return ",";
+		}
+		return "";
+	}
+}
+
+function PF_INT_S11SU( index, pos, note, type  ) {
+	if ( type == 3 ) {
+		if ( index == 0 ) {
+			return pos=='l' ? ""  : '';
+		} else { 
+			if ( pos == 'l' ) {
+				return chk( note, ''    ) ? ""  : "";
+			} else {
+				return chk( note, '' ) ? "'" : "";
+			}
+		}
+	} else {
+		if ( index == 0 ) {
+			return pos=='l' ? ""  : '';
+		} else { 
+			if ( pos == 'l' ) {
+				return chk( note, ''    ) ? ""  : "";
+			} else {
+				return chk( note, 'sol la do re mi fa' ) ? "'" : "";
+			}
+		}
+	}
+}
+function PF_INT_S11SD( index, pos, note, type  ) {
+	switch ( type ) {
+		case 1 :
+			if ( index == 0 ) {
+				return pos=='l' ? "'"  : '';
+			} else { 
+				if ( pos == 'l' ) {
+					return chk( note, 'la sol fa re do' ) ? ""  : ",";
+				} else {
+					return chk( note, '' ) ? ""   : "";
+				}
+			}
+		case 2 :
+			if ( index == 0 ) {
+				return pos=='l' ? "'"  : '';
+			} else { 
+				if ( pos == 'l' ) {
+					return chk( note, 'la sol fa re do' ) ? ","  : ",";
+				} else {
+					return chk( note, 'fa mi re do la sol' ) ? "'"   : "";
+				}
+			}
+		case 3 :
+			if ( index == 0 ) {
+				return pos=='l' ? "'"  : '';
+			} else { 
+				if ( pos == 'l' ) {
+					return chk( note, 'te la sol fa mi re do' ) ? ","   : "";
+				} else {
+					return chk( note, '' ) ? ""  : "";
+				}
+			}
+	}
+	throw 'NOT HAPPEN';
+}
+
+// l0,r0, lcond,lthen,lelse, rcond,rthen,relse
+var PF_INT_S11FU = create_pf3([
+	[  "", "", "", "", "", "", "", "" ],
+	[  "", "", "", "", "", "", "", "" ],
+	[  "", "", "", "", "", "", "", "" ],
+]);
+var PF_INT_S11FD = create_pf3([
+	[  "'", "", "   ti la sol fa mi re do", ",", "",  "", "", ""    ],
+	[  "'", "", "te ti la sol fa mi re do", ",", "",  "fa", "'", "" ],
+	[  "'", "", "te ti la sol fa mi re do", ",", "",  "", "", ""    ],
+]);
+
+
+var PF_INT_D5SU = create_pf3([
+	[  "", "'", "di ri fi si li  ", ",",  "",  "      ", "", "'" ],
+	[  "", "'", "re mi fa fi sol la ti do ", "",   ",", "ti      ", "", "'" ],
+	[  "", "'", "di ri ma si li        ", ",",  "",  "      ", "",  "'" ],
+]);
+var PF_INT_D5SD = create_pf3([
+	[  "'", "'",  "", "", ",",  "",   "", "'" ],
+	[  "'", "'",  "", "", ",",  "ti", "", "'" ],
+	[  "'", "'",  "", "", ",",  "",   "", "'" ],
+]);
+var PF_INT_D5FU = create_pf3([
+	[  "", "'", "re mi sol la ti", ",", "",    "", "", "'" ],
+	[  "", "'", "",                ",",  "",    "sol la ti do re mi", "", "'" ],
+	[  "", "'", "di ri ma si li",                ",",  "",    "", "", "'" ],
+]);
+var PF_INT_D5FD = create_pf3([
+	[  "'", "'",    "", "", ",",    "mi re", "", "'" ],
+	[  "'", "'",    "", "", ",",    "mi re do ti la sol", "", "'" ],
+	[  "'", "'",    "", "", ",",    "", "", "'" ],
+]);
+
+
+
+var PF_INT_S5SU = create_pf3([
+	[  "", "'", "di ri fi si li    ", ",", "",  "      " , "", "'" ],
+	[  "", "'", "                  ", "",  ",", "      ", "'", "'" ],
+	[  "", "'", "re fa sol la te do", ",",  "",  "      ", "",  "'" ],
+]);
+var PF_INT_S5SD = create_pf3([
+	[  "", "", "", "", "", "", "", "" ],
+	[  "", "", "", "", "", "", "", "" ],
+	[  "", "", "", "", "", "", "", "" ],
+]);
+var PF_INT_S5FU = create_pf3([
+	[  "", "", "", "", "", "", "", "" ],
+	[  "", "", "", "", "", "", "", "" ],
+	[  "", "", "", "", "", "", "", "" ],
+]);
+var PF_INT_S5FD = create_pf3([
+	[  "", "", "", "", "", "", "", "" ],
+	[  "", "", "", "", "", "", "", "" ],
+	[  "", "", "", "", "", "", "", "" ],
+]);
+
+
+
+
+
+
+
+function PF_INT_DIM4SU( index, pos, note ) {
+	if ( index == 0 ) {
+		return pos=='l' ? "'"  : '';
+	} else { 
+		if ( pos == 'l' ) {
+			return chk( note, 'le ra me se te ' ) ? "" : ",";
+		} else {
+			return "";
+		}
+	}
+}
+
+function PF_INT5U1( index, pos, note ) {
+	if ( index == 0 ) {
+		if ( pos == 'l' )
+			return "";
+		else
+			return "'";
+	} else { 
+		if ( pos == 'l' ) {
+			switch( note){
+				case 'di': // XXX
+				// case 're':
+				case 'ri': // XXX
+				// case 'mi':
+				case 'fi': // XXX
+				// case 'sol':
+				case 'si': // XXX
+				// case 'la':
+				case 'li': // XXX
+				// case 'ti':
+					return ",";
+				case 'te' :
+					return "";
+			}
+			return "";
+		} else if ( pos == 'r' ) {
+			return "'";
+		}
+	}
+	throw new Error( 'ILLEGAL PATTERN' );
+}
+function PF_INT5( index, pos, note ) {
+	if ( index == 0 ) {
+		if ( pos == 'l' )
+			return "";
+		else
+			return "'";
+	} else { 
+		if ( pos == 'l' ) {
+			switch( note){
+				case 're':
+				case 'mi':
+				case 'sol':
+				case 'la':
+				case 'ti':
+					return ",";
+			}
+			return "";
+		} else if ( pos == 'r' ) {
+			return "'";
+		}
+	}
+	throw new Error( 'ILLEGAL PATTERN' );
+}
+function PF_INT5D( index, pos, note ) {
+	if ( index == 0 ) {
+		if ( pos == 'l' )
+			return "'";
+		else
+			return "'";
+	} else { 
+		if ( pos == 'l' ) {
+			return ",";
+		} else if ( pos == 'r' ) {
+			return "'";
+		}
+	}
+	throw new Error( 'ILLEGAL PATTERN' );
+}
+
 var ASCEND_SHARP  = 'do di re ri mi fa fi sol si la li ti do'.split(' ');
 var DESCEND_FLAT  = 'do ra re me mi fa se sol le la te ti do'.split(' ').reverse()
 var ASCEND_FLAT   = 'do ra re me mi fa se sol le la te ti do'.split(' ');
@@ -168,28 +495,83 @@ var DESCEND_SHARP = 'do di re ri mi fa fi sol si la li ti do'.split(' ').reverse
 
 function batch() {
 	var batch_pg = [
-		[ 're', "",   0, ASCEND_FLAT  ,  ],
-		[ 're', "'",  0, DESCEND_FLAT ,  ],
-		[ 'me', "",   0, ASCEND_FLAT  ,  ],
-		[ 'me', "'",  0, DESCEND_FLAT ,  ],
-		[ 'mi', "",   0, ASCEND_FLAT  ,  ],
-		[ 'mi', "'",  0, DESCEND_FLAT ,  ],
-		[ 'fa', "'",  0, ASCEND_FLAT ,   ],
-		[ 'fa', "'",  0, DESCEND_FLAT ,  ],
+		// [ 're', PF_NULL,   1, ASCEND_SHARP ,  ],
+		// [ 're', PF_FIRST,  1, DESCEND_SHARP,  ],
+		// [ 're', PF_NULL,   0, ASCEND_FLAT  ,  ],
+		// [ 're', PF_FIRST,  0, DESCEND_FLAT ,  ],
 
-		[ 're', "",   1, ASCEND_SHARP ,  ],
-		[ 're', "'",  1, DESCEND_SHARP,  ],
-		[ 'me', "",   1, ASCEND_SHARP ,  ],
-		[ 'me', "'",  1, DESCEND_SHARP,  ],
-		[ 'mi', "",   1, ASCEND_SHARP ,  ],
-		[ 'mi', "'",  1, DESCEND_SHARP,  ],
-		[ 'fa', "'",  1, ASCEND_SHARP,  ],
-		[ 'fa', "'",  1, DESCEND_SHARP,  ],
+		// [ 'me', PF_NULL,   0, ASCEND_FLAT  ,  ],
+		// [ 'me', PF_FIRST,  0, DESCEND_FLAT ,  ],
+
+		// [ 'mi', PF_NULL,   0, ASCEND_FLAT  ,  ],
+		// [ 'mi', PF_FIRST,  0, DESCEND_FLAT ,  ],
+
+		// [ 're', PF_NULL,   1, ASCEND_SHARP ,  ],
+		// [ 're', PF_FIRST,  1, DESCEND_SHARP,  ],
+		// [ 'me', PF_NULL,   1, ASCEND_SHARP ,  ],
+		// [ 'me', PF_FIRST,  1, DESCEND_SHARP,  ],
+		// [ 'mi', PF_NULL,   1, ASCEND_SHARP ,  ],
+		// [ 'mi', PF_FIRST,  1, DESCEND_SHARP,  ],
+
+
+		// [ 're', PF_FIRST,  1, DESCEND_SHARP,  ],
+
+		// 2nd
+		// [ 're', PF_FIRST,  1, ASCEND_FLAT,   ],
+		// [ 're', PF_FIRST,  1, DESCEND_FLAT,  ],
+		// Minor 3rd
+		// [ 'me', PF_FIRST,  1, ASCEND_SHARP,   ],
+		// [ 'me', PF_FIRST,  1, DESCEND_SHARP,  ],
+		// [ 'me', PF_FIRST,  1, ASCEND_FLAT,    ],
+		// [ 'me', PF_FIRST,  1, DESCEND_FLAT,   ],
+
+		// Major 3rd
+		// [ 'mi', PF_FIRST,  1, ASCEND_SHARP,   ],
+		// [ 'mi', PF_FIRST,  1, DESCEND_SHARP,  ],
+		// [ 'mi', PF_FIRST,  1, ASCEND_FLAT,    ],
+		// [ 'mi', PF_FIRST,  1, DESCEND_FLAT,   ],
+
+		// Perfect 4th
+		// [ 'fa', PF_INT4,   1, ASCEND_SHARP,   ],
+		// [ 'fa', PF_INT4,   1, DESCEND_SHARP,  ],
+		// [ 'fa', PF_INT4F,     1, ASCEND_FLAT ,   ],
+		// [ 'fa', PF_INTP4FD,    1, DESCEND_FLAT ,  ],
+
+		// Sharp 11th
+		// [ 'fi', PF_INT_S11SU, 1, ASCEND_SHARP ,  ],
+		// [ 'fi', PF_INT_S11SD, 1, DESCEND_SHARP , ],
+		// [ 'fi', PF_INT_S11FU, 1, ASCEND_FLAT ,   ],
+		// [ 'fi', PF_INT_S11FD, 1, DESCEND_FLAT ,  ],
+
+		// Dim 5th
+		[ 'se', PF_INT_D5SU, 1, ASCEND_SHARP ,   ],
+		[ 'se', PF_INT_D5SD, 1, DESCEND_SHARP ,  ],
+		[ 'se', PF_INT_D5FU, 1, ASCEND_FLAT ,    ],
+		[ 'se', PF_INT_D5FD, 1, DESCEND_FLAT ,   ],
+
+		// Sharp 5th
+		[ 'si', PF_INT_S5SU, 1, ASCEND_SHARP ,   ],
+		[ 'si', PF_INT_S5SD, 1, DESCEND_SHARP ,  ],
+		[ 'si', PF_INT_S5FU, 1, ASCEND_FLAT ,    ],
+		[ 'si', PF_INT_S5FD, 1, DESCEND_FLAT ,   ],
+
+
+		// Perfect 5th
+		// [ 'sol', PF_INT5U1,     1, ASCEND_SHARP,   ],
+		// [ 'sol', PF_INT5D,    1, DESCEND_SHARP,  ],
+		// [ 'sol', PF_INT5,     1, ASCEND_FLAT ,   ],
+		// [ 'sol', PF_INT5D,    1, DESCEND_FLAT ,  ],
 	];
-	var pg=null;
+
 	for ( var i=0; i<batch_pg.length; i++ ) {
-		pg = batch_pg[i];
-		exec( pg[3] , pg[0], pg[2], pg[1], 'out/pat_' + fmt(i,2) + '.ly' );
+		var arr = batch_pg[i];
+		exec({
+			notes    : arr[3],
+			trans    : arr[0],
+			isSharp  : arr[2],
+			postfix  : arr[1],
+			filename : 'out/pat_' + fmt(i,2) + '.ly' ,
+		});
 	}
 }
 
