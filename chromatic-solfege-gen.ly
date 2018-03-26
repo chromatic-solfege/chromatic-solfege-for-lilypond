@@ -6,14 +6,30 @@
     \context {
         \Score
         \override TextSpanner.style = #'line
-        \override TextSpanner.thickness = #4
+        \override TextSpanner.thickness = #5
         \override TextSpanner.bound-details.right.padding = #-1
         \override TextSpanner.bound-details.left.padding = #0
         \override TextSpanner.color = #red
       }
 }
-stau = \startTextSpan
-stou = \stopTextSpan
+
+textSpanColorA = {
+  \once \override TextSpanner.style = #'line
+  \once \override TextSpanner.thickness = #5
+  \once \override TextSpanner.bound-details.right.padding = #-1
+  \once \override TextSpanner.bound-details.left.padding = #0
+  \once \override TextSpanner.color = #red
+}
+textSpanColorB = {
+  \once \override TextSpanner.style = #'zigzag
+  \once \override TextSpanner.thickness = #4
+  \once \override TextSpanner.bound-details.right.padding = #-1
+  \once \override TextSpanner.bound-details.left.padding = #0
+  \once \override TextSpanner.color = #red
+}
+uin = \startTextSpan
+uout = \stopTextSpan
+
 \layout {
       indent = #0
       ragged-right = ##f

@@ -15,12 +15,24 @@ function applyTemplate( s, o ) {
 	});
 }
 
+function prefix( n ) {
+	if ( ch.isTripleSharp( n ) ) {
+		return '\\sharpdoublesharp ';
+	} else if ( ch.isTripleFlat( n ) ) {
+		return '\\flatdoubleflat ';
+	} else if ( ch.isQuadrupleSharp( n ) ) {
+		return '\\doublesharpdoublesharp ';
+	} else if ( ch.isQuadrupleFlat( n ) ) {
+		return '\\doubleflatdoubleflat ';
+	} else {
+		return "";
+	}
+}
+
 function gen_flat( args ) {
 	var notes    = args.notes;
 	var trans    = args.trans;
 	var postfix  = args.postfix;
-	var mark_s   = args.mark_s;
-	var mark_e   = args.mark_e;
 
 	var notes_str  = "";
 	var lyrics = "";
@@ -28,8 +40,8 @@ function gen_flat( args ) {
 		var note1 = notes[i];
 		var note2 = ch.transpose( note1, trans );
 
-		notes_str  += ( note1  + postfix( i, 'l',note1 ) +        " " +  note2 + postfix( i, 'r', note2 ) + " s " );
-		lyrics     += ( note1  +                                  " " +  note2 +                            "   " );
+		notes_str  += ( prefix( note1 ) +note1  + postfix( i, 'l',note1 ) +        " " + prefix( note2 ) + note2 + postfix( i, 'r', note2 ) + " s " );
+		lyrics     += (                 +note1  +                                  " " +                 + note2 +                            "   " );
 
 	}
 	return [{
@@ -39,12 +51,15 @@ function gen_flat( args ) {
 	}];
 }
 
+var TAG_START = '\\uin';
+var TAG_STOP  = '\\uout';
+
 function gen_sharp( args ) {
 	var notes    = args.notes;
 	var trans    = args.trans;
 	var postfix  = args.postfix;
-	var mark_s   = args.mark_s;
-	var mark_e   = args.mark_e;
+	var ms = TAG_START;
+	var me = TAG_STOP;
 
 	var result = [];
 	var notes_01 = '';
@@ -59,23 +74,29 @@ function gen_sharp( args ) {
 		var note1 = notes[i];
 		var note2 = ch.transpose( note1, trans );
 
-		if ( ch.isIrregularAccidental( note2 ) || ch.isDoubleAccidental( note2 ) ) {
+		if ( ch.isIrregularAccidental( note2 ) || ch.isDoubleAccidental( note2 ) || ch.isTripleAccidental( note2 ) || ch.isQuadrupleAccidental( note2 )  ) {
 			var rnote1 = ch.respell( note1 );
 			var rnote2 = ch.respell( note2 );
 
-			notes_01  += (  note1 + postfix(i,'l', note1, 1 ) + mark_s + " " +  note2 + postfix(i,'r', note2, 1 ) + mark_e + " s " );
-			notes_02  += (  note1 + postfix(i,'l', note1, 2 ) + mark_s + " " + rnote2 + postfix(i,'r',rnote2, 2 ) + mark_e + " s " );
-			notes_03  += ( rnote1 + postfix(i,'l',rnote1, 3 ) + mark_s + " " + rnote2 + postfix(i,'r',rnote2, 3 ) + mark_e + " s " );
-			lyrics_01 += (  note1 +                                   " " +  note2                          +          "   " );
-			lyrics_02 += (  note1 +                                   " " + rnote2                          +          "   " );
-			lyrics_03 += ( rnote1 +                                   " " + rnote2                          +          "   " );
+			if ( ch.isTripleAccidental( note2 ) || ch.isQuadrupleAccidental( note2 ) ) {
+				notes_01  += "\\textSpanColorB "; 
+				notes_02  += "\\textSpanColorB "; 
+				notes_03  += "\\textSpanColorB "; 
+			}
+
+			notes_01  += ( prefix(  note1 ) +  note1 + postfix(i,'l', note1, 1 ) + ms + " " + prefix(  note2 ) +  note2 + postfix(i,'r', note2, 1 ) + me + " s " );
+			notes_02  += ( prefix(  note1 ) +  note1 + postfix(i,'l', note1, 2 ) + ms + " " + prefix( rnote2 ) + rnote2 + postfix(i,'r',rnote2, 2 ) + me + " s " );
+			notes_03  += ( prefix( rnote1 ) + rnote1 + postfix(i,'l',rnote1, 3 ) + ms + " " + prefix( rnote2 ) + rnote2 + postfix(i,'r',rnote2, 3 ) + me + " s " );
+			lyrics_01 += (                     note1 +                                  " " +                     note2                             +      "   " );
+			lyrics_02 += (                     note1 +                                  " " +                    rnote2                             +      "   " );
+			lyrics_03 += (                    rnote1 +                                  " " +                    rnote2                             +      "   " );
 		} else {
-			notes_01  += ( note1  + postfix(i,'l', note1, 1 ) +          " " +  note2 + postfix(i,'r', note2, 1 ) +          " s " );
-			notes_02  += ( note1  + postfix(i,'l', note1, 2 ) +          " " +  note2 + postfix(i,'r', note2, 2 ) +          " s " );
-			notes_03  += ( note1  + postfix(i,'l', note1, 3 ) +          " " +  note2 + postfix(i,'r', note2, 3 ) +          " s " );
-			lyrics_01 += ( note1  +                                   " " +  note2                          +          "   " );
-			lyrics_02 += ( note1  +                                   " " +  note2                          +          "   " );
-			lyrics_03 += ( note1  +                                   " " +  note2                          +          "   " );
+			notes_01  += ( prefix(  note1 ) + note1  + postfix(i,'l', note1, 1 ) +      " " + prefix(  note2 ) +  note2 + postfix(i,'r', note2, 1 ) +      " s " );
+			notes_02  += ( prefix(  note1 ) + note1  + postfix(i,'l', note1, 2 ) +      " " + prefix(  note2 ) +  note2 + postfix(i,'r', note2, 2 ) +      " s " );
+			notes_03  += ( prefix(  note1 ) + note1  + postfix(i,'l', note1, 3 ) +      " " + prefix(  note2 ) +  note2 + postfix(i,'r', note2, 3 ) +      " s " );
+			lyrics_01 += (                    note1  +                                  " " +                     note2                             +      "   " );
+			lyrics_02 += (                    note1  +                                  " " +                     note2                             +      "   " );
+			lyrics_03 += (                    note1  +                                  " " +                     note2                             +      "   " );
 		}
 
 	}
@@ -142,11 +163,7 @@ result += `
 
 
 
-var TAG_START = '\\stau';
-var TAG_STOP = '\\stou';
 function exec( args ) {
-	args.mark_s = TAG_START;
-	args.mark_e = TAG_STOP;
 
 	var result;
 	if ( args.isSharp ) {
@@ -161,8 +178,8 @@ function exec( args ) {
 	// var output = applyTemplate( template, result );
 	var output = createTemplate( result );
 
-	fs.writeFileSync( args.filename, output, 'utf8' );
 	console.error( args.filename );
+	fs.writeFileSync( args.filename, output, 'utf8' );
 
 	// process.stdout.write(   + '\n' );
 }
@@ -243,109 +260,35 @@ function PF_FIRST( index, pos, note ) {
 		return '';
 }
 
-function PF_INT4( index, pos, note ) {
-	if ( index == 0 ) {
-		if ( pos == 'l' )
-			return "'";
-		else
-			return "";
-	} else { 
-		if ( pos == 'l' ) {
-			return ",";
-		}
-		return "";
-	}
-}
-function PF_INT4F( index, pos, note ) {
-	if ( index == 0 ) {
-		if ( pos == 'l' )
-			return "";
-		else
-			return "";
-	} else { 
-		if ( pos == 'l' ) {
-			return "";
-		}
-		return "";
-	}
-}
-function PF_INTP4FD( index, pos, note ) {
-	if ( index == 0 ) {
-		if ( pos == 'l' )
-			return "'";
-		else
-			return "";
-	} else { 
-		if ( pos == 'l' ) {
-			if ( chk( note, 'le ra me se te ' ) )
-				return "";
-			else
-				return ",";
-		}
-		return "";
-	}
-}
+// Perfect 4th
+var PF_INT_P4SU = create_pf3([
+	[  "", "",    "", "", "",   "", "'", "" ],
+	[  "", "",    "", "", "",   "", "'", "" ],
+	[  "", "",    "", "", "",   "", "", "" ],
+]);
+var PF_INT_P4SD = create_pf3([
+	[  "'", "",  "la sol fa re do", "", ",",  "",   "", "" ],
+	[  "'", "",  "la sol fa re do", "", ",",  "",   "", "" ],
+	[  "'", "",  "la sol fa re do", "", ",",  "",   "", "" ],
+]);
+var PF_INT_P4FD = create_pf3([
+	[  "'", "",  "   le ra me se te", "", ",",  "",   "", "" ],
+	[  "'", "",  "fa le ra me se te", "", ",",  "",   "", "" ],
+	[  "'", "",  "fa le ra me se te", "", ",",  "",   "", "" ],
+]);
 
 // Aug 11th
-function PF_INT_S11SU( index, pos, note, type  ) {
-	if ( type == 3 ) {
-		if ( index == 0 ) {
-			return pos=='l' ? ""  : '';
-		} else { 
-			if ( pos == 'l' ) {
-				return chk( note, ''    ) ? ""  : "";
-			} else {
-				return chk( note, '' ) ? "'" : "";
-			}
-		}
-	} else {
-		if ( index == 0 ) {
-			return pos=='l' ? ""  : '';
-		} else { 
-			if ( pos == 'l' ) {
-				return chk( note, ''    ) ? ""  : "";
-			} else {
-				return chk( note, 'sol la do re mi fa' ) ? "'" : "";
-			}
-		}
-	}
-}
-function PF_INT_S11SD( index, pos, note, type  ) {
-	switch ( type ) {
-		case 1 :
-			if ( index == 0 ) {
-				return pos=='l' ? "'"  : '';
-			} else { 
-				if ( pos == 'l' ) {
-					return chk( note, 'la sol fa re do' ) ? ""  : ",";
-				} else {
-					return chk( note, '' ) ? ""   : "";
-				}
-			}
-		case 2 :
-			if ( index == 0 ) {
-				return pos=='l' ? "'"  : '';
-			} else { 
-				if ( pos == 'l' ) {
-					return chk( note, 'la sol fa re do' ) ? ","  : ",";
-				} else {
-					return chk( note, 'fa mi re do la sol' ) ? "'"   : "";
-				}
-			}
-		case 3 :
-			if ( index == 0 ) {
-				return pos=='l' ? "'"  : '';
-			} else { 
-				if ( pos == 'l' ) {
-					return chk( note, 'te la sol fa mi re do' ) ? ","   : "";
-				} else {
-					return chk( note, '' ) ? ""  : "";
-				}
-			}
-	}
-	throw 'NOT HAPPEN';
-}
+var PF_INT_S11SU = create_pf3([
+	[  "", "",    "", "", "",   "sol la do re mi fa", "'", "" ],
+	[  "", "",    "", "", "",   "sol la do re mi fa", "'", "" ],
+	[  "", "",    "", "", "",   "                  ", "", "" ],
+]);
 
+var PF_INT_S11SD = create_pf3([
+	[  "'", "",   "la sol fa re do", "", ",",   "                  ", "",  "" ],
+	[  "'", "",   "               ", "", ",",   "fa mi re do la sol", "'", "" ],
+	[  "'", "",   "de le se me ra ", "", ",",   "                  ", "",  "" ],
+]);
 
 // l0,r0, lcond,lthen,lelse, rcond,rthen,relse
 var PF_INT_S11FU = create_pf3([
@@ -358,7 +301,6 @@ var PF_INT_S11FD = create_pf3([
 	[  "'", "", "te ti la sol fa mi re do", ",", "",  "fa", "'", "" ],
 	[  "'", "", "te ti la sol fa mi re do", ",", "",  "", "", ""    ],
 ]);
-
 
 // Dim 5th
 var PF_INT_D5SU = create_pf3([
@@ -380,6 +322,24 @@ var PF_INT_D5FD = create_pf3([
 	[  "'", "'",    "", "", ",",    "mi re", "", "'" ],
 	[  "'", "'",    "", "", ",",    "mi re do ti la sol", "", "'" ],
 	[  "'", "'",    "", "", ",",    "", "", "'" ],
+]);
+
+
+// Perfect 5th
+var PF_INT_5SU = create_pf3([
+	[  "",  "'",    "di ri fi si li   ", ",", "",    "", "", "'" ],
+	[  "",  "'",    "di ri fi si li ti", ",", "",    "", "", "'" ],
+	[  "",  "'",    "di ri fi si li ti", ",", "",    "", "", "'" ],
+]);
+var PF_INT_5SD = create_pf3([
+	[  "'", "'",  "", "", ",",  "", "", "'" ],
+	[  "'", "'",  "", "", ",",  "", "", "'" ],
+	[  "'", "'",  "", "", ",",  "", "", "'" ],
+]);
+var PF_INT_5FU = create_pf3([
+	[  "", "'",   "re mi sol la ti", ",", "",  "", "", "'" ],
+	[  "", "'",   "re mi sol la ti", ",", "",  "", "", "'" ],
+	[  "", "'",   "re mi sol la ti", ",", "",  "", "", "'" ],
 ]);
 
 
@@ -428,6 +388,7 @@ var PF_INT_F6FD = create_pf3([
 	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
 ]);
 
+// Natural 13th
 var PF_INT_N6SU = create_pf3([
 	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
 	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
@@ -450,6 +411,7 @@ var PF_INT_N6FD = create_pf3([
 ]);
 
 
+// 7th
 var PF_INT_7SU = create_pf3([
 	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
 	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
@@ -471,6 +433,7 @@ var PF_INT_7FD = create_pf3([
 	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
 ]);
 
+// Major 7th
 var PF_INT_M7SU = create_pf3([
 	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
 	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
@@ -492,6 +455,153 @@ var PF_INT_M7FD = create_pf3([
 	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
 ]);
 
+// Special
+
+
+// Aug 13th
+var PF_INT_A6SU = create_pf3([
+	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
+	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
+	[  "", "'",    "de      ",  "", ",",   "      ", "", "'" ],
+]);
+var PF_INT_A6SD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_A6FU = create_pf3([
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_A6FD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+
+// Sharp 9th
+var PF_INT_A9SU = create_pf3([
+	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
+	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
+	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
+]);
+var PF_INT_A9SD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_A9FU = create_pf3([
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_A9FD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+
+// Flat 9th
+var PF_INT_D9SU = create_pf3([
+	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
+	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
+	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
+]);
+var PF_INT_D9SD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_D9FU = create_pf3([
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
+]);
+var PF_INT_D9FD = create_pf3([
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
+]);
+
+// Sharp 2th
+var PF_INT_A2SU = create_pf3([
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+var PF_INT_A2SD = create_pf3([
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+var PF_INT_A2FU = create_pf3([
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+var PF_INT_A2FD = create_pf3([
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+
+// Flat  2th
+var PF_INT_D2SU = create_pf3([
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+var PF_INT_D2SD = create_pf3([
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+var PF_INT_D2FU = create_pf3([
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+var PF_INT_D2FD = create_pf3([
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+
+// Dim  3rd
+var PF_INT_D3SU = create_pf3([
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+var PF_INT_D3SD = create_pf3([
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+var PF_INT_D3FU = create_pf3([
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+var PF_INT_D3FD = create_pf3([
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
+]);
+
+
+// Aug 3rd
+var PF_INT_A3FU = create_pf3([
+	[  "", "",   "",  "", "",  "", "", "" ],
+	[  "", "",   "",  "", "",  "", "", "" ],
+	[  "", "'",  "" , "", "",  "", "", "" ],
+]);
+var PF_INT_A3FD = create_pf3([
+	[  "'", "",  "",   "", "",   "",   "",  "" ],
+	[  "'", "",  "",   "", "",   "",   "",  "" ],
+	[  "'", "'", "ta", ",", "",  "fa", "'", "" ],
+]);
 
 /*
 var PF_INT_M6SU = create_pf3([
@@ -517,20 +627,6 @@ var PF_INT_M6FD = create_pf3([
 */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function PF_INT_DIM4SU( index, pos, note ) {
 	if ( index == 0 ) {
 		return pos=='l' ? "'"  : '';
@@ -543,74 +639,6 @@ function PF_INT_DIM4SU( index, pos, note ) {
 	}
 }
 
-function PF_INT5U1( index, pos, note ) {
-	if ( index == 0 ) {
-		if ( pos == 'l' )
-			return "";
-		else
-			return "'";
-	} else { 
-		if ( pos == 'l' ) {
-			switch( note){
-				case 'di': // XXX
-				// case 're':
-				case 'ri': // XXX
-				// case 'mi':
-				case 'fi': // XXX
-				// case 'sol':
-				case 'si': // XXX
-				// case 'la':
-				case 'li': // XXX
-				// case 'ti':
-					return ",";
-				case 'te' :
-					return "";
-			}
-			return "";
-		} else if ( pos == 'r' ) {
-			return "'";
-		}
-	}
-	throw new Error( 'ILLEGAL PATTERN' );
-}
-function PF_INT5( index, pos, note ) {
-	if ( index == 0 ) {
-		if ( pos == 'l' )
-			return "";
-		else
-			return "'";
-	} else { 
-		if ( pos == 'l' ) {
-			switch( note){
-				case 're':
-				case 'mi':
-				case 'sol':
-				case 'la':
-				case 'ti':
-					return ",";
-			}
-			return "";
-		} else if ( pos == 'r' ) {
-			return "'";
-		}
-	}
-	throw new Error( 'ILLEGAL PATTERN' );
-}
-function PF_INT5D( index, pos, note ) {
-	if ( index == 0 ) {
-		if ( pos == 'l' )
-			return "'";
-		else
-			return "'";
-	} else { 
-		if ( pos == 'l' ) {
-			return ",";
-		} else if ( pos == 'r' ) {
-			return "'";
-		}
-	}
-	throw new Error( 'ILLEGAL PATTERN' );
-}
 
 var ASCEND_SHARP  = 'do di re ri mi fa fi sol si la li ti do'.split(' ');
 var DESCEND_FLAT  = 'do ra re me mi fa se sol le la te ti do'.split(' ').reverse()
@@ -619,105 +647,166 @@ var DESCEND_SHARP = 'do di re ri mi fa fi sol si la li ti do'.split(' ').reverse
 
 function batch() {
 	var batch_pg = [
-		// [ 're', PF_NULL,   1, ASCEND_SHARP ,  ],
-		// [ 're', PF_FIRST,  1, DESCEND_SHARP,  ],
-		// [ 're', PF_NULL,   0, ASCEND_FLAT  ,  ],
-		// [ 're', PF_FIRST,  0, DESCEND_FLAT ,  ],
+		// trans, id, prefix_formatter,  sharp=1/flat=0,  note_list
+		// su:sharp ascend, sd:sharp descend, fu:flat ascend, fd:flat descend
+	
+		// Major 2nd
+		[ 're', 'su', PF_NULL,      1, ASCEND_SHARP ,  ],
+		[ 're', 'sd', PF_FIRST,     1, DESCEND_SHARP,  ],
+		[ 're', 'fu', PF_NULL,      1, ASCEND_FLAT,    ],
+		[ 're', 'fd', PF_FIRST,     1, DESCEND_FLAT,   ],
 
-		// [ 'me', PF_NULL,   0, ASCEND_FLAT  ,  ],
-		// [ 'me', PF_FIRST,  0, DESCEND_FLAT ,  ],
+		// Minor 2nd
+		[ 'ra', 'su', PF_NULL,      1, ASCEND_SHARP ,  ],
+		[ 'ra', 'sd', PF_FIRST,     1, DESCEND_SHARP,  ],
+		[ 'ra', 'fu', PF_NULL,      1, ASCEND_FLAT,    ],
+		[ 'ra', 'fd', PF_FIRST,     1, DESCEND_FLAT,   ],
 
-		// [ 'mi', PF_NULL,   0, ASCEND_FLAT  ,  ],
-		// [ 'mi', PF_FIRST,  0, DESCEND_FLAT ,  ],
-
-		// [ 're', PF_NULL,   1, ASCEND_SHARP ,  ],
-		// [ 're', PF_FIRST,  1, DESCEND_SHARP,  ],
-		// [ 'me', PF_NULL,   1, ASCEND_SHARP ,  ],
-		// [ 'me', PF_FIRST,  1, DESCEND_SHARP,  ],
-		// [ 'mi', PF_NULL,   1, ASCEND_SHARP ,  ],
-		// [ 'mi', PF_FIRST,  1, DESCEND_SHARP,  ],
-
-
-		// [ 're', PF_FIRST,  1, DESCEND_SHARP,  ],
-
-		// 2nd
-		// [ 're', PF_FIRST,  1, ASCEND_FLAT,   ],
-		// [ 're', PF_FIRST,  1, DESCEND_FLAT,  ],
 		// Minor 3rd
-		// [ 'me', PF_FIRST,  1, ASCEND_SHARP,   ],
-		// [ 'me', PF_FIRST,  1, DESCEND_SHARP,  ],
-		// [ 'me', PF_FIRST,  1, ASCEND_FLAT,    ],
-		// [ 'me', PF_FIRST,  1, DESCEND_FLAT,   ],
+		[ 'me', 'su', PF_NULL ,     1, ASCEND_SHARP,   ],
+		[ 'me', 'sd', PF_FIRST,     1, DESCEND_SHARP,  ],
+		[ 'me', 'fu', PF_NULL ,     1, ASCEND_FLAT,    ],
+		[ 'me', 'fd', PF_FIRST,     1, DESCEND_FLAT,   ],
 
 		// Major 3rd
-		// [ 'mi', PF_FIRST,  1, ASCEND_SHARP,   ],
-		// [ 'mi', PF_FIRST,  1, DESCEND_SHARP,  ],
-		// [ 'mi', PF_FIRST,  1, ASCEND_FLAT,    ],
-		// [ 'mi', PF_FIRST,  1, DESCEND_FLAT,   ],
+		[ 'mi', 'su', PF_NULL ,     1, ASCEND_SHARP,   ],
+		[ 'mi', 'sd', PF_FIRST,     1, DESCEND_SHARP,  ],
+		[ 'mi', 'fu', PF_NULL,      1, ASCEND_FLAT,    ],
+		[ 'mi', 'fd', PF_FIRST,     1, DESCEND_FLAT,   ],
 
 		// Perfect 4th
-		[ 'fa', PF_INT4,      1, ASCEND_SHARP,   ],
-		[ 'fa', PF_INT4,      1, DESCEND_SHARP,  ],
-		[ 'fa', PF_INT4F,     1, ASCEND_FLAT ,   ],
-		[ 'fa', PF_INTP4FD,   1, DESCEND_FLAT ,  ],
+		[ 'fa', 'su', PF_INT_P4SU,  1, ASCEND_SHARP,   ],
+		[ 'fa', 'sd', PF_INT_P4SD,  1, DESCEND_SHARP,  ],
+		[ 'fa', 'fu', PF_NULL    ,  1, ASCEND_FLAT ,   ],
+		[ 'fa', 'fd', PF_INT_P4FD,  1, DESCEND_FLAT ,  ],
 
 		// Sharp 11th
-		// [ 'fi', PF_INT_S11SU, 1, ASCEND_SHARP ,  ],
-		// [ 'fi', PF_INT_S11SD, 1, DESCEND_SHARP , ],
-		// [ 'fi', PF_INT_S11FU, 1, ASCEND_FLAT ,   ],
-		// [ 'fi', PF_INT_S11FD, 1, DESCEND_FLAT ,  ],
+		[ 'fi', 'su', PF_INT_S11SU, 1, ASCEND_SHARP ,  ],
+		[ 'fi', 'sd', PF_INT_S11SD, 1, DESCEND_SHARP , ],
+		[ 'fi', 'fu', PF_INT_S11FU, 1, ASCEND_FLAT ,   ],
+		[ 'fi', 'fd', PF_INT_S11FD, 1, DESCEND_FLAT ,  ],
 
-		// // Dim 5th
-		// [ 'se', PF_INT_D5SU, 1, ASCEND_SHARP ,   ],
-		// [ 'se', PF_INT_D5SD, 1, DESCEND_SHARP ,  ],
-		// [ 'se', PF_INT_D5FU, 1, ASCEND_FLAT ,    ],
-		// [ 'se', PF_INT_D5FD, 1, DESCEND_FLAT ,   ],
+		// Dim 5th
+		[ 'se', 'su', PF_INT_D5SU, 1, ASCEND_SHARP ,   ],
+		[ 'se', 'sd', PF_INT_D5SD, 1, DESCEND_SHARP ,  ],
+		[ 'se', 'fu', PF_INT_D5FU, 1, ASCEND_FLAT ,    ],
+		[ 'se', 'fd', PF_INT_D5FD, 1, DESCEND_FLAT ,   ],
 
-		// // Perfect 5th
-		// [ 'sol', PF_INT5U1,     1, ASCEND_SHARP,   ],
-		// [ 'sol', PF_INT5D,    1, DESCEND_SHARP,  ],
-		// [ 'sol', PF_INT5,     1, ASCEND_FLAT ,   ],
-		// [ 'sol', PF_INT5D,    1, DESCEND_FLAT ,  ],
+		// Perfect 5th
+		[ 'sol', 'su', PF_INT_5SU,    1, ASCEND_SHARP,   ],
+		[ 'sol', 'sd', PF_INT_5SD,    1, DESCEND_SHARP,  ],
+		[ 'sol', 'fu', PF_INT_5FU,    1, ASCEND_FLAT ,   ],
+		[ 'sol', 'fd', PF_INT_5SD,    1, DESCEND_FLAT ,  ],
 
-		// // Sharp 5th
-		// [ 'si', PF_INT_S5SU, 1, ASCEND_SHARP ,   ],
-		// [ 'si', PF_INT_S5SD, 1, DESCEND_SHARP ,  ],
-		// [ 'si', PF_INT_S5FU, 1, ASCEND_FLAT ,    ],
-		// [ 'si', PF_INT_S5FD, 1, DESCEND_FLAT ,   ],
+		// Sharp 5th
+		[ 'si', 'su', PF_INT_S5SU, 1, ASCEND_SHARP ,   ],
+		[ 'si', 'sd', PF_INT_S5SD, 1, DESCEND_SHARP ,  ],
+		[ 'si', 'fu', PF_INT_S5FU, 1, ASCEND_FLAT ,    ],
+		[ 'si', 'fd', PF_INT_S5FD, 1, DESCEND_FLAT ,   ],
 
-		// // Flat 13th
-		// [ 'le', PF_INT_F6SU, 1, ASCEND_SHARP ,   ],
-		// [ 'le', PF_INT_F6SD, 1, DESCEND_SHARP ,  ],
-		// [ 'le', PF_INT_F6FU, 1, ASCEND_FLAT ,    ],
-		// [ 'le', PF_INT_F6FD, 1, DESCEND_FLAT ,   ],
+		// Flat 13th
+		[ 'le', 'su', PF_INT_F6SU, 1, ASCEND_SHARP ,   ],
+		[ 'le', 'sd', PF_INT_F6SD, 1, DESCEND_SHARP ,  ],
+		[ 'le', 'fu', PF_INT_F6FU, 1, ASCEND_FLAT ,    ],
+		[ 'le', 'fd', PF_INT_F6FD, 1, DESCEND_FLAT ,   ],
 
-		// // Natural 13th
-		// [ 'la', PF_INT_N6SU, 1, ASCEND_SHARP ,   ],
-		// [ 'la', PF_INT_N6SD, 1, DESCEND_SHARP ,  ],
-		// [ 'la', PF_INT_N6FU, 1, ASCEND_FLAT ,    ],
-		// [ 'la', PF_INT_N6FD, 1, DESCEND_FLAT ,   ],
+		// Natural 13th
+		[ 'la', 'su', PF_INT_N6SU, 1, ASCEND_SHARP ,   ],
+		[ 'la', 'sd', PF_INT_N6SD, 1, DESCEND_SHARP ,  ],
+		[ 'la', 'fu', PF_INT_N6FU, 1, ASCEND_FLAT ,    ],
+		[ 'la', 'fd', PF_INT_N6FD, 1, DESCEND_FLAT ,   ],
 
-		// // 7th
-		// [ 'te', PF_INT_7SU, 1, ASCEND_SHARP ,   ],
-		// [ 'te', PF_INT_7SD, 1, DESCEND_SHARP ,  ],
-		// [ 'te', PF_INT_7FU, 1, ASCEND_FLAT ,    ],
-		// [ 'te', PF_INT_7FD, 1, DESCEND_FLAT ,   ],
+		// 7th
+		[ 'te', 'su', PF_INT_7SU, 1, ASCEND_SHARP ,   ],
+		[ 'te', 'sd', PF_INT_7SD, 1, DESCEND_SHARP ,  ],
+		[ 'te', 'fu', PF_INT_7FU, 1, ASCEND_FLAT ,    ],
+		[ 'te', 'fd', PF_INT_7FD, 1, DESCEND_FLAT ,   ],
 
-		// // Maj7th
-		// [ 'te', PF_INT_M7SU, 1, ASCEND_SHARP ,   ],
-		// [ 'te', PF_INT_M7SD, 1, DESCEND_SHARP ,  ],
-		// [ 'te', PF_INT_M7FU, 1, ASCEND_FLAT ,    ],
-		// [ 'te', PF_INT_M7FD, 1, DESCEND_FLAT ,   ],
+		// Maj7th
+		[ 'ti', 'su', PF_INT_M7SU, 1, ASCEND_SHARP ,   ],
+		[ 'ti', 'sd', PF_INT_M7SD, 1, DESCEND_SHARP ,  ],
+		[ 'ti', 'fu', PF_INT_M7FU, 1, ASCEND_FLAT ,    ],
+		[ 'ti', 'fd', PF_INT_M7FD, 1, DESCEND_FLAT ,   ],
+
+		// SPECIAL
+
+		// Aug 13th
+		[ 'li', 'su', PF_INT_A6SU, 1, ASCEND_SHARP ,   ],
+		[ 'li', 'sd', PF_INT_A6SD, 1, DESCEND_SHARP ,  ],
+		[ 'li', 'fu', PF_INT_A6FU, 1, ASCEND_FLAT ,    ],
+		[ 'li', 'fd', PF_INT_A6FD, 1, DESCEND_FLAT ,   ],
+
+		// Sharp 9th
+		[ 'ri', 'su', PF_INT_A9SU, 1, ASCEND_SHARP ,   ],
+		[ 'ri', 'sd', PF_INT_A9SD, 1, DESCEND_SHARP ,  ],
+		[ 'ri', 'fu', PF_INT_A9FU, 1, ASCEND_FLAT ,    ],
+		[ 'ri', 'fd', PF_INT_A9FD, 1, DESCEND_FLAT ,   ],
+
+		// Flat 9th
+		[ 'ra', 'su', PF_INT_D9SU, 1, ASCEND_SHARP ,   ],
+		[ 'ra', 'sd', PF_INT_D9SD, 1, DESCEND_SHARP ,  ],
+		[ 'ra', 'fu', PF_INT_D9FU, 1, ASCEND_FLAT ,    ],
+		[ 'ra', 'fd', PF_INT_D9FD, 1, DESCEND_FLAT ,   ],
+
+		// Sharp 2th
+		[ 'ri', 'su', PF_INT_A2SU, 1, ASCEND_SHARP ,   ],
+		[ 'ri', 'sd', PF_INT_A2SD, 1, DESCEND_SHARP ,  ],
+		[ 'ri', 'fu', PF_INT_A2FU, 1, ASCEND_FLAT ,    ],
+		[ 'ri', 'fd', PF_INT_A2FD, 1, DESCEND_FLAT ,   ],
+
+		// Sharp 2th
+		[ 'ra', 'su', PF_INT_D2SU, 1, ASCEND_SHARP ,   ],
+		[ 'ra', 'sd', PF_INT_D2SD, 1, DESCEND_SHARP ,  ],
+		[ 'ra', 'fu', PF_INT_D2FU, 1, ASCEND_FLAT ,    ],
+		[ 'ra', 'fd', PF_INT_D2FD, 1, DESCEND_FLAT ,   ],
+
+		// Dim 3rd
+		[ 'maw', 'su', PF_INT_D3SU, 1, ASCEND_SHARP ,   ],
+		[ 'maw', 'sd', PF_INT_D3SD, 1, DESCEND_SHARP ,  ],
+		[ 'maw', 'fu', PF_INT_D3FU, 1, ASCEND_FLAT ,    ],
+		[ 'maw', 'fd', PF_INT_D3FD, 1, DESCEND_FLAT ,   ],
+
+		// Dim 1st
+		[ 'de', 'su', PF_NULL,  1, ASCEND_SHARP ,   ],
+		[ 'de', 'sd', PF_FIRST, 1, DESCEND_SHARP ,  ],
+		[ 'de', 'fu', PF_NULL,  1, ASCEND_FLAT ,    ],
+		[ 'de', 'fd', PF_FIRST, 1, DESCEND_FLAT ,   ],
+
+		// Aug 1st
+		[ 'di', 'su', PF_NULL,  1, ASCEND_SHARP ,   ],
+		[ 'di', 'sd', PF_FIRST, 1, DESCEND_SHARP ,  ],
+		[ 'di', 'fu', PF_NULL,  1, ASCEND_FLAT ,    ],
+		[ 'di', 'fd', PF_FIRST, 1, DESCEND_FLAT ,   ],
+
+		// Dim 2nd
+		[ 'raw', 'su', PF_NULL,  1, ASCEND_SHARP ,   ],
+		[ 'raw', 'sd', PF_FIRST, 1, DESCEND_SHARP ,  ],
+		[ 'raw', 'fu', PF_NULL,  1, ASCEND_FLAT ,    ],
+		[ 'raw', 'fd', PF_FIRST, 1, DESCEND_FLAT ,   ],
+
+		// Dim 3nd
+		[ 'maw', 'su', PF_NULL,  1, ASCEND_SHARP ,   ],
+		[ 'maw', 'sd', PF_FIRST, 1, DESCEND_SHARP ,  ],
+		[ 'maw', 'fu', PF_NULL,  1, ASCEND_FLAT ,    ],
+		[ 'maw', 'fd', PF_FIRST, 1, DESCEND_FLAT ,   ],
+
+		// Aug 3nd
+		[ 'ma', 'su', PF_NULL,  1, ASCEND_SHARP ,   ],
+		[ 'ma', 'sd', PF_FIRST, 1, DESCEND_SHARP ,  ],
+		[ 'ma', 'fu', PF_INT_A3FU,  1, ASCEND_FLAT ,    ],
+		[ 'ma', 'fd', PF_INT_A3FD, 1, DESCEND_FLAT ,   ],
+
+
 	];
 
 	for ( var i=0; i<batch_pg.length; i++ ) {
 		var arr = batch_pg[i];
 		exec({
-			notes    : arr[3],
+			notes    : arr[4],
 			trans    : arr[0],
-			isSharp  : arr[2],
-			postfix  : arr[1],
-			filename : 'out/pat_' + fmt(i,2) + '.ly' ,
+			isSharp  : arr[3],
+			postfix  : arr[2],
+			filename : 'out/PAT' + fmt(i,3) + "_" + arr[0] + "_" + arr[1] + '.ly' ,
 		});
 	}
 }
