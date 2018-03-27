@@ -366,7 +366,7 @@ var PF_INT_S5FD = create_pf3([
 	[  "'", "'",   "", "", ",",   "", "", "'" ],
 ]);
 
-// Flat 13th
+// Dim 13th
 var PF_INT_F6SU = create_pf3([
 	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
 	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
@@ -480,7 +480,7 @@ var PF_INT_A6FD = create_pf3([
 	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
 ]);
 
-// Sharp 9th
+// Aug 9th
 var PF_INT_A9SU = create_pf3([
 	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
 	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
@@ -502,8 +502,8 @@ var PF_INT_A9FD = create_pf3([
 	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
 ]);
 
-// Flat 9th
-var PF_INT_D9SU = create_pf3([
+// Minor 9th
+var PF_INT_MI9SU = create_pf3([
 	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
 	[  "", "'",    "        ",  "", ",",   "      ", "'","'" ],
 	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
@@ -524,7 +524,7 @@ var PF_INT_D9FD = create_pf3([
 	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
 ]);
 
-// Sharp 2th
+// Aug 2th
 var PF_INT_A2SU = create_pf3([
 	[  "", "",    "        ",  "", "",   "      ", "", "" ],
 	[  "", "",    "        ",  "", "",   "      ", "", "" ],
@@ -546,8 +546,8 @@ var PF_INT_A2FD = create_pf3([
 	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
 ]);
 
-// Flat  2th
-var PF_INT_D2SU = create_pf3([
+// Minor 2th
+var PF_INT_MI2SU = create_pf3([
 	[  "", "",    "        ",  "", "",   "      ", "", "" ],
 	[  "", "",    "        ",  "", "",   "      ", "", "" ],
 	[  "", "",    "        ",  "", "",   "      ", "", "" ],
@@ -568,7 +568,7 @@ var PF_INT_D2FD = create_pf3([
 	[  "'", "",    "        ",  "", "",   "      ", "", "" ],
 ]);
 
-// Dim  3rd
+// Dim 3rd
 var PF_INT_D3SU = create_pf3([
 	[  "", "",    "        ",  "", "",   "      ", "", "" ],
 	[  "", "",    "        ",  "", "",   "      ", "", "" ],
@@ -602,6 +602,24 @@ var PF_INT_A3FD = create_pf3([
 	[  "'", "",  "",   "", "",   "",   "",  "" ],
 	[  "'", "'", "ta", ",", "",  "fa", "'", "" ],
 ]);
+
+// Dim 4th
+var PF_INT_D4SD = create_pf3([
+	[  "'", "",  "ti li si mi fi ri di",   ",", "",   "",   "",  "" ],
+	[  "'", "",  "li si ri di ",           ",", "",   "",   "",  "" ],
+	[  "'", "",  "   li si ma    ri di ta",   ",", "",   "",   "",  "" ],
+]);
+var PF_INT_D4FU = create_pf3([
+	[  "", "",   "",  "", "",  "", "", "" ],
+	[  "", "",   "",  "", "",  "", "", "" ],
+	[  "", "'",  "" , "", "",  "", "", "" ],
+]);
+var PF_INT_D4FD = create_pf3([
+	[  "'", "",  "",   "", "",   "",   "",  "" ],
+	[  "'", "",  "",   "", "",   "",   "",  "" ],
+	[  "'", "'", "ta", ",", "",  "fa", "'", "" ],
+]);
+
 
 /*
 var PF_INT_M6SU = create_pf3([
@@ -680,7 +698,7 @@ function batch() {
 		[ 'fa', 'fu', PF_NULL    ,  1, ASCEND_FLAT ,   ],
 		[ 'fa', 'fd', PF_INT_P4FD,  1, DESCEND_FLAT ,  ],
 
-		// Sharp 11th
+		// Aug 11th
 		[ 'fi', 'su', PF_INT_S11SU, 1, ASCEND_SHARP ,  ],
 		[ 'fi', 'sd', PF_INT_S11SD, 1, DESCEND_SHARP , ],
 		[ 'fi', 'fu', PF_INT_S11FU, 1, ASCEND_FLAT ,   ],
@@ -698,13 +716,13 @@ function batch() {
 		[ 'sol', 'fu', PF_INT_5FU,    1, ASCEND_FLAT ,   ],
 		[ 'sol', 'fd', PF_INT_5SD,    1, DESCEND_FLAT ,  ],
 
-		// Sharp 5th
+		// Aug 5th
 		[ 'si', 'su', PF_INT_S5SU, 1, ASCEND_SHARP ,   ],
 		[ 'si', 'sd', PF_INT_S5SD, 1, DESCEND_SHARP ,  ],
 		[ 'si', 'fu', PF_INT_S5FU, 1, ASCEND_FLAT ,    ],
 		[ 'si', 'fd', PF_INT_S5FD, 1, DESCEND_FLAT ,   ],
 
-		// Flat 13th
+		// Dim 13th
 		[ 'le', 'su', PF_INT_F6SU, 1, ASCEND_SHARP ,   ],
 		[ 'le', 'sd', PF_INT_F6SD, 1, DESCEND_SHARP ,  ],
 		[ 'le', 'fu', PF_INT_F6FU, 1, ASCEND_FLAT ,    ],
@@ -736,29 +754,29 @@ function batch() {
 		[ 'li', 'fu', PF_INT_A6FU, 1, ASCEND_FLAT ,    ],
 		[ 'li', 'fd', PF_INT_A6FD, 1, DESCEND_FLAT ,   ],
 
-		// Sharp 9th
+		// Aug 9th
 		[ 'ri', 'su', PF_INT_A9SU, 1, ASCEND_SHARP ,   ],
 		[ 'ri', 'sd', PF_INT_A9SD, 1, DESCEND_SHARP ,  ],
 		[ 'ri', 'fu', PF_INT_A9FU, 1, ASCEND_FLAT ,    ],
 		[ 'ri', 'fd', PF_INT_A9FD, 1, DESCEND_FLAT ,   ],
 
-		// Flat 9th
-		[ 'ra', 'su', PF_INT_D9SU, 1, ASCEND_SHARP ,   ],
-		[ 'ra', 'sd', PF_INT_D9SD, 1, DESCEND_SHARP ,  ],
-		[ 'ra', 'fu', PF_INT_D9FU, 1, ASCEND_FLAT ,    ],
-		[ 'ra', 'fd', PF_INT_D9FD, 1, DESCEND_FLAT ,   ],
+		// Minor 9th
+		[ 'ra', 'su', PF_INT_MI9SU, 1, ASCEND_SHARP ,   ],
+		[ 'ra', 'sd', PF_INT_MI9SD, 1, DESCEND_SHARP ,  ],
+		[ 'ra', 'fu', PF_INT_MI9FU, 1, ASCEND_FLAT ,    ],
+		[ 'ra', 'fd', PF_INT_MI9FD, 1, DESCEND_FLAT ,   ],
 
-		// Sharp 2th
+		// Aug 2th
 		[ 'ri', 'su', PF_INT_A2SU, 1, ASCEND_SHARP ,   ],
 		[ 'ri', 'sd', PF_INT_A2SD, 1, DESCEND_SHARP ,  ],
 		[ 'ri', 'fu', PF_INT_A2FU, 1, ASCEND_FLAT ,    ],
 		[ 'ri', 'fd', PF_INT_A2FD, 1, DESCEND_FLAT ,   ],
 
-		// Sharp 2th
-		[ 'ra', 'su', PF_INT_D2SU, 1, ASCEND_SHARP ,   ],
-		[ 'ra', 'sd', PF_INT_D2SD, 1, DESCEND_SHARP ,  ],
-		[ 'ra', 'fu', PF_INT_D2FU, 1, ASCEND_FLAT ,    ],
-		[ 'ra', 'fd', PF_INT_D2FD, 1, DESCEND_FLAT ,   ],
+		// Minor 2th
+		[ 'ra', 'su', PF_INT_MI2SU, 1, ASCEND_SHARP ,   ],
+		[ 'ra', 'sd', PF_INT_MI2SD, 1, DESCEND_SHARP ,  ],
+		[ 'ra', 'fu', PF_INT_MI2FU, 1, ASCEND_FLAT ,    ],
+		[ 'ra', 'fd', PF_INT_MI2FD, 1, DESCEND_FLAT ,   ],
 
 		// Dim 3rd
 		[ 'maw', 'su', PF_INT_D3SU, 1, ASCEND_SHARP ,   ],
@@ -795,6 +813,12 @@ function batch() {
 		[ 'ma', 'sd', PF_FIRST, 1, DESCEND_SHARP ,  ],
 		[ 'ma', 'fu', PF_INT_A3FU,  1, ASCEND_FLAT ,    ],
 		[ 'ma', 'fd', PF_INT_A3FD, 1, DESCEND_FLAT ,   ],
+
+		// Dim 4th
+		[ 'fe', 'su', PF_NULL,     1, ASCEND_SHARP ,   ],
+		[ 'fe', 'sd', PF_INT_D4SD, 1, DESCEND_SHARP ,  ],
+		[ 'fe', 'fu', PF_INT_D4FU, 1, ASCEND_FLAT ,    ],
+		[ 'fe', 'fd', PF_INT_D4FD, 1, DESCEND_FLAT ,   ],
 
 
 	];
