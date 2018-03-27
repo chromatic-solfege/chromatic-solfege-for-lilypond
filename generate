@@ -30,27 +30,6 @@ function prefix( n ) {
 	}
 }
 
-function gen_flat( args ) {
-	var notes    = args.notes;
-	var trans    = args.trans;
-	var postfix  = args.postfix;
-
-	var notes_str  = "";
-	var lyrics = "";
-	for ( var i=0; i<notes.length; i++ ) {
-		var note1 = notes[i];
-		var note2 = ch.transpose( note1, trans );
-
-		notes_str  += ( prefix( note1 ) +note1  + postfix( i, 'l',note1 ) +        " " + prefix( note2 ) + note2 + postfix( i, 'r', note2 ) + " s " );
-		lyrics     += (                 +note1  +                                  " " +                 + note2 +                            "   " );
-
-	}
-	return [{
-		caption  : '',
-		notes    : notes_str,
-		lyrics   : lyrics,
-	}];
-}
 
 var TAG_START = '\\uin';
 var TAG_STOP  = '\\uout';
@@ -62,7 +41,6 @@ function gen_sharp( args ) {
 	var ms = TAG_START;
 	var me = TAG_STOP;
 
-	var result = [];
 	var notes_01 = '';
 	var notes_02 = '';
 	var notes_03 = '';
@@ -102,6 +80,7 @@ function gen_sharp( args ) {
 
 	}
 
+	var result = [];
 	result.push({
 		caption  : '1. Harmonic Spelling',
 		notes    : notes_01,
@@ -117,7 +96,9 @@ function gen_sharp( args ) {
 		notes    : notes_03,
 		lyrics   : lyrics_03,
 	});
-	return result;
+
+	var output = createTemplate( result );
+	return output;
 }
 
 function createTemplate( arr ) {
@@ -161,29 +142,6 @@ result += `
 	return result.trim();
 }
 
-
-
-
-function exec( args ) {
-
-	var result;
-	if ( args.isSharp ) {
-		result = gen_sharp( args );
-	} else {
-		result = gen_flat(  args );
-	}
-	// console.error( result );
-
-	// console.error( notes, filename );
-	// var template = fs.readFileSync( './template.ly', 'utf8' );
-	// var output = applyTemplate( template, result );
-	var output = createTemplate( result );
-
-	console.error( args.filename );
-	fs.writeFileSync( OUTPUT_PATH + args.filename, output, 'utf8' );
-
-	// process.stdout.write(   + '\n' );
-}
 
 function fmt( i, len ) {
 	var s = String(i);
@@ -504,8 +462,6 @@ var PF_INT_D6FD = create_pf3([
 ]);
 
 
-
-
 // Sharp 9th
 var PF_INT_A9SU = create_pf3([
 	[  "", "'",    "        ",  "", ",",   "      ", "", "'" ],
@@ -638,19 +594,6 @@ var PF_INT_A7FD = create_pf3([
 ]);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 var PF_INT_M6SU = create_pf3([
 	[  "", "'",    "        ",  ",", "",   "      ", "", "'" ],
@@ -673,20 +616,6 @@ var PF_INT_M6FD = create_pf3([
 	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
 ]);
 */
-
-
-function PF_INT_DIM4SU( index, pos, note ) {
-	if ( index == 0 ) {
-		return pos=='l' ? "'"  : '';
-	} else { 
-		if ( pos == 'l' ) {
-			return chk( note, 'le ra me se te ' ) ? "" : ",";
-		} else {
-			return "";
-		}
-	}
-}
-
 
 var ASCEND_SHARP  = 'do di re ri mi fa fi sol si la li ti do'.split(' ');
 var DESCEND_FLAT  = 'do ra re me mi fa se sol le la te ti do'.split(' ').reverse()
@@ -891,18 +820,28 @@ function batch() {
 
 	];
 
+	var CNT=0;
+	function new_filename(interval, category ) {
+		return 'PAT' + fmt(CNT++,3) + "-" + interval + "-" + category + '.ly';
+	}
+
+
 	for ( var i=0; i<batch_pg.length; i++ ) {
 		var arr = batch_pg[i];
 		switch ( arr[0] ) {
 			case '*' :
-				arr[6] = 'PAT' + fmt(i,3) + "-" + arr[1] + "-" + arr[2] + '.ly';
-				exec({
+				var filename = new_filename( arr[1], arr[2] );
+				arr[6] = filename;
+				var output = gen_sharp({
 					notes    : arr[5],
 					trans    : arr[1],
 					isSharp  : arr[4],
 					postfix  : arr[3],
 					filename : arr[6],
 				});
+				console.error( filename );
+				fs.writeFileSync( OUTPUT_PATH + filename, output, 'utf8' );
+
 				break;
 			default :
 				//
