@@ -6,6 +6,17 @@ var argv = Array.prototype.slice.call( process.argv );
 argv.shift();
 argv.shift();
 
+function normalizeArguments( args ) {
+	var result = [];
+	for ( var i=0; i<args.length; i++ ) {
+		result = result.concat( args[i].trim().split(  / +/ ) );
+	}
+	return result;
+}
+
+argv = normalizeArguments( argv );
+
+
 if ( argv[0] === '-' ) {
 	var readline = require('readline');
 	var rl = readline.createInterface({
