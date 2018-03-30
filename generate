@@ -2,9 +2,10 @@
 
 var ch = require( 'chromatic' );
 var fs = require( 'fs' );
+var applyTemplate = require( 'solfege-template' );
 var OUTPUT_PATH = 'out/'
 
-function applyTemplate( s, o ) {
+function __applyTemplate( s, o ) {
 	return s.replace(  /\$\{([a-zA-Z0-9_]+)\}/g, function( s0, s1 ) {
 		// console.error( s1 );
 		s1 = s1.trim();
@@ -84,7 +85,7 @@ function gen_sharp( args ) {
 	}
 
 	// v1
-	// return createTemplate([
+	// return applyTemplate([
 	// 	{
 	// 		caption  : '1. Harmonic Spelling',
 	// 		notes    : notes_01,
@@ -106,7 +107,7 @@ function gen_sharp( args ) {
 	// return [
 	// 	{
 	// 		// caption  : '1. Harmonic Spelling',
-	// 		text : createTemplate([
+	// 		text : applyTemplate([
 	// 			{
 	// 				// caption  : '', 
 	// 				notes    : notes_01,
@@ -117,7 +118,7 @@ function gen_sharp( args ) {
 	// 	{
 	// 		// caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
 	// 		caption  : 'enharmonic spelling',
-	// 		text : createTemplate([
+	// 		text : applyTemplate([
 	// 			{
 	// 				// caption  : 'enharmonic spelling', 
 	// 				notes    : notes_02,
@@ -127,7 +128,7 @@ function gen_sharp( args ) {
 	// 	},
 	// 	{
 	// 		// caption  : '3. Enharmonic Spelling with Vertical Interval Correctness',
-	// 		text : createTemplate([
+	// 		text : applyTemplate([
 	// 			{
 	// 				notes    : notes_03,
 	// 				lyrics   : lyrics_03,
@@ -140,7 +141,7 @@ function gen_sharp( args ) {
 		return [
 			{
 				// caption  : '1. Harmonic Spelling',
-				text : createTemplate([
+				text : applyTemplate([
 					{
 						// caption  : '', 
 						notes    : notes_01,
@@ -151,7 +152,7 @@ function gen_sharp( args ) {
 			{
 				// caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
 				// caption  : 'enharmonic spelling',
-				text : createTemplate([
+				text : applyTemplate([
 					{
 						// caption  : 'enharmonic spelling', 
 						notes    : notes_02,
@@ -163,7 +164,7 @@ function gen_sharp( args ) {
 	} else {
 		return [
 			{
-				text : createTemplate([
+				text : applyTemplate([
 					{
 						notes    : notes_01,
 						lyrics   : lyrics_01,
@@ -174,46 +175,6 @@ function gen_sharp( args ) {
 	}
 }
 
-function createTemplate( arr ) {
-	var result = "";
-
-result += `
-\\version "2.18.2"
-\\include "aaron.ly"
-\\include "chromatic-solfege-gen.ly"
-\\include "lilypond-book-preamble.ly"
-`;
-
-	function createBlock( caption, notes, lyrics ) {
-		var result =  "";
-		if ( caption ) {
-			result +=
-(`
-\\markup \\bold \\italic {
-    ${caption}
-}
-`);
-		}
-
-		result +=
-`
-\\makescore 
-  \\relative do' {
-    ${notes}
-  }
-  \\lyricmode {
-    ${lyrics}
-  }
-`;
-		return result;
-	}
-
-	for ( var i=0; i<arr.length; i++ ) {
-		var e= arr[i];
-		result += createBlock( e.caption, e.notes, e.lyrics );
-	}
-	return result.trim();
-}
 
 
 function fmt( i, len ) {

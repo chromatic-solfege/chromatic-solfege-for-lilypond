@@ -54,18 +54,25 @@ uout = \stopTextSpan
   #(use-modules (ice-9 rdelim))
   #(use-modules (ice-9 regex))
   #(define (ch:transpose str )
-      (let* ((port (open-input-pipe (string-append 
+      (let* (
+               (port (open-input-pipe 
+                        (string-append 
                                        "solfege " 
-                                       (regexp-substitute/global #f "([\\|\\<\\>])" str 'pre "\\" 1 'post)
-                                    )))
-             (str  (read-line port)))
+                                       "\""
+                                       str
+                                       "\""
+                        )
+                     )
+               )
+               (str  (read-line port))
+            )
           (close-pipe port)
           str
       ))
 % <<< Added (Fri, 30 Mar 2018 15:29:33 +0900)
 
 %#(warn (regexp-substitute/global #f "\\|" "abcde|abcde" 'pre "\\\\|" 'post ))
-#(warn (ch:transpose "se do re mi | do re mi | < do mi sol >" ))
+%#(warn (ch:transpose "se do re mi | do re mi | < do mi sol >" ))
 %asc=#(ch:transpose "se do re mi \\| do ti la" )
 %#(warn asc)  
 
