@@ -84,59 +84,6 @@ function gen_sharp( args ) {
 
 	}
 
-	// v1
-	// return applyTemplate([
-	// 	{
-	// 		caption  : '1. Harmonic Spelling',
-	// 		notes    : notes_01,
-	// 		lyrics   : lyrics_01,
-	// 	},
-	// 	{
-	// 		caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
-	// 		notes    : notes_02,
-	// 		lyrics   : lyrics_02,
-	// 	},
-	// 	{
-	// 		caption  : '3. Enharmonic Spelling with Vertical Interval Correctness',
-	// 		notes    : notes_03,
-	// 		lyrics   : lyrics_03,
-	// 	},
-	// ]);
-
-	// v2
-	// return [
-	// 	{
-	// 		// caption  : '1. Harmonic Spelling',
-	// 		text : applyTemplate([
-	// 			{
-	// 				// caption  : '', 
-	// 				notes    : notes_01,
-	// 				lyrics   : lyrics_01,
-	// 			},
-	// 		]),
-	// 	},
-	// 	{
-	// 		// caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
-	// 		caption  : 'enharmonic spelling',
-	// 		text : applyTemplate([
-	// 			{
-	// 				// caption  : 'enharmonic spelling', 
-	// 				notes    : notes_02,
-	// 				lyrics   : lyrics_02,
-	// 			},
-	// 		]),
-	// 	},
-	// 	{
-	// 		// caption  : '3. Enharmonic Spelling with Vertical Interval Correctness',
-	// 		text : applyTemplate([
-	// 			{
-	// 				notes    : notes_03,
-	// 				lyrics   : lyrics_03,
-	// 			},
-	// 		]),
-	// 	},
-	// ];
-
 	if ( is_irregular ) {
 		return [
 			{
@@ -627,29 +574,6 @@ var PF_INT_A7FD = create_pf3([
 	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
 ]);
 
-
-/*
-var PF_INT_M6SU = create_pf3([
-	[  "", "'",    "        ",  ",", "",   "      ", "", "'" ],
-	[  "", "'",    "        ",  "",  ",",  "      ", "'","'" ],
-	[  "", "'",    "        ",  ",", "",   "      ", "", "'" ],
-]);
-var PF_INT_M6SD = create_pf3([
-	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
-	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
-	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
-]);
-var PF_INT_M6FU = create_pf3([
-	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
-	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
-	[  "", "'",   "         ", "", ",",    "      ", "", "'" ],
-]);
-var PF_INT_M6FD = create_pf3([
-	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
-	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
-	[  "'", "'",   "        ", "", ",",    "      ", "", "'" ],
-]);
-*/
 
 var ASCEND_SHARP  = 'do di re ri mi fa fi sol si la li ti do'.split(' ');
 var DESCEND_FLAT  = 'do ra re me mi fa se sol le la te ti do'.split(' ').reverse()
