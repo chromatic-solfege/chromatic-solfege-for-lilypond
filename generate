@@ -49,11 +49,14 @@ function gen_sharp( args ) {
 	var lyrics_02 = '';
 	var lyrics_03 = '';
 
+	var is_irregular = false;
 	for ( var i=0; i<notes.length; i++ ) {
 		var note1 = notes[i];
 		var note2 = ch.transpose( note1, trans );
 
 		if ( ch.isIrregularAccidental( note2 ) || ch.isDoubleAccidental( note2 ) || ch.isTripleAccidental( note2 ) || ch.isQuadrupleAccidental( note2 )  ) {
+			is_irregular = true;
+
 			var rnote1 = ch.respell( note1 );
 			var rnote2 = ch.respell( note2 );
 
@@ -80,25 +83,95 @@ function gen_sharp( args ) {
 
 	}
 
-	var result = [];
-	result.push({
-		caption  : '1. Harmonic Spelling',
-		notes    : notes_01,
-		lyrics   : lyrics_01,
-	});
-	result.push({
-		caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
-		notes    : notes_02,
-		lyrics   : lyrics_02,
-	});
-	result.push({
-		caption  : '3. Enharmonic Spelling with Vertical Interval Correctness',
-		notes    : notes_03,
-		lyrics   : lyrics_03,
-	});
+	// v1
+	// return createTemplate([
+	// 	{
+	// 		caption  : '1. Harmonic Spelling',
+	// 		notes    : notes_01,
+	// 		lyrics   : lyrics_01,
+	// 	},
+	// 	{
+	// 		caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
+	// 		notes    : notes_02,
+	// 		lyrics   : lyrics_02,
+	// 	},
+	// 	{
+	// 		caption  : '3. Enharmonic Spelling with Vertical Interval Correctness',
+	// 		notes    : notes_03,
+	// 		lyrics   : lyrics_03,
+	// 	},
+	// ]);
 
-	var output = createTemplate( result );
-	return output;
+	// v2
+	// return [
+	// 	{
+	// 		// caption  : '1. Harmonic Spelling',
+	// 		text : createTemplate([
+	// 			{
+	// 				// caption  : '', 
+	// 				notes    : notes_01,
+	// 				lyrics   : lyrics_01,
+	// 			},
+	// 		]),
+	// 	},
+	// 	{
+	// 		// caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
+	// 		caption  : 'enharmonic spelling',
+	// 		text : createTemplate([
+	// 			{
+	// 				// caption  : 'enharmonic spelling', 
+	// 				notes    : notes_02,
+	// 				lyrics   : lyrics_02,
+	// 			},
+	// 		]),
+	// 	},
+	// 	{
+	// 		// caption  : '3. Enharmonic Spelling with Vertical Interval Correctness',
+	// 		text : createTemplate([
+	// 			{
+	// 				notes    : notes_03,
+	// 				lyrics   : lyrics_03,
+	// 			},
+	// 		]),
+	// 	},
+	// ];
+
+	if ( is_irregular ) {
+		return [
+			{
+				// caption  : '1. Harmonic Spelling',
+				text : createTemplate([
+					{
+						// caption  : '', 
+						notes    : notes_01,
+						lyrics   : lyrics_01,
+					},
+				]),
+			},
+			{
+				// caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
+				// caption  : 'enharmonic spelling',
+				text : createTemplate([
+					{
+						// caption  : 'enharmonic spelling', 
+						notes    : notes_02,
+						lyrics   : lyrics_02,
+					},
+				]),
+			},
+		];
+	} else {
+		return [
+			{
+				text : createTemplate([
+					{
+						notes    : notes_01,
+						lyrics   : lyrics_01,
+					},
+				]),
+			},
+		];
+	}
 }
 
 function createTemplate( arr ) {
@@ -115,11 +188,11 @@ result += `
 		var result =  "";
 		if ( caption ) {
 			result +=
-`
+(`
 \\markup \\bold \\italic {
     ${caption}
 }
-`;
+`);
 		}
 
 		result +=
@@ -820,59 +893,86 @@ function batch() {
 
 	];
 
-	var CNT=0;
-	function new_filename(interval, category ) {
-		return 'PAT' + fmt(CNT++,3) + "-" + interval + "-" + category + '.ly';
-	}
-
-
-	for ( var i=0; i<batch_pg.length; i++ ) {
-		var arr = batch_pg[i];
-		switch ( arr[0] ) {
-			case '*' :
-				var filename = new_filename( arr[1], arr[2] );
-				arr[6] = filename;
-				var output = gen_sharp({
-					notes    : arr[5],
-					trans    : arr[1],
-					isSharp  : arr[4],
-					postfix  : arr[3],
-					filename : arr[6],
-				});
-				console.error( filename );
-				fs.writeFileSync( OUTPUT_PATH + filename, output, 'utf8' );
-
-				break;
-			default :
-				//
-		}
-	}
 
 	{
-		let output = "";
+		{
+			let CNT=0;
+			let SEQ = 0;
+			function fname_generate(interval, category ) {
+				return 'PAT' + fmt(CNT,3) + "-" + interval + "-" + category + "-" + ( SEQ ++ ) + '.ly';
+			}
+			function fname_next() {
+				CNT++;
+				SEQ=0;
+			}
+		}
+
+		let include_text = "";
+
 		for ( var i=0; i<batch_pg.length; i++ ) {
 			var arr = batch_pg[i];
-
 			switch ( arr[0] ) {
 				case '==' :
-					output+= '\\subsection{'    + arr[1] + '}\n';
+					include_text+= '\\subsection{'    + arr[1] + '}\n';
 					break;
 				case '===' :
-					output+= '\\subsubsection{' + arr[1] + '}\n';
+					include_text+= '\\subsubsection{' + arr[1] + '}\n';
 					break;
 
 				case '*' :
-					var filename = arr[6];
-					var f = filename.replace( /\.ly$/, '.pdf' );
-					output+= '\\includegraphics[width=1.0\\textwidth]{' + f + '}\n';
+					var output_arr = gen_sharp({
+						notes    : arr[5],
+						trans    : arr[1],
+						isSharp  : arr[4],
+						postfix  : arr[3],
+					});
+
+
+					// if ( arr[2].endsWith( 'd' ) ) {
+					// 	continue;
+					// }
+					
+					switch ( arr[2] ) {
+						case 'fu' :
+							include_text+= '\\paragraph{ Flat Ascending}\n';
+							break;
+						case 'fd' :
+							include_text+= '\\paragraph{ Flat Descending}\n';
+							break;
+						case 'su' :
+							include_text+= '\\paragraph{ Sharp Ascending}\n';
+							break;
+						case 'sd' :
+							include_text+= '\\paragraph{ Sharp Descending}\n';
+							break;
+					}
+
+					for ( var oi=0; oi<output_arr.length; oi++ ) {
+						let o = output_arr[oi];
+
+						let filename = fname_generate( arr[1], arr[2] );
+						fs.writeFileSync( OUTPUT_PATH + filename, o.text, 'utf8' );
+						console.error( filename );
+
+						if ( o.caption )
+							include_text+= '\\paragraph{' + o.caption + '}\n';
+
+
+						let filename2 = filename.replace( /\.ly$/, '.pdf' );
+						include_text+= '\\noindent\\includegraphics[width=1.0\\textwidth]{' + filename2 + '}\n';
+					}
+					fname_next();
+
 					break;
 				default :
-					throw new Error( "" );
+					//
 			}
-
 		}
-		fs.writeFileSync( OUTPUT_PATH + 'output.tex', output, 'utf8' );
+
+		console.error( 'output.tex' );
+		fs.writeFileSync( OUTPUT_PATH + 'output.tex', include_text, 'utf8' );
 	}
+
 }
 
 batch();

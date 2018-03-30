@@ -57,7 +57,7 @@ makescore = #(define-scheme-function (parser location noteValues noteNames) (ly:
           %\time 16/4
           \omit Score.TimeSignature
           \omit Score.BarNumber
-          \omit Score.BarLine
+          % \omit Score.BarLine
           \stemUp
           \new Voice = "myRhythm" {
               %\override Beam.breakable = ##t

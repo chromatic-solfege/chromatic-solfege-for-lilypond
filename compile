@@ -1,4 +1,18 @@
 #!/bin/bash
 
+function max2 {
+   while [ `jobs | wc -l` -ge 5 ]
+   do
+      sleep 0.2
+   done
+}
+
 cd out
-lilypond -I /home/ats/Documents/lilypond/include/ *.ly
+for  i in *.ly  ;
+do
+	max2
+	echo "$i"
+	lilypond -I /home/ats/Documents/lilypond/include/ "$i" 2> /dev/null &
+done;
+
+# lilypond -I /home/ats/Documents/lilypond/include/ *.ly
