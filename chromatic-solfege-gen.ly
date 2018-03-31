@@ -88,6 +88,7 @@ makescore = #(define-scheme-function (parser location noteValues noteNames) (ly:
           % \omit Score.BarLine
           \stemUp
           \new Voice = "myRhythm" {
+              \accidentalStyle neo-modern
               %\override Beam.breakable = ##t
               %\set Timing.beatStructure  = #'( 1 1 1 1 1 1 1 1 1 1 1 1 1 1  )
               %\hide Stem
