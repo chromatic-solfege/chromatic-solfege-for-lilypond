@@ -53,7 +53,7 @@ function gen_sharp( args ) {
 	var is_irregular = false;
 	for ( var i=0; i<notes.length; i++ ) {
 		var note1 = notes[i];
-		var note2 = ch.transpose( note1, trans );
+		var note2 = ch.transpose( note1, trans ).shift();
 
 		if ( ch.isIrregularAccidental( note2 ) || ch.isDoubleAccidental( note2 ) || ch.isTripleAccidental( note2 ) || ch.isQuadrupleAccidental( note2 )  ) {
 			is_irregular = true;
@@ -146,6 +146,7 @@ function chk( a,b ) {
 
 function create_pf( l0,r0, lcond,lthen,lelse, rcond,rthen,relse ) {
 	return function( index, pos, note, type ) {
+		console.error( 'create_pf(', index, pos, note, type , ')' );
 		if ( index == 0 ) {
 			return pos == 'l' ? l0 : r0;
 			switch ( pos ) {
@@ -582,11 +583,12 @@ var DESCEND_SHARP = 'do di re ri mi fa fi sol si la li ti do'.split(' ').reverse
 
 function batch() {
 	var batch_pg = [
+		[ '==' , 'Intervals' ],
+
 		// su:sharp ascend, sd:sharp descend, fu:flat ascend, fd:flat descend
 	
 		// mark, trans, id, prefix_formatter,  sharp=1/flat=0,  note_list, filename(generated later)
 		// Major 2nd
-		[ '==' , 'Chord Tones' ],
 		[ '===' , 'Major 2nd' ],
 		[ '*', 're', 'su', PF_NULL,      1, ASCEND_SHARP ,    "",  ],
 		[ '*', 're', 'sd', PF_FIRST,     1, DESCEND_SHARP,    "",  ],
@@ -679,7 +681,7 @@ function batch() {
 
 		// Tensions
 
-		[ '==' , 'Tensions' ],
+		[ '==' , 'Intervals Larger Than Octave' ],
 		[ '===' , 'Sharp 9th' ],
 		// Sharp 9th
 		[ '*', 'ri', 'su', PF_INT_A9SU, 1, ASCEND_SHARP ,     "",  ],
@@ -697,7 +699,7 @@ function batch() {
 		//
 		// Special
 		//
-		[ '==' , 'Special' ],
+		[ '==' , 'Theoretical Intervals' ],
 
 		// Augumented 1st
 		[ '===' , 'Augumented 1st' ],
@@ -799,12 +801,15 @@ function batch() {
 			switch ( arr[0] ) {
 				case '==' :
 					include_text+= '\\subsection{'    + arr[1] + '}\n';
+					console.error( '\\subsection{'    + arr[1] + '}' );
 					break;
 				case '===' :
 					include_text+= '\\subsubsection{' + arr[1] + '}\n';
+					console.error( '\\subsubsection{' + arr[1] + '}' );
 					break;
 
 				case '*' :
+					console.error( "generating ", arr[1] +'-' + arr[2] );
 					var output_arr = gen_sharp({
 						notes    : arr[5],
 						trans    : arr[1],
