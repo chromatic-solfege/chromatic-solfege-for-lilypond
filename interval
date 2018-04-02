@@ -146,7 +146,7 @@ function chk( a,b ) {
 
 function create_pf( l0,r0, lcond,lthen,lelse, rcond,rthen,relse ) {
 	return function( index, pos, note, type ) {
-		console.error( 'create_pf(', index, pos, note, type , ')' );
+		// console.error( 'create_pf(', index, pos, note, type , ')' );
 		if ( index == 0 ) {
 			return pos == 'l' ? l0 : r0;
 			switch ( pos ) {
@@ -824,16 +824,16 @@ function batch() {
 					
 					switch ( arr[2] ) {
 						case 'fu' :
-							include_text+= '\\paragraph{ Flat Ascending}\n';
+							include_text+= '\\paragraph{Flat Ascending}\n';
 							break;
 						case 'fd' :
-							include_text+= '\\paragraph{ Flat Descending}\n';
+							include_text+= '\\paragraph{Flat Descending}\n';
 							break;
 						case 'su' :
-							include_text+= '\\paragraph{ Sharp Ascending}\n';
+							include_text+= '\\paragraph{Sharp Ascending}\n';
 							break;
 						case 'sd' :
-							include_text+= '\\paragraph{ Sharp Descending}\n';
+							include_text+= '\\paragraph{Sharp Descending}\n';
 							break;
 					}
 
@@ -842,7 +842,7 @@ function batch() {
 
 						let filename = fname_generate( arr[1], arr[2] );
 						fs.writeFileSync( OUTPUT_PATH + filename, o.text, 'utf8' );
-						console.error( filename );
+						console.error( OUTPUT_PATH + filename );
 
 						if ( o.caption )
 							include_text+= '\\paragraph{' + o.caption + '}\n';
@@ -859,7 +859,7 @@ function batch() {
 			}
 		}
 
-		console.error( 'output.tex' );
+		console.error( OUTPUT_PATH + 'output.tex' );
 		fs.writeFileSync( OUTPUT_PATH + 'output.tex', include_text, 'utf8' );
 	}
 

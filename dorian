@@ -1,38 +1,38 @@
 #!/usr/bin/nodejs
 
+var ch = require( 'chromatic' );
 var ScaleGenerator = require( 'scale-generator' );
+
+ScaleGenerator.prototype.writeScore1 = function ( type, notes ) {
+	var id = notes.split( /\s+/ ).shift();
+	var output = ScaleGenerator.applyTemplate( notes );
+
+	this.nextOutputFilename( type + '-' + id );
+	ScaleGenerator.writeFile( this.currentOutputFilename(), output );
+
+	this.writeIncludeText( '\\noindent ' );
+	this.writeIncludeText(  ch.note2alphabet_tex( id ) ) ;
+	this.writeIncludeText( '$\\vcenter{ \\hbox{ \\includegraphics[width=1.0 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n' );
+};
 
 var OUTPUT_PATH = 'out/'
 function batch() {
-	var c = new ScaleGenerator( OUTPUT_PATH, 'scale' );
-	c.writeHeader1( "Natural" );
-	c.writeScore( "diatonic", "do  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeHeader1( "Sharp" );
-	c.writeScore( "diatonic", "sol do' re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "re  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "la  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "mi  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "ti  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "fi  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeHeader1( "Flat" );
-	c.writeScore( "diatonic", "fa  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "te  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "me  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "le  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "re  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "se  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
-
-	c.writeHeader1( "Special ( Flat )" );
-	c.writeScore( "diatonic", "de  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "fe  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
-
-	c.writeHeader1( "Special ( Sharp )" );
-	c.writeScore( "diatonic", "di  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "si  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "ri  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "li  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "ma  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeScore( "diatonic", "ta  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	var c = new ScaleGenerator( OUTPUT_PATH, 'dorian' );
+	c.writeHeader1( "Scales" );
+	c.writeHeader1( "Dorian Scales" );
+	c.writeScore(  "do@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore( "sol@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "re@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "le@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "mi@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "ti@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "fi@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "fa@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "te@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "me@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "le@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "ra@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+	c.writeScore(  "se@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
 	c.close();
 }
 

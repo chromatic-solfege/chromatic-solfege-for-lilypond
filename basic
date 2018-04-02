@@ -19,16 +19,27 @@ ScaleGenerator.prototype.writeScore2 = function ( type, notes ) {
 	this.nextOutputFilename( type + '-' + id );
 	ScaleGenerator.writeFile( this.currentOutputFilename(), output );
 
-	this.writeIncludeText( '\\noindent $\\vcenter{ \\hbox{ \\includegraphics[width=1.0 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n' );
+	this.writeIncludeText( '\\noindent $\\vcenter{ \\hbox{ \\includegraphics[width=0.6 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n' );
 };
 
 var OUTPUT_PATH = 'out/'
 function batch() {
 	var c = new ScaleGenerator( OUTPUT_PATH, 'basic' );
 	c.writeHeader1( "Natural" );
+	c.writeTextBody( "The diatonic notes are named as the traditional solfège." );
 	c.writeScore2( "example", "do  do  re mi fa sol la ti do" );
 	c.writeHeader1( "Flat" );
+	c.writeTextBody( `When flat is added to a note, the name of the note alters. The vowel part of the name will be replaced to “\\textit{e}”. In case the vowel is already “\\textit{e}”, it will be replaced with “\\textit{a}”.` );
 	c.writeScore2( "example", "do  de  ra me fe se  le te de" );
+	c.writeHeader1( "Sharp" );
+	c.writeTextBody( `Sharp is treated in the same manner except it will be replaced with “i”. In case the vowel is already “i”, it will be replaced with “a” as well as flat.` );
+	c.writeScore2( "example", "do  di  ri mi fi si  li ti di" );
+	c.writeHeader1( "Double Flat" );
+	c.writeTextBody( `Double flat is also treated in the same manner as flat and sharp, except the vowel is replaced with “aw”.` );
+	c.writeScore2( "example", "do  daw  raw maw faw saw law taw daw" );
+	c.writeHeader1( "Double Sharp" );
+	c.writeTextBody( `Double sharp is also treated in the same manner as double flat, except the vowel is replaced with “ai”.` );
+	c.writeScore2( "example", "do  dai  rai mai fai sai lai tai dai" );
 
 	// c.writeScore2( "diatonic", "do  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
 	// c.writeHeader1( "Sharp" );
