@@ -278,4 +278,21 @@ doubleflatdoubleflat = {
           (add! (cdr mylist) myelem ))))
 
 #(add! language-pitch-names aaron-c)
+
+#(define lookup-aaron-by-pitch
+  (lambda (p)
+      (define lookup
+          (lambda ( es p )
+              ;(write (length es))
+              ;(newline)
+              (if (null? es)
+                  ""
+                  (let* ((p2 (cdr (car es))))
+                      (if (equal? p p2 )
+                          (car (car es))
+                          (lookup (cdr es) p ))))))
+      
+      (lookup (cdr aaron-c ) p )))
+
+
 \language "aaron"
