@@ -14,7 +14,8 @@ if [ ${#FILES[@]} -eq 0 ]; then
 	./notenames
 	./diatonic
 	./interval
-	./dorian
+	./scales
+	./scales-dorian
 	FILES=(out/*.ly)
 fi
 

@@ -3,22 +3,29 @@
 var ch = require( 'chromatic' );
 var ScaleGenerator = require( 'scale-generator' );
 
-ScaleGenerator.prototype.writeScore1 = function ( type, notes ) {
-	var id = notes.split( /\s+/ ).shift();
-	var output = ScaleGenerator.applyTemplate( notes );
-
-	this.nextOutputFilename( type + '-' + id );
-	ScaleGenerator.writeFile( this.currentOutputFilename(), output );
-
-	this.writeIncludeText( '\\noindent ' );
-	this.writeIncludeText(  ch.note2alphabet_tex( id ) ) ;
-	this.writeIncludeText( '$\\vcenter{ \\hbox{ \\includegraphics[width=1.0 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n' );
-};
 
 var OUTPUT_PATH = 'out/'
 function batch() {
-	var c = new ScaleGenerator( OUTPUT_PATH, 'dorian' );
-	c.writeHeader1( "Scales" );
+	var c = new ScaleGenerator( OUTPUT_PATH, 'scales-dorian' );
+
+	c.writeHeader2( "Dorian Scale" );
+	c.writeHeader3( "" );
+	c.writeScore(  "dorian-01",                  "do@(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7"   ,  0.6, [] );
+	c.writeHeader3( "" );
+	c.writeScore(  "dorian-02",                  "te@(re,me,fa,sol,la,te,do)  1 2 3 4 5 6 7"   ,  0.6, [] );
+	c.writeHeader3( "" );
+	c.writeScore(  "dorian-03",                  "la@(me,fa,sol,la,te,do,re)  1 2 3 4 5 6 7"   ,  0.6, [] );
+	c.writeHeader3( "" );
+	c.writeScore(  "dorian-04",                 "sol@(fa,sol,la,te,do,re,me)  1 2 3 4 5 6 7"   ,  0.6, [] );
+	c.writeHeader3( "" );
+	c.writeScore(  "dorian-05",                  "fa@(sol,la,te,do,re,me,fa)  1 2 3 4 5 6 7"   ,  0.6, [] );
+	c.writeHeader3( "" );
+	c.writeScore(  "dorian-06",                  "me@(la,te,do,re,me,fa,sol)  1 2 3 4 5 6 7"   ,  0.6, [] );
+	c.writeHeader3( "" );
+	c.writeScore(  "dorian-07",                  "re@(te,do,re,me,fa,sol,la)  1 2 3 4 5 6 7"   ,  0.6, [] );
+
+	c.writeHeader1( "Dorian" );
+	c.writeHeader2( "Dorian Scales" );
 	c.writeHeader1( "Dorian Scales" );
 	c.writeScore(  "do@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
 	c.writeScore( "sol@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
