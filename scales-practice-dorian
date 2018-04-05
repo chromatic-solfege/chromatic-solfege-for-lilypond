@@ -1,0 +1,25 @@
+#!/usr/bin/nodejs
+
+var ch = require( 'chromatic' );
+var ScaleGenerator = require( 'scale-generator' );
+var OUTPUT_PATH = 'out/'
+var c = new ScaleGenerator( OUTPUT_PATH, 'scales-practice-dorian' );
+
+c.writeScore(  "do@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore( "sol@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "re@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "le@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "mi@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "ti@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "fi@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "fa@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "te@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "me@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "le@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "ra@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+c.writeScore(  "se@(do,re,me,fa,sol,la,te)  < 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >" );
+
+c.close();
+
+// vim: filetype=javascript :
+

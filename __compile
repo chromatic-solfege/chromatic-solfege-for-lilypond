@@ -16,6 +16,8 @@ if [ ${#FILES[@]} -eq 0 ]; then
 	./interval
 	./scales
 	./scales-dorian
+	./scales-melodic
+	./scales-practice-dorian
 	FILES=(out/*.ly)
 fi
 
