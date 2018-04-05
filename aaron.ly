@@ -279,6 +279,19 @@ doubleflatdoubleflat = {
 
 #(add! language-pitch-names aaron-c)
 
+#(define pitch-equal?
+          (lambda (p1 p2)
+              ;(write (ly:pitch-alteration p1))(newline)
+              ;(write (ly:pitch-alteration p2))(newline)
+              ;(write (ly:pitch-notename p1))(newline)
+              ;(write (ly:pitch-notename p2))(newline)
+              ;(write (equal? (ly:pitch-alteration p1)(ly:pitch-alteration p2)))(newline)
+              ;(write (equal? (ly:pitch-notename p1)(ly:pitch-notename p2)))(newline)
+              (and
+               (equal? (ly:pitch-alteration p1)(ly:pitch-alteration p2))
+               (equal? (ly:pitch-notename p1)(ly:pitch-notename p2)))
+              ))
+
 #(define lookup-aaron-by-pitch
   (lambda (p)
       (define lookup
@@ -288,11 +301,15 @@ doubleflatdoubleflat = {
               (if (null? es)
                   ""
                   (let* ((p2 (cdr (car es))))
-                      (if (equal? p p2 )
-                          (car (car es))
+                      (if (pitch-equal? p p2 )
+                          (symbol->string (car (car es)))
                           (lookup (cdr es) p ))))))
       
       (lookup (cdr aaron-c ) p )))
+
+#(write (pitch-equal? (ly:make-pitch -1 1  -2/4 ) (ly:make-pitch -1 1  -2/4 )) )
+
+
 
 % #(display-scheme-music (equal? (ly:make-pitch -1 0  -8/4 ) (ly:make-pitch -1 0  -8/4 )))
 % #(display-scheme-music (lookup-aaron-by-pitch (ly:make-pitch -1 1  -2/4 ) ))
