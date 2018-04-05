@@ -786,7 +786,7 @@ function batch() {
 			let CNT=0;
 			let SEQ = 0;
 			function fname_generate(interval, category ) {
-				return 'PAT' + fmt(CNT,3) + "-" + interval + "-" + category + "-" + ( SEQ ++ ) + '.ly';
+				return 'interval-' + fmt(CNT,3) + "-" + interval + "-" + category + "-" + ( SEQ ++ ) + '.ly';
 			}
 			function fname_next() {
 				CNT++;
@@ -859,8 +859,8 @@ function batch() {
 			}
 		}
 
-		console.error( OUTPUT_PATH + 'output.tex' );
-		fs.writeFileSync( OUTPUT_PATH + 'output.tex', include_text, 'utf8' );
+		console.error( OUTPUT_PATH + 'interval-output.tex' );
+		fs.writeFileSync( OUTPUT_PATH + 'interval-output.tex', include_text, 'utf8' );
 	}
 
 }
