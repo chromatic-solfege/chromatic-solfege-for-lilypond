@@ -76,27 +76,36 @@
          ; (warn fretdiagram-def)
          ))
 
-#(define fretdiagram-add-by-pitch
+#(define fretdiagram-add-by-pitch-offset
      (lambda* ( string-num pitch-offset pitch-name )
          (define string-offset (list-ref fretdiagram-guitar-string-offset-map string-num))
          (fretdiagram-add string-num (- pitch-offset string-offset) pitch-name )
          ))
 
+#(define note-event-to-string-num
+     (lambda (e)
+         (define sne (car (reverse (lookup-music-by-name (ly:music-property e 'articulations ) 'StringNumberEvent ))))
+         (if (null? sne )
+             '()
+             (ly:music-property sne 'string-number))))
+
+#(define fretdiagram-add-by-pitch
+     (lambda* ( string-num pitch  )
+         (let* 
+          (( pitch-offset (+ (ly:pitch-semitones pitch ) 24))
+           ( pitch-name   (lookup-aaron-by-pitch pitch)))
+          (fretdiagram-add-by-pitch-offset string-num pitch-offset pitch-name))))
 
 #(define fretdiagram-add-note-event
      (lambda* (e)
-         (define p (ly:music-property e 'pitch))
-         (define sne (car (reverse (lookup-music-by-name (ly:music-property e 'articulations ) 'StringNumberEvent ))))
-         ; (display-scheme-music (ly:pitch-notename p))
-         (if (null? sne)
-             #f
-             (let* ((string-num (ly:music-property sne 'string-number))
-                    (pitch-offset (+ (ly:pitch-semitones p ) 24))
-                    (pitch-name (lookup-aaron-by-pitch p)))
-                 ;(write "pitch-offset=" )(write pitch-offset)
-                 ;(write "string-offset=" )(write string-offset)
-                 ;(newline)
-                 (fretdiagram-add-by-pitch string-num pitch-offset pitch-name)))))
+         (let* 
+          (( pitch        (ly:music-property e 'pitch))
+           ( string-num   (note-event-to-string-num e)))
+          ;(write "pitch-offset=" )(write pitch-offset)
+          ;(write "string-offset=" )(write string-offset)
+          ;(newline)
+          (fretdiagram-add-by-pitch string-num pitch )
+          )))
 
 
 #(define put-string-number-on-music!
