@@ -26,7 +26,7 @@
 % Creating guitar strings to note number
 %
 
-#(define guitar-string-offset-map
+#(define fretdiagram-guitar-string-offset-map
      ((lambda ()
           (define result '())
           (visit 
@@ -40,7 +40,7 @@
                ;(write (ly:pitch-semitones (ly:music-property e 'pitch ) ))
                ))
           (append '(null)  result ))))
-%#(warn guitar-string-offset-map)
+%#(warn fretdiagram-guitar-string-offset-map)
 
 #(define set-string-number-to-note-event 
      (lambda ( e num )
@@ -54,6 +54,8 @@
                 (ly:music-property e 'articulations)))))
 
 #(define fretdiagram-def '())
+#(define fretdiagram-init (lambda() (set! fretdiagram-def '() )))
+#(define fretdiagram-get (lambda() fretdiagram-def ))
 #(define fretdiagram-add 
      (lambda (str-num fret-num fret-mark )
          (set! fretdiagram-def
@@ -69,6 +71,11 @@
          ; (warn fretdiagram-def)
          ))
 
+#(define fretdiagram-add-by-note
+     (lambda ( pitch-num string-num )
+         (write 1)
+         ))
+
 
 #(define fretdiagram-add-note-event
      (lambda* (e)
@@ -78,15 +85,20 @@
          (if (null? sne)
              #f
              (let* ((sn (ly:music-property sne 'string-number))
-                    (string-offset (list-ref guitar-string-offset-map sn))
-                    (pitch-offset (+ (ly:pitch-semitones p ) 24)))
+                    (string-offset (list-ref fretdiagram-guitar-string-offset-map sn))
+                    (pitch-offset (+ (ly:pitch-semitones p ) 24))
+                    (pitch-name (lookup-aaron-by-pitch p)))
                  ;(write "pitch-offset=" )(write pitch-offset)
                  ;(write "string-offset=" )(write string-offset)
                  ;(newline)
-                 (fretdiagram-add sn (- pitch-offset string-offset) (lookup-aaron-by-pitch p))))))
+                 (fretdiagram-add sn (- pitch-offset string-offset) pitch-name)))))
+
 
 #(define put-string-number-on-music!
      (lambda (music string-number-map)
+         ; Initialization
+         (fretdiagram-init)
+         
          (visit
           (ly:music-property (ly:music-property music 'element ) 'elements )
           ((lambda()
@@ -99,7 +111,8 @@
                         (fretdiagram-add-note-event e)
                         (set! counter (+ counter 1)) )
                        #f)))))
-         fretdiagram-def ))
+         (fretdiagram-get)))
+
 
 
 % #(display-scheme-music fretdiagram-def)
@@ -141,11 +154,8 @@
            (ly:music-property obj1 'articulations )))))
 
 
-#(newline)
-
-#(write put-scale-chart!)
+%#(write put-scale-chart!)
 #(newline)
 
 % #(warn (length (lookup-music-by-name (ly:music-property (ly:music-property music 'element ) 'elements ) 'NoteEvent)))
-
 % vim: lisp sw=1 ts=1 sts=1 et
