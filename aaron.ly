@@ -280,34 +280,60 @@ doubleflatdoubleflat = {
 #(add! language-pitch-names aaron-c)
 
 #(define pitch-equal?
-          (lambda (p1 p2)
-              ;(write (ly:pitch-alteration p1))(newline)
-              ;(write (ly:pitch-alteration p2))(newline)
-              ;(write (ly:pitch-notename p1))(newline)
-              ;(write (ly:pitch-notename p2))(newline)
-              ;(write (equal? (ly:pitch-alteration p1)(ly:pitch-alteration p2)))(newline)
-              ;(write (equal? (ly:pitch-notename p1)(ly:pitch-notename p2)))(newline)
-              (and
-               (equal? (ly:pitch-alteration p1)(ly:pitch-alteration p2))
-               (equal? (ly:pitch-notename p1)(ly:pitch-notename p2)))
-              ))
+     (lambda (p1 p2)
+         ;(write (ly:pitch-alteration p1))(newline)
+         ;(write (ly:pitch-alteration p2))(newline)
+         ;(write (ly:pitch-notename p1))(newline)
+         ;(write (ly:pitch-notename p2))(newline)
+         ;(write (equal? (ly:pitch-alteration p1)(ly:pitch-alteration p2)))(newline)
+         ;(write (equal? (ly:pitch-notename p1)(ly:pitch-notename p2)))(newline)
+         (and
+          (equal? (ly:pitch-alteration p1)(ly:pitch-alteration p2))
+          (equal? (ly:pitch-notename p1)(ly:pitch-notename p2)))
+         ))
+
+#(define pitch-equal-by-num?
+     (lambda (p pitch-algeration pitch-notename)
+         (and
+          (equal? (ly:pitch-alteration p) pitch-alteration )
+          (equal? (ly:pitch-notename   p) pitch-notename   )
+          )))
 
 #(define lookup-aaron-by-pitch
-  (lambda (p)
-      (define lookup
-          (lambda ( es p )
-              ;(write (length es))
-              ;(newline)
-              (if (null? es)
-                  ""
-                  (let* ((p2 (cdr (car es))))
-                      (if (pitch-equal? p p2 )
-                          (symbol->string (car (car es)))
-                          (lookup (cdr es) p ))))))
+    (lambda (p)
+        (define lookup
+            (lambda ( es p )
+                ;(write (length es))
+                ;(newline)
+                (if (null? es)
+                    ""
+                    (let* ((p2 (cdr (car es))))
+                        (if (pitch-equal? p p2 )
+                            (symbol->string (car (car es)))
+                            (lookup (cdr es) p ))))))
       
-      (lookup (cdr aaron-c ) p )))
+        (lookup (cdr aaron-c ) p )))
 
-#(write (pitch-equal? (ly:make-pitch -1 1  -2/4 ) (ly:make-pitch -1 1  -2/4 )) )
+
+
+#(define lookup-aaron-by-num
+    (lambda ( pitch-algeration pitch-notename )
+        (define lookup
+            (lambda ( es )
+                ;(write (length es))
+                ;(newline)
+                (if (null? es)
+                    ""
+                    (let* ((p2 (cdr (car es))))
+                        (if (pitch-equal-by-num? p2 pitch-algeration pitch-notename )
+                            (symbol->string (car (car es)))
+                            (lookup (cdr es) ))))))
+      
+        (lookup (cdr aaron-c ) )))
+
+
+
+% #(write (pitch-equal? (ly:make-pitch -1 1  -2/4 ) (ly:make-pitch -1 1  -2/4 )) )
 
 
 
