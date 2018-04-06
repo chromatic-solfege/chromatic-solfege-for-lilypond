@@ -58,16 +58,21 @@
 #(define fretdiagram-get (lambda() fretdiagram-def ))
 #(define fretdiagram-add 
      (lambda (string-num fret-num fret-mark )
-         (set! fretdiagram-def
-               (cons
-                (list 'place-fret string-num fret-num 
-                    (markup
-                      #:line
-                      (#:override
-                       (cons (quote font-family) (quote serif))
-                       (#:italic 
-                        fret-mark ))))
-                fretdiagram-def ))
+         (if (and 
+              (<= 0 fret-num )
+              (< fret-num 24 ))
+             (set! fretdiagram-def
+                   (cons
+                    (list 'place-fret string-num fret-num 
+                        (markup
+                         #:line
+                         (#:override
+                          (cons (quote font-family) (quote serif))
+                          (#:italic 
+                           fret-mark ))))
+                    fretdiagram-def ))    
+             #f)
+         
          ; (warn fretdiagram-def)
          ))
 
@@ -128,29 +133,29 @@
                'direction 1
                'text
                (markup #:override '(font-family . serif )
-               (markup #:translate '(8 . 0) 
-               (markup
-                #:line
-                (#:override
-                 (cons (quote size) 2.0)
-                 (#:override
-                  (list 'fret-diagram-details
-                      (cons (quote finger-code) (quote in-dot))
-                      (cons (quote number-type) (quote arabic))
-                      (cons (quote fret-label-font-mag) 0.5)
-                      (cons (quote dot-label-font-mag) 0.6)
-                      (cons (quote string-label-font-mag) 0.6 ) 
-                      (cons 'dot-radius 0.45 )
-                      (cons (quote label-dir) 1)
-                      (cons (quote mute-string) "M")
-                      (cons (quote orientation) (quote landscape))
-                      (cons (quote barre-type) (quote curved))
-                      (cons 'top-fret-thickness  0.1)
-                      (cons 'capo-thickness  0.3)
+                   (markup #:translate '(8 . 0) 
+                       (markup
+                        #:line
+                        (#:override
+                         (cons (quote size) 2.0)
+                         (#:override
+                          (list 'fret-diagram-details
+                              (cons (quote finger-code) (quote in-dot))
+                              (cons (quote number-type) (quote arabic))
+                              (cons (quote fret-label-font-mag) 0.5)
+                              (cons (quote dot-label-font-mag) 0.6)
+                              (cons (quote string-label-font-mag) 0.6 ) 
+                              (cons 'dot-radius 0.45 )
+                              (cons (quote label-dir) 1)
+                              (cons (quote mute-string) "M")
+                              (cons (quote orientation) (quote landscape))
+                              (cons (quote barre-type) (quote curved))
+                              (cons 'top-fret-thickness  0.1)
+                              (cons 'capo-thickness  0.3)
                       
-                      (cons (quote xo-font-magnification) 0.4)
-                      (cons (quote xo-padding) 0.3))
-                  (#:fret-diagram-verbose  fretdiagram-def  )))))))
+                              (cons (quote xo-font-magnification) 0.4)
+                              (cons (quote xo-padding) 0.3))
+                          (#:fret-diagram-verbose  fretdiagram-def  )))))))
            (ly:music-property obj1 'articulations )))))
 
 
