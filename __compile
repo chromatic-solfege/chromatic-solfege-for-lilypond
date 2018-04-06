@@ -17,6 +17,7 @@ if [ ${#FILES[@]} -eq 0 ]; then
 	./scales
 	./scales-dorian
 	./scales-melodic
+	./scales-harmonic
 	./scales-practice-dorian
 	FILES=(out/*.ly)
 fi
