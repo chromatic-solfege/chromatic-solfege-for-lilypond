@@ -57,10 +57,10 @@
 #(define fretdiagram-init (lambda() (set! fretdiagram-def '() )))
 #(define fretdiagram-get (lambda() fretdiagram-def ))
 #(define fretdiagram-add 
-     (lambda (str-num fret-num fret-mark )
+     (lambda (string-num fret-num fret-mark )
          (set! fretdiagram-def
                (cons
-                (list 'place-fret str-num fret-num 
+                (list 'place-fret string-num fret-num 
                     (markup
                       #:line
                       (#:override
@@ -71,9 +71,10 @@
          ; (warn fretdiagram-def)
          ))
 
-#(define fretdiagram-add-by-note
-     (lambda ( pitch-num string-num )
-         (write 1)
+#(define fretdiagram-add-by-pitch
+     (lambda* ( string-num pitch-offset pitch-name )
+         (define string-offset (list-ref fretdiagram-guitar-string-offset-map string-num))
+         (fretdiagram-add string-num (- pitch-offset string-offset) pitch-name )
          ))
 
 
@@ -84,14 +85,13 @@
          ; (display-scheme-music (ly:pitch-notename p))
          (if (null? sne)
              #f
-             (let* ((sn (ly:music-property sne 'string-number))
-                    (string-offset (list-ref fretdiagram-guitar-string-offset-map sn))
+             (let* ((string-num (ly:music-property sne 'string-number))
                     (pitch-offset (+ (ly:pitch-semitones p ) 24))
                     (pitch-name (lookup-aaron-by-pitch p)))
                  ;(write "pitch-offset=" )(write pitch-offset)
                  ;(write "string-offset=" )(write string-offset)
                  ;(newline)
-                 (fretdiagram-add sn (- pitch-offset string-offset) pitch-name)))))
+                 (fretdiagram-add-by-pitch string-num pitch-offset pitch-name)))))
 
 
 #(define put-string-number-on-music!
