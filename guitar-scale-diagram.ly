@@ -26,7 +26,7 @@
 % Creating guitar strings to note number
 %
 
-#(define fretdiagram-guitar-string-offset-map
+#(define fretdiagram:guitar-string-offset-map
      ((lambda ()
           (define result '())
           (visit 
@@ -40,7 +40,7 @@
                ;(write (ly:pitch-semitones (ly:music-property e 'pitch ) ))
                ))
           (append '(null)  result ))))
-%#(warn fretdiagram-guitar-string-offset-map)
+%#(warn fretdiagram:guitar-string-offset-map)
 
 #(define set-string-number-to-note-event 
      (lambda ( e num )
@@ -53,15 +53,16 @@
                  num) 
                 (ly:music-property e 'articulations)))))
 
-#(define fretdiagram-def '())
-#(define fretdiagram-init (lambda() (set! fretdiagram-def '() )))
-#(define fretdiagram-get (lambda() fretdiagram-def ))
-#(define fretdiagram-add 
+#(define fretdiagram:flg-expand-octave #f)
+#(define fretdiagram:def '())
+#(define fretdiagram:init (lambda() (set! fretdiagram:def '() )))
+#(define fretdiagram:get (lambda() fretdiagram:def ))
+#(define fretdiagram:add 
      (lambda (string-num fret-num fret-mark )
          (if (and 
               (<= 0 fret-num )
               (< fret-num 24 ))
-             (set! fretdiagram-def
+             (set! fretdiagram:def
                    (cons
                     (list 'place-fret string-num fret-num 
                         (markup
@@ -70,16 +71,16 @@
                           (cons (quote font-family) (quote serif))
                           (#:italic 
                            fret-mark ))))
-                    fretdiagram-def ))    
+                    fretdiagram:def ))    
              #f)
          
-         ; (warn fretdiagram-def)
+         ; (warn fretdiagram:def)
          ))
 
-#(define fretdiagram-add-by-pitch-offset
+#(define fretdiagram:add-by-pitch-offset
      (lambda* ( string-num pitch-offset pitch-name )
-         (define string-offset (list-ref fretdiagram-guitar-string-offset-map string-num))
-         (fretdiagram-add string-num (- pitch-offset string-offset) pitch-name )
+         (define string-offset (list-ref fretdiagram:guitar-string-offset-map string-num))
+         (fretdiagram:add string-num (- pitch-offset string-offset) pitch-name )
          ))
 
 #(define note-event-to-string-num
@@ -89,14 +90,14 @@
              '()
              (ly:music-property sne 'string-number))))
 
-#(define fretdiagram-add-by-pitch
+#(define fretdiagram:add-by-pitch
      (lambda* ( string-num pitch  )
          (let* 
           (( pitch-offset (+ (ly:pitch-semitones pitch ) 24))
            ( pitch-name   (lookup-aaron-by-pitch pitch)))
-          (fretdiagram-add-by-pitch-offset string-num pitch-offset pitch-name))))
+          (fretdiagram:add-by-pitch-offset string-num pitch-offset pitch-name))))
 
-#(define fretdiagram-add-note-event
+#(define fretdiagram:add-note-event
      (lambda* (e)
          (let* 
           (( pitch        (ly:music-property e 'pitch))
@@ -104,14 +105,14 @@
           ;(write "pitch-offset=" )(write pitch-offset)
           ;(write "string-offset=" )(write string-offset)
           ;(newline)
-          (fretdiagram-add-by-pitch string-num pitch )
+          (fretdiagram:add-by-pitch string-num pitch )
           )))
 
 
 #(define put-string-number-on-music!
      (lambda (music string-number-map)
          ; Initialization
-         (fretdiagram-init)
+         (fretdiagram:init)
          
          (visit
           (ly:music-property (ly:music-property music 'element ) 'elements )
@@ -122,16 +123,16 @@
                    (if (eq? (ly:music-property e 'name) 'NoteEvent )
                        (begin
                         (set-string-number-to-note-event e (list-ref string-number-map counter ))
-                        (fretdiagram-add-note-event e)
+                        (fretdiagram:add-note-event e)
                         (set! counter (+ counter 1)) )
                        #f)))))
-         (fretdiagram-get)))
+         (fretdiagram:get)))
 
 
 
-% #(display-scheme-music fretdiagram-def)
+% #(display-scheme-music fretdiagram:def)
 #(define put-scale-chart!
-     (lambda (music fretdiagram-def )
+     (lambda (music fretdiagram:def )
          (define obj1 (last (lookup-music-by-name (ly:music-property (ly:music-property music 'element ) 'elements ) 'NoteEvent)))
          (set!
           (ly:music-property obj1 'articulations )
@@ -164,7 +165,7 @@
                       
                               (cons (quote xo-font-magnification) 0.4)
                               (cons (quote xo-padding) 0.3))
-                          (#:fret-diagram-verbose  fretdiagram-def  )))))))
+                          (#:fret-diagram-verbose  fretdiagram:def  )))))))
            (ly:music-property obj1 'articulations )))))
 
 
