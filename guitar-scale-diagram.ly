@@ -59,7 +59,8 @@
 #(define fretdiagram:get (lambda() fretdiagram:def ))
 #(define fretdiagram:add 
      (lambda (string-num fret-num fret-mark )
-         (if (and 
+         (if (and
+              (< 0 string-num ) ; string-num == 0 indicates hiding the fret dot. 7 Apr 2018
               (<= 0 fret-num )
               (< fret-num 24 ))
              (set! fretdiagram:def
@@ -132,7 +133,7 @@
 
 % #(display-scheme-music fretdiagram:def)
 #(define put-scale-chart!
-     (lambda (music fretdiagram:def )
+     (lambda (music fretdiagram-definition )
          (define obj1 (last (lookup-music-by-name (ly:music-property (ly:music-property music 'element ) 'elements ) 'NoteEvent)))
          (set!
           (ly:music-property obj1 'articulations )
@@ -165,7 +166,7 @@
                       
                               (cons (quote xo-font-magnification) 0.4)
                               (cons (quote xo-padding) 0.3))
-                          (#:fret-diagram-verbose  fretdiagram:def  )))))))
+                          (#:fret-diagram-verbose  fretdiagram-definition  )))))))
            (ly:music-property obj1 'articulations )))))
 
 
