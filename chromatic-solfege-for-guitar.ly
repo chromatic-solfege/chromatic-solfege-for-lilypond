@@ -4,8 +4,9 @@
 
 makescore-for-guitar =
 #(define-scheme-function (parser location noteValues noteNames fingeringPattern ) (ly:music? ly:music? list?)
-     (put-scale-chart! noteValues
-         (put-string-number-on-music! noteValues fingeringPattern))
+     (put-fretdiagram-on-music! noteValues
+         (create-fretdiagram-definition
+             (put-string-number-on-music! noteValues fingeringPattern)))
      #{ 
        
          \score {
