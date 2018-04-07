@@ -53,7 +53,7 @@
                  num) 
                 (ly:music-property e 'articulations)))))
 
-#(define fretdiagram:flg-expand-octave #f)
+#(define fretdiagram:flg-expand-octave #t)
 #(define fretdiagram:def '())
 #(define fretdiagram:init (lambda() (set! fretdiagram:def '() )))
 #(define fretdiagram:get (lambda() fretdiagram:def ))
@@ -81,8 +81,7 @@
 #(define fretdiagram:add-by-pitch-offset
      (lambda* ( string-num pitch-offset pitch-name )
          (define string-offset (list-ref fretdiagram:guitar-string-offset-map string-num))
-         (fretdiagram:add string-num (- pitch-offset string-offset) pitch-name )
-         ))
+         (fretdiagram:add string-num (- pitch-offset string-offset) pitch-name )))
 
 #(define note-event-to-string-num
      (lambda (e)
@@ -91,12 +90,27 @@
              '()
              (ly:music-property sne 'string-number))))
 
+
 #(define fretdiagram:add-by-pitch
      (lambda* ( string-num pitch  )
-         (let* 
-          (( pitch-offset (+ (ly:pitch-semitones pitch ) 24))
-           ( pitch-name   (lookup-aaron-by-pitch pitch)))
-          (fretdiagram:add-by-pitch-offset string-num pitch-offset pitch-name))))
+         (if fretdiagram:flg-expand-octave
+             (letrec
+              (( pitch-offset (+ (ly:pitch-semitones pitch ) 24))
+               ( pitch-name   (lookup-aaron-by-pitch pitch))
+               (loop_x 
+                (lambda (x)
+                    (write x)(newline)
+                    (fretdiagram:add-by-pitch-offset x pitch-offset pitch-name)
+                    (if (< 1 x )
+                        (loop_x (- x 1 ))
+                        #f))))
+              (loop_x  6))
+             
+             
+             (let* 
+              (( pitch-offset (+ (ly:pitch-semitones pitch ) 24))
+               ( pitch-name   (lookup-aaron-by-pitch pitch)))
+              (fretdiagram:add-by-pitch-offset string-num pitch-offset pitch-name)))))
 
 #(define fretdiagram:add-note-event
      (lambda* (e)
@@ -112,27 +126,35 @@
 
 #(define put-string-number-on-music!
      (lambda (music string-number-map)
-         ; Initialization
-         (fretdiagram:init)
-         
          (visit
           (ly:music-property (ly:music-property music 'element ) 'elements )
           ((lambda()
                (define counter 0)
-               
                (lambda (e)
                    (if (eq? (ly:music-property e 'name) 'NoteEvent )
                        (begin
                         (set-string-number-to-note-event e (list-ref string-number-map counter ))
-                        (fretdiagram:add-note-event e)
                         (set! counter (+ counter 1)) )
                        #f)))))
+         music ))
+
+
+#(define create-fretdiagram-definition
+     (lambda (music)
+         (fretdiagram:init)
+         
+         (visit
+          (ly:music-property (ly:music-property music 'element ) 'elements )
+          (lambda (e)
+              (if (eq? (ly:music-property e 'name) 'NoteEvent )
+                  (begin
+                   (fretdiagram:add-note-event e)))))
          (fretdiagram:get)))
 
 
 
 % #(display-scheme-music fretdiagram:def)
-#(define put-scale-chart!
+#(define put-fretdiagram-on-music!
      (lambda (music fretdiagram-definition )
          (define obj1 (last (lookup-music-by-name (ly:music-property (ly:music-property music 'element ) 'elements ) 'NoteEvent)))
          (set!
@@ -175,3 +197,4 @@
 
 % #(warn (length (lookup-music-by-name (ly:music-property (ly:music-property music 'element ) 'elements ) 'NoteEvent)))
 % vim: lisp sw=1 ts=1 sts=1 et
+
