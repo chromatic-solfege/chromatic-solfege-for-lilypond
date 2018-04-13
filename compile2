@@ -11,6 +11,7 @@ FILES=( "$@" )
 
 # If no file is specified to the arguments, it should default to all scale generators.
 if [ ${#FILES[@]} -eq 0 ]; then
+	rm out/*
 	FILES=( 
 		./basic
 		./notenames
@@ -20,6 +21,7 @@ if [ ${#FILES[@]} -eq 0 ]; then
 		./scales-dorian
 		./scales-melodic
 		./scales-harmonic
+		./scales-melodic-s11
 		./scales-exercise
 	)
 fi
@@ -31,27 +33,12 @@ do
 	# echo "${i##*/}"
 	NAME="${i##*/}"
 	echo "Processing ${NAME} ..."
-	rm -v "out/${NAME}"*
+	# echo "out/${NAME}"-[0-9]*
+	rm -v "out/${NAME}"-[0-9]*
 	./${NAME}
 	echo 
 	echo 
 done;
-
-exit;
-
-if [ ${#FILES[@]} -eq 0 ]; then
-	rm out/*
-	./basic
-	./notenames
-	./diatonic
-	./interval
-	./scales-basic
-	./scales-dorian
-	./scales-melodic
-	./scales-harmonic
-	./scales-exercise
-	FILES=(out/*.ly)
-fi
 
 # echo ${#FILES[@]}
 # echo ${FILES[*]}
@@ -69,11 +56,19 @@ function max2 {
 }
 
 cd out
-for  i in  "${FILES[@]}" # "$@";
+
+for NAME in  "${FILES[@]}" # "$@";
 do
-	max2
-	echo "${i##*/}"
-	lilypond -I /home/ats/Documents/lilypond/include/ "${i##*/}" 2> /dev/null &
+	echo "Compiling ${NAME} ..."
+	for  i in "${NAME}"-[0-9]*.ly # "$@";
+	do
+		# echo $i
+		max2
+		echo "${i##*/}"
+		lilypond -I /home/ats/Documents/lilypond/include/ "${i##*/}" 2> /dev/null &
+	done;
+	echo 
+	echo 
 done;
 
 beep
