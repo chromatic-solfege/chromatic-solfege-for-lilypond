@@ -15,7 +15,7 @@ function batch() {
 		c.writeScore(  'diminished',                       "do@(do,re,me,fa,se,le,la,ti)  1 2 3 4 5 6 7 8" ,       0.6, [] );
 	c.writeHeader3( "Harmonic Minor  Scale" );
 		c.writeScore(  'harmonic',                         "do@(do,re,me,fa,sol,le,ti)  1 2 3 4 5 6 7" ,           0.6, [] );
-	c.writeHeader3( "Melodi Minor \\sharp 11 Scale" );
+	c.writeHeader3( "Melodic Minor \\sharp 11 Scale" );
 		c.writeScore(  'melodic-s11',                      "do@(do,re,me,fi,sol,la,ti)  1 2 3 4 5 6 7" ,           0.6, [] );
 
 	c.writeHeader3( "Wholetone Scale" );
