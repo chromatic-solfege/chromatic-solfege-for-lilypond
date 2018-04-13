@@ -5,7 +5,7 @@ var ScaleGenerator = require( 'scale-generator' );
 
 var OUTPUT_PATH = 'out/'
 function batch() {
-	var c = new ScaleGenerator( OUTPUT_PATH, 'scales' );
+	var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales' */ );
 
 	c.writeHeader3( "Dorian Scale" );
 		c.writeScore(  "dorian",                           "do@(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7"   ,         0.6, [] );

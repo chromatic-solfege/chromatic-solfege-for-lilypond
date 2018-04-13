@@ -24,7 +24,7 @@ ScaleGenerator.prototype.writeScore2 = function ( type, notes ) {
 
 var OUTPUT_PATH = 'out/'
 function batch() {
-	var c = new ScaleGenerator( OUTPUT_PATH, 'basic' );
+	var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
 	c.writeHeader1( "Natural" );
 	c.writeTextBody( "The diatonic notes are named as the traditional solfège." );
 	c.writeScore2( "example", "do  do  re mi fa sol la ti do" );
