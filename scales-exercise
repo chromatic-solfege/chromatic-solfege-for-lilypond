@@ -3,14 +3,14 @@
 var ch = require( 'chromatic' );
 var ScaleGenerator = require( 'scale-generator' );
 var OUTPUT_PATH = 'out/'
-var c = new ScaleGenerator( OUTPUT_PATH, 'scales-practice-dorian' );
+var c = new ScaleGenerator( OUTPUT_PATH, 'scales-exercise' );
 
 function exec( keys, scale, pattern , comment ) {
 	for ( var i of keys )
 		c.writeScore(  `${i}@(${scale}) ${ pattern }` );
 }
 
-var pattern_01 = "< 1 3 5 7 >  < 2 4 6 8 > < 3 5 7 9 > < 4 6 8 10 > < 5 7 9 11 > < 6 8 10 12 > < 7 9 11 13 > < 8 10 12 14 >"
+var pattern_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ]"
 var scale_dorian = "do,re,me,fa,sol,la,te"
 var keys = "do,fa,te,me,le,ra,se,sol,re,la,mi,ti,fi".split( ',' );
 
