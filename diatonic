@@ -17,7 +17,7 @@ ScaleGenerator.prototype.writeScore1 = function ( notes ) {
 
 var OUTPUT_PATH = 'out/'
 function batch() {
-	var c = new ScaleGenerator( OUTPUT_PATH, 'diatonic' );
+	var c = new ScaleGenerator( OUTPUT_PATH /*, 'diatonic' */ );
 	c.writeHeader1( "Diatonic Scales" );
 	c.writeHeader2( "Natural" );
 	c.writeScore1( "do  do  re mi fa sol la ti do | do ti la sol fa mi re do" );

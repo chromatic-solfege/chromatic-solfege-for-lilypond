@@ -5,7 +5,7 @@ var ScaleGenerator = require( 'scale-generator' );
 
 var OUTPUT_PATH = 'out/'
 function batch() {
-	var c = new ScaleGenerator( OUTPUT_PATH, 'notenames' );
+	var c = new ScaleGenerator( OUTPUT_PATH /*, 'notenames' */ );
 	c.writeHeader1( "Note Names" );
 	c.writeHeader2( "Natural" );
 	c.writeScore( "notename-natural", "do  do  re mi fa sol la ti do | do ti la sol fa mi re do" );

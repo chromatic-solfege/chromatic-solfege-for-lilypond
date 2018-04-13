@@ -3,7 +3,7 @@
 var ch = require( 'chromatic' );
 var ScaleGenerator = require( 'scale-generator' );
 var OUTPUT_PATH = 'out/'
-var c = new ScaleGenerator( OUTPUT_PATH, 'scales-melodic-s11' );
+var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-melodic-s11' */ );
 
 c.writeHeader3( "Melodic Minor Scale" );
 c.writeScore(  "melodic-s11-01",                  "do@(do,re,me,fi,sol,la,ti)  1 2 3 4 5 6 7"   ,  0.6, [] );

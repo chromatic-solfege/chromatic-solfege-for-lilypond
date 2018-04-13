@@ -3,7 +3,7 @@
 var ch = require( 'chromatic' );
 var ScaleGenerator = require( 'scale-generator' );
 var OUTPUT_PATH = 'out/'
-var c = new ScaleGenerator( OUTPUT_PATH, 'scales-exercise' );
+var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-exercise' */ );
 
 function exec( keys, scale, pattern , comment ) {
 	for ( var i of keys )
