@@ -105,6 +105,7 @@ makescore = #(define-scheme-function (parser location noteValues noteNames) (ly:
           }
         }
       >>
+	  \midi { }
     }
   #}
 )
