@@ -2,30 +2,38 @@
 
 var ch = require( 'chromatic' );
 var ScaleGenerator = require( 'scale-generator' );
+var s = require( './scale-settings.js' );
 
 var OUTPUT_PATH = 'out/'
 function batch() {
 	var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales' */ );
 
 	c.writeHeader3( "Dorian Scale" );
-		c.writeScore(  "dorian",                           "do@(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7"   ,         0.6, [] );
-	c.writeHeader3( "Melodic Minor Scale" );
-		c.writeScore(  'melodic',                          "do@(do,re,me,fa,sol,la,ti)  1 2 3 4 5 6 7"   ,         0.6, [] );
+		c.writeScore(  "dorian",                           "do@(do,re,me,fa,sol,la,te)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 " , s.scale, s.dimension );
+
 	c.writeHeader3( "Diminished Scale" );
-		c.writeScore(  'diminished',                       "do@(do,re,me,fa,se,le,la,ti)  1 2 3 4 5 6 7 8" ,       0.6, [] );
-	c.writeHeader3( "Harmonic Minor  Scale" );
-		c.writeScore(  'harmonic',                         "do@(do,re,me,fa,sol,le,ti)  1 2 3 4 5 6 7" ,           0.6, [] );
+		c.writeScore(  'diminished',                       "do@(do,re,me,fa,se,le,la,ti)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 " , s.scale, s.dimension );
+
+	c.writeHeader3( "Melodic Minor Scale" );
+		c.writeScore(  'melodic',                          "do@(do,re,me,fa,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 " , s.scale, s.dimension );
+
+	c.writeHeader3( "Harmonic Minor Scale" );
+		c.writeScore(  'harmonic',                         "do@(do,re,me,fa,sol,le,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 " , s.scale, s.dimension );
+
 	c.writeHeader3( "Melodic Minor \\sharp 11 Scale" );
-		c.writeScore(  'melodic-s11',                      "do@(do,re,me,fi,sol,la,ti)  1 2 3 4 5 6 7" ,           0.6, [] );
+		c.writeScore(  'melodic-s11',                      "do@(do,re,me,fi,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 " , s.scale, s.dimension );
 
 	c.writeHeader3( "Wholetone Scale" );
-		c.writeScore(  'wholetone',                        "do@(do,re,mi,fi,si,li) 1 2 3 4 5 6" ,                  0.6, [] );
-	c.writeHeader3( "Augument Scale" );
-		c.writeScore(  'augumented',                       "do@(do,me,mi,sol,le,ti)  1 2 3 4 5 6" ,                0.6, [] );
-	c.writeHeader3( "Double Augument Scale" );
-		c.writeScore(  'double-augumented',                "do@(do,re,me,mi,se,sol,le,te,ti)  1 2 3 4 5 6 7 8 9" , 0.6, [] );
-	c.writeHeader3( "Double Augument \\sharp 11 Scale" );
-		c.writeScore(  'double-augumented-s11',            "do@(do,re,me,mi,se,le,la,te)  1 2 3 4 5 6 7 8 " ,      0.6, [] );
+		c.writeScore(  'wholetone',                        "do@(do,re,mi,fi,si,li)            1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 " , s.scale, s.dimension );
+
+	c.writeHeader3( "Augumented Scale" );
+		c.writeScore(  'augumented',                       "do@(do,me,mi,sol,le,ti)           1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 " , s.scale, s.dimension );
+
+	c.writeHeader3( "Augumented Minor Major 7th Scale" );
+		c.writeScore(  'augumented-ma7',                "do@(do,re,me,mi,se,sol,le,te,ti)  1 2 3 4 5 6 7 8 9 1 s 1 9 8 7 6 5 4 3 2 1 " , s.scale, s.dimension );
+
+	c.writeHeader3( "Augumented Natural 13th Scale" );
+		c.writeScore(  'augumented-n13',            "do@(do,re,me,mi,se,le,la,te)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 " , s.scale, s.dimension );
 
 	c.close();
 }
