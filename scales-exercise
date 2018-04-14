@@ -16,13 +16,17 @@ function exec( keys, scale, pattern , title, comment ) {
 		c.writeScore(  `${i}@(${scale}) ${ pattern }` );
 }
 
+var pattern6_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] "
 var pattern7_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ]"
+var pattern8_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ] s 9, [ 11 13 15 ]"
+var pattern9_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ] s 9, [ 11 13 15 ] s 10, [ 12 14 16 ]"
 
 var scale_dorian = "do,re,me,fa,sol,la,te";
 var scale_diminished = "do,re,me,fa,se,le,la,ti";
 var scale_melodic = "do,re,me,fa,sol,la,ti";
 var scale_harmonic = "do,re,me,fa,sol,le,ti";
 var scale_melodic_s11 = "do,re,me,fi,sol,la,ti";
+
 var scale_wholetone = "do,re,mi,fi,si,li";
 var scale_augument = "do,me,mi,sol,le,ti";
 var scale_augument_ma7 = "do,re,me,mi,se,sol,le,te,ti";
@@ -31,11 +35,16 @@ var scale_augument_n13 = "do,re,me,mi,se,le,la,te";
 
 var keys = "do,fa,te,me,le,ra,se,sol,re,la,mi,ti,fi".split( ',' );
 
-exec( keys, scale_dorian, pattern7_01, "Dorian - Broken Chord Movement 1", "" );
-exec( keys, scale_melodic , pattern7_01, "Melodic - Broken Chord Movement 1", "" );
-exec( keys, scale_harmonic, pattern7_01, "Harmonic - Broken Chord Movement 1", "" );
-exec( keys, scale_melodic_s11 , pattern7_01, "Melodic \\sharp 11 - Broken Chord Movement 1", "" );
+exec( keys, scale_dorian,       pattern7_01, "Dorian - Broken Chord Movement 1", "" );
+exec( keys, scale_diminished,   pattern8_01, "Diminished - Broken Chord Movement 1", "" );
+exec( keys, scale_melodic ,     pattern7_01, "Melodic Minor - Broken Chord Movement 1", "" );
+exec( keys, scale_harmonic,     pattern7_01, "Harmonic Minor - Broken Chord Movement 1", "" );
+exec( keys, scale_melodic_s11 , pattern7_01, "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
 
+exec( keys, scale_wholetone ,   pattern6_01, "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
+exec( keys, scale_augument ,    pattern6_01, "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
+exec( keys, scale_augument_ma7, pattern9_01, "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
+exec( keys, scale_augument_n13, pattern8_01, "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
 
 c.close();
 
