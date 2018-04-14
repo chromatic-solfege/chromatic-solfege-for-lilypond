@@ -2,23 +2,24 @@
 
 var ch = require( 'chromatic' );
 var ScaleGenerator = require( 'scale-generator' );
+var s = require( './scale-settings.js' );
 var OUTPUT_PATH = 'out/'
 var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-dorian' */);
 
 c.writeHeader3( "Dorian Scale" );
-c.writeScore(  "dorian-01",                  "do@(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7"   ,  0.6, [] );
+c.writeScore(  "dorian-01",                  "do@(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
 c.writeHeader3( "Phrygian Scale" );
-c.writeScore(  "dorian-02",                  "te@(re,me,fa,sol,la,te,do)  1 2 3 4 5 6 7"   ,  0.6, [] );
+c.writeScore(  "dorian-02",                  "te@(re,me,fa,sol,la,te,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
 c.writeHeader3( "Lydian Scale" );
-c.writeScore(  "dorian-03",                  "la@(me,fa,sol,la,te,do,re)  1 2 3 4 5 6 7"   ,  0.6, [] );
+c.writeScore(  "dorian-03",                  "la@(me,fa,sol,la,te,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
 c.writeHeader3( "Mixolydian Scale" );
-c.writeScore(  "dorian-04",                 "sol@(fa,sol,la,te,do,re,me)  1 2 3 4 5 6 7"   ,  0.6, [] );
+c.writeScore(  "dorian-04",                 "sol@(fa,sol,la,te,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
 c.writeHeader3( "Aeolian Scale" );
-c.writeScore(  "dorian-05",                  "fa@(sol,la,te,do,re,me,fa)  1 2 3 4 5 6 7"   ,  0.6, [] );
+c.writeScore(  "dorian-05",                  "fa@(sol,la,te,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
 c.writeHeader3( "Locrian Scale" );
-c.writeScore(  "dorian-06",                  "me@(la,te,do,re,me,fa,sol)  1 2 3 4 5 6 7"   ,  0.6, [] );
+c.writeScore(  "dorian-06",                  "me@(la,te,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
 c.writeHeader3( "Ionian Scale" );
-c.writeScore(  "dorian-07",                  "re@(te,do,re,me,fa,sol,la)  1 2 3 4 5 6 7"   ,  0.6, [] );
+c.writeScore(  "dorian-07",                  "re@(te,do,re,me,fa,sol,la)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
 
 c.close();
 
