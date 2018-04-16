@@ -55,9 +55,9 @@ uout = \stopTextSpan
   #(use-modules (ice-9 regex))
   #(define (ch:transpose str )
       (let* (
-               (port (open-input-pipe 
-                        (string-append 
-                                       "solfege " 
+               (port (open-input-pipe
+                        (string-append
+                                       "solfege "
                                        "\""
                                        str
                                        "\""
@@ -74,14 +74,14 @@ uout = \stopTextSpan
 %#(warn (regexp-substitute/global #f "\\|" "abcde|abcde" 'pre "\\\\|" 'post ))
 %#(warn (ch:transpose "se do re mi | do re mi | < do mi sol >" ))
 %asc=#(ch:transpose "se do re mi \\| do ti la" )
-%#(warn asc)  
+%#(warn asc)
 
 makescore = #(define-scheme-function (parser location noteValues noteNames) (ly:music? ly:music? )
-  #{ 
+  #{
     \score {
       <<
         \new Staff \relative do' {
-          \clef "G" 
+          \clef "G"
           %\time 16/4
           \omit Score.TimeSignature
           \omit Score.BarNumber
@@ -92,7 +92,7 @@ makescore = #(define-scheme-function (parser location noteValues noteNames) (ly:
               %\override Beam.breakable = ##t
               %\set Timing.beatStructure  = #'( 1 1 1 1 1 1 1 1 1 1 1 1 1 1  )
               %\hide Stem
-              \textSpannerDown        
+              \textSpannerDown
               \cadenzaOn
               #noteValues
           }
@@ -105,7 +105,8 @@ makescore = #(define-scheme-function (parser location noteValues noteNames) (ly:
           }
         }
       >>
-	  \midi { }
+      \midi { \tempo 4 = 180 }
+      \layout {}
     }
   #}
 )
