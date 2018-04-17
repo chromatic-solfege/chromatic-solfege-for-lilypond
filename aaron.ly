@@ -333,9 +333,13 @@ doubleflatdoubleflat = {
 
 
 #(define note-to-pitch
-     (lambda (lang-name note-name )
-         (let ((lang (assoc-get lang-name language-pitch-names ) ))
-             (assoc-get note-name lang ))))
+     (lambda (lang-name note-name octave-offset)
+         (let* ((lang (assoc-get lang-name language-pitch-names ) )
+                (note (assoc-get note-name lang )))
+             (ly:make-pitch
+              (+ (ly:pitch-octave note) octave-offset )
+              (ly:pitch-notename note )
+              (ly:pitch-alteration note )))))
 
 
 % #(write (pitch-equal? (ly:make-pitch -1 1  -2/4 ) (ly:make-pitch -1 1  -2/4 )) )
