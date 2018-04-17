@@ -311,7 +311,7 @@ doubleflatdoubleflat = {
                         (if (pitch-equal? p p2 )
                             (symbol->string (car (car es)))
                             (lookup (cdr es) p ))))))
-      
+
         (lookup (cdr aaron-c ) p )))
 
 
@@ -328,9 +328,14 @@ doubleflatdoubleflat = {
                         (if (pitch-equal-by-num? p2 pitch-algeration pitch-notename )
                             (symbol->string (car (car es)))
                             (lookup (cdr es) ))))))
-      
+
         (lookup (cdr aaron-c ) )))
 
+
+#(define note-to-pitch
+     (lambda (lang-name note-name )
+         (let ((lang (assoc-get lang-name language-pitch-names ) ))
+             (assoc-get note-name lang ))))
 
 
 % #(write (pitch-equal? (ly:make-pitch -1 1  -2/4 ) (ly:make-pitch -1 1  -2/4 )) )
