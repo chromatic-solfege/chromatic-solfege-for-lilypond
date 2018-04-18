@@ -873,10 +873,13 @@ inputmusic = { do' re mi }
                              ; (system "gnome-open my.wav" )
                              ))
 
+music-to-festival = #(define-void-function (parser location music output-file tempo voice )(ly:music? string? number? string? )
+    (read-aloud-music music output-file tempo (if (string=? voice "" ) '() voice ) )
+)
 
-
-
-
+music-to-aaron = #(define-music-function (parser location music)(ly:music?)
+    (make-music 'SequentialMusic 'elements
+     (visit-music music (new-music-to-aaron))))
 
 
 
