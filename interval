@@ -85,16 +85,20 @@ function gen_sharp( args ) {
 	}
 
 	if ( is_irregular ) {
+		var fname_01 = args.fname_generate(); // LATE_GEN_2018
+		var fname_02 = args.fname_generate(); // LATE_GEN_2018
 		return [
 			{
 				// caption  : '1. Harmonic Spelling',
 				text : applyTemplate([
 					{
 						// caption  : '', 
+						filename : fname_01, // LATE_GEN_2018
 						notes    : notes_01,
 						lyrics   : lyrics_01,
 					},
 				]),
+				filename : fname_01, // LATE_GEN_2018
 			},
 			{
 				// caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
@@ -102,21 +106,26 @@ function gen_sharp( args ) {
 				text : applyTemplate([
 					{
 						// caption  : 'enharmonic spelling', 
+						filename : fname_02, // LATE_GEN_2018
 						notes    : notes_02,
 						lyrics   : lyrics_02,
 					},
 				]),
+				filename : fname_02, // LATE_GEN_2018
 			},
 		];
 	} else {
+		var fname_01 = args.fname_generate(); // LATE_GEN_2018
 		return [
 			{
 				text : applyTemplate([
 					{
+						filename : fname_01, // LATE_GEN_2018
 						notes    : notes_01,
 						lyrics   : lyrics_01,
 					},
 				]),
+				filename : fname_01, // LATE_GEN_2018
 			},
 		];
 	}
@@ -810,13 +819,15 @@ function batch() {
 
 				case '*' :
 					console.error( "generating ", arr[1] +'-' + arr[2] );
+
+					// LATE_GEN_2018 ... ADDED (Wed, 18 Apr 2018 17:33:36 +0900)  
 					var output_arr = gen_sharp({
+						fname_generate : ()=> fname_generate( arr[1], arr[2] ) , // LATE_GEN_2018 
 						notes    : arr[5],
 						trans    : arr[1],
 						isSharp  : arr[4],
 						postfix  : arr[3],
 					});
-
 
 					// if ( arr[2].endsWith( 'd' ) ) {
 					// 	continue;
@@ -839,8 +850,10 @@ function batch() {
 
 					for ( var oi=0; oi<output_arr.length; oi++ ) {
 						let o = output_arr[oi];
+						// console.error( "oi=",oi, "o.filename", o.filename );// LATE_GEN_2018
 
-						let filename = fname_generate( arr[1], arr[2] );
+						// let filename = fname_generate( arr[1], arr[2] ); // LATE_GEN_2018
+						let filename = o.filename; // LATE_GEN_2018
 						fs.writeFileSync( OUTPUT_PATH + filename, o.text, 'utf8' );
 						console.error( OUTPUT_PATH + filename );
 
