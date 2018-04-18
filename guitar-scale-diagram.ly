@@ -646,12 +646,13 @@ inputmusic = { do' re mi }
    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 )
   0)
 %}
-#(write   'hello)
+#(write 'Hello)
 
 
 
 #(define aaron-to-pronunciation (lambda (note ) 
                                   (cond 
+                                    ((string=? note "de" )  "daeh"  )
                                     ((string=? note "do" )  "doh"  )
                                     ((string=? note "di" )  "dee"  )
                                     ((string=? note "ra" )  "rah"  )
@@ -659,16 +660,19 @@ inputmusic = { do' re mi }
                                     ((string=? note "ri" )  "ree"  )
                                     ((string=? note "me" )  "meh"  )
                                     ((string=? note "mi" )  "mee"  )
-                                    ((string=? note "fa" )  "faah"  )
+                                    ((string=? note "ma" )  "mah"  )
+                                    ((string=? note "fe" )  "feh" )
+                                    ((string=? note "fa" )  "faah" )
                                     ((string=? note "fi" )  "fee"  )
-                                    ((string=? note "se" )  "saeh"  )
+                                    ((string=? note "se" )  "saeh" )
                                     ((string=? note "sol")  "sew"  )
                                     ((string=? note "si" )  "see"  )
-                                    ((string=? note "le" )  "laeh"  )
+                                    ((string=? note "le" )  "laeh" )
                                     ((string=? note "la" )  "lah"  )
                                     ((string=? note "li" )  "lee"  )
-                                    ((string=? note "te" )  "taeh"  )
+                                    ((string=? note "te" )  "taeh" )
                                     ((string=? note "ti" )  "tee"  )
+                                    ((string=? note "ta" )  "taah"  )
 
                                     ((string=? note "daw" )  "daw"  )
                                     ((string=? note "raw" )  "raw"  )
@@ -686,16 +690,19 @@ inputmusic = { do' re mi }
                                     ((string=? note "lai" )  "lai"  )
                                     ((string=? note "tai" )  "tai"  )
 
-                                    (else "ugh"))))
+                                    (else "hey!"))))
 
 #(define aaron-to-octave-offset (lambda (note ) 
                                   (cond 
+                                    ((string=? note "de" )  -1  )
+                                    ((string=? note "ta" )  1  )
                                     ((string=? note "daw" )  -1  )
                                     ((string=? note "tai" )  1  )
                                     (else 0 ))))
 
 #(define aaron-to-eng (lambda (note ) 
                                   (cond 
+                                    ((string=? note "de" )  "B"   )
                                     ((string=? note "do" )  "C"   )
                                     ((string=? note "di" )  "C#"  )
                                     ((string=? note "ra" )  "Db"  )
@@ -703,6 +710,8 @@ inputmusic = { do' re mi }
                                     ((string=? note "ri" )  "D#"  )
                                     ((string=? note "me" )  "Eb"  )
                                     ((string=? note "mi" )  "E"   )
+                                    ((string=? note "ma" )  "F"   )
+                                    ((string=? note "fe" )  "E"   )
                                     ((string=? note "fa" )  "F"   )
                                     ((string=? note "fi" )  "F#"  )
                                     ((string=? note "se" )  "Gb"  )
@@ -713,6 +722,7 @@ inputmusic = { do' re mi }
                                     ((string=? note "li" )  "A#"  )
                                     ((string=? note "te" )  "Bb"  )
                                     ((string=? note "ti" )  "B"   )
+                                    ((string=? note "ta" )  "C"   )
 
                                     ((string=? note "daw" )  "Bb"  )
                                     ((string=? note "raw" )  "C"  )
