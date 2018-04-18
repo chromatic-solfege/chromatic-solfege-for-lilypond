@@ -71,7 +71,7 @@ function batch() {
 	);
 	c.writeHeader2( "Double Flat" );
 	c.writeScore( "enharmonic-double-flat", "do " +
-          "do raw  s  re maw  s ma faw  s  fa saw  s  sol law  s  la taw  s  te daw   s  do raw \n" +
+          "do raw  s  re maw  s me faw  s  fa saw  s  sol law  s  la taw  s  te daw   s  do raw \n" +
           "raw do  s  daw te  s taw la  s  law sol  s  saw fa  s  faw me  s  maw re  s  raw do" 
 	);
 
