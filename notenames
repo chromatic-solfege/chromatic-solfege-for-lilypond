@@ -10,7 +10,7 @@ function batch() {
 	c.writeHeader2( "Natural" );
 	c.writeScore( "notename-natural", "do  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeHeader2( "Sharp" );
-	c.writeScore( "notename-sharp", "do  di  ri ma fi si li ta di | di ti li si fi ma ri di" );
+	c.writeScore( "notename-sharp", "do  di  ri ma fi si li ta di | di ta li si fi ma ri di" );
 	c.writeHeader2( "Flat" );
 	c.writeScore( "notename-flat", "do  de  ra me fe se le te de | de te le se fe me ra de" );
 
