@@ -59,7 +59,7 @@
                                      ))
                             (reverse result)))
 
-#(define music-to-elements-two(lambda (music)
+#(define music-to-elements-ver-two(lambda (music)
                                (let ((result '() ))
                                    (if (list? music )
                                        (begin
@@ -80,7 +80,7 @@
                                    result
                                    )))
 
-#(define music-to-elements (lambda(music)
+#(define music-to-elements-ver-three (lambda(music)
                              ; (write "music-to-elements:" )
                              ; (newline)
                              ; (display-scheme-music music)
@@ -115,6 +115,40 @@
                                      ; In this case music should be 'elements
                                      (music-to-elements
                                        result)))))))
+
+#(define music-to-elements (lambda(music)
+                             (letrec
+                               ((proc-list (lambda ( elements )
+                                             (apply append (let loop ((elements elements ))
+                                                           (if (null? elements )
+                                                             '()
+                                                             (cons (proc-elem (car elements )) (loop (cdr elements ))))))))
+                                (proc-elem (lambda( e )
+                                             (let ((name (ly:music-property e 'name))) 
+                                               (cond
+                                                 ((eq? name 'SequentialMusic )
+                                                  (proc-list (ly:music-property e 'elements )))
+                                                 ((eq? name 'RelativeOctaveMusic )
+                                                  (proc-elem (ly:music-property e 'element )))
+                                                 ((eq? name 'TransposedMusic )
+                                                  (proc-elem (ly:music-property e 'element )))
+                                                 ((eq? name 'TimeScaledMusic )
+                                                  (proc-elem (ly:music-property e 'element )))
+
+
+                                                 ((eq? name 'UnfoldedRepeatedMusic )
+                                                  (apply append (let loop2 (( count (ly:music-property e 'repeat-count )))
+                                                                (if (< 0 count )
+                                                                  (cons
+                                                                    (proc-elem (ly:music-deep-copy (ly:music-property e 'element ))) 
+                                                                    (loop2 (- count 1 )))
+                                                                  '()))))
+                                                 ((eq? name 'NoteEvent )
+                                                  (list e))
+                                                 ((eq? name 'RestEvent )
+                                                  (list e))
+                                                 (else '()))))))
+                               (proc-elem music ))))
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Creating guitar strings to note number
@@ -738,7 +772,8 @@ inputmusic = { do' re mi }
                                          (display (string-append "<SINGING BPM=\""  (object->string tempo ) "\">\n") output-port) 
                                          )
 
-                                        ((eq? event-type 'rest-event )
+                                        ((or (eq? event-type 'rest-event )
+                                             (eq? event-type 'skip-event ))
                                          (display (string-append 
                                                     "<REST BEATS=\"" 
                                                     (object->string 
@@ -747,7 +782,7 @@ inputmusic = { do' re mi }
                                                            (ly:moment-main (ly:duration-length (ly:music-property note-event 'duration ))))))
                                                     "\">"
                                                     "</REST>\n" ) output-port ))
-                                        ((eq? event-type 'note-event   )
+                                        ((eq? event-type 'note-event )
                                          (let ((pitch (ly:music-property note-event 'pitch )))
                                            ;; (display (ly:moment-main (ly:duration-length (ly:music-property note-event 'duration ))) )
                                            ;; (newline)
@@ -772,48 +807,33 @@ inputmusic = { do' re mi }
                                          (close output-port))
                                         (else  #f))))))
 
-#(define new-music-to-aaron (lambda ( file-name tempo )
+#(define new-music-to-aaron (lambda ()
+                              (define result '() )
                               (lambda ( event-type note-event ) 
                                 (cond
-                                  ((eq? event-type 'begin  ) 
-                                   (display "<?xml version=\"1.0\"?>\n" output-port)
-                                   (display "<!DOCTYPE SINGING PUBLIC \"-//SINGING//DTD SINGING mark up//EN\" \"Singing.v0_1.dtd\" []>\n" output-port)
-                                   (display (string-append "<SINGING BPM=\""  (object->string tempo ) "\">\n") output-port) 
-                                   )
-
-                                  ((eq? event-type 'rest-event )
-                                    (display "F**********************K" ) 
-                                   )
+                                  ((eq? event-type 'begin ))
                                   ((eq? event-type 'note-event )
-                                   (let ((pitch (ly:music-property note-event 'pitch )))
-                                     ;; (display (ly:moment-main (ly:duration-length (ly:music-property note-event 'duration ))) )
-                                     ;; (newline)
-                                     (display (string-append 
-                                                "<PITCH NOTE=\""
-                                                (aaron-to-eng (lookup-aaron-by-pitch pitch))
-                                                (object->string (+ 4
-                                                                   (ly:pitch-octave pitch ) 
-                                                                   (aaron-to-octave-offset (lookup-aaron-by-pitch pitch))))
-                                                "\"><DURATION BEATS=\"" 
-                                                (object->string 
-                                                  (exact->inexact
-                                                    (* 4
-                                                       (ly:moment-main (ly:duration-length (ly:music-property note-event 'duration ))))))
-                                                "\">"
-                                                (aaron-to-pronunciation (lookup-aaron-by-pitch pitch))
-                                                "</DURATION></PITCH>\n" ) output-port )))
-
+                                   (set! result 
+                                     (cons
+                                       (make-music
+                                         'LyricEvent
+                                         'text
+                                         (lookup-aaron-by-pitch (ly:music-property note-event 'pitch ))
+                                         'duration
+                                         (ly:music-deep-copy (ly:music-property note-event 'duration )))
+                                       result )))
+                                  ((or (eq? event-type 'rest-event )
+                                       (eq? event-type 'skip-event )))
                                   ((eq? event-type 'end )
-                                   (display "</SINGING>\n" output-port)
-                                   (force-output output-port)
-                                   (close output-port))
-                                  (else  #f)))
-                              ))
+                                    (reverse result ))
+
+                                  (else  #f))))) 
 
 
-#(define music-to-festival (lambda ( music event-handler )
+#(define visit-music (lambda ( music event-handler )
                              (set! music (music-to-elements music))
-                             (let ((note-events (lookup-note-events music )))
+                             (let ((note-events music )
+                                   (note-events-comment-out "(lookup-note-events music )"))
                                (event-handler 'begin '() )
 
                                (let loop (( note-events note-events )) 
@@ -826,10 +846,11 @@ inputmusic = { do' re mi }
                                         (event-handler 'note-event note-event  ))
                                        ((eq? note-event-name 'RestEvent )
                                         (event-handler 'rest-event note-event  ))
+                                       ((eq? note-event-name 'SkipEvent )
+                                        (event-handler 'skip-event note-event  ))
                                        (else (display "****************************************************"))
                                        )
                                      (loop (cdr note-events ))))))
-
                                (event-handler 'end '() )))
 
 
@@ -847,7 +868,7 @@ inputmusic = { do' re mi }
                                              output-file ))))
 
 #(define read-aloud-music (lambda ( music output-file tempo voice) 
-                             (music-to-festival music (new-festival-formatter output-file tempo ) )
+                             (visit-music music (new-festival-formatter output-file tempo ) )
                              (compile-festival output-file  (string-append output-file ".wav" )  voice )
                              ; (system "gnome-open my.wav" )
                              ))
