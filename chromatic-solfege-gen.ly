@@ -1,5 +1,6 @@
 \version "2.18.2"
 \include "lilypond-book-preamble.ly"
+\include "guitar-scale-diagram.ly"
 \include "aaron.ly"
 
 \layout {
@@ -76,10 +77,11 @@ uout = \stopTextSpan
 %asc=#(ch:transpose "se do re mi \\| do ti la" )
 %#(warn asc)
 
-makescore = #(define-scheme-function (parser location noteValues noteNames) (ly:music? ly:music? )
+makescore = #(define-scheme-function (parser location source-filename notes) ( string? ly:music? )
   #{
     \score {
       <<
+        \music-to-festival #notes #(string-append source-filename ".xml" ) #180 #""
         \new Staff \relative do' {
           \clef "G"
           %\time 16/4
@@ -94,16 +96,17 @@ makescore = #(define-scheme-function (parser location noteValues noteNames) (ly:
               %\hide Stem
               \textSpannerDown
               \cadenzaOn
-              #noteValues
+              #notes
           }
         }
         \new Lyrics {
           \lyricsto "myRhythm" {
             \override Lyrics.LyricText.font-shape = #'italic
             \override Lyrics.LyricText.font-series = #'bold
-            #noteNames
+            \music-to-aaron #notes
           }
         }
+
       >>
       \midi { \tempo 4 = 180 }
       \layout {}
