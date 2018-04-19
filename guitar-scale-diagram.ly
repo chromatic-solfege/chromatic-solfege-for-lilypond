@@ -646,9 +646,8 @@ inputmusic = { do' re mi }
    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 )
   0)
 %}
-#(write 'Hello)
-
-
+% #(write 'Hello\ World\ Guitar\ Scale\ Diagram )
+% #(newline)
 
 #(define aaron-to-pronunciation (lambda (note ) 
                                   (cond 
