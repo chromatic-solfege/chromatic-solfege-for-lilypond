@@ -15,14 +15,10 @@ if [ ${#FILES[@]} -eq 0 ]; then
 	FILES=( 
 		./ch-000-basic
 		./ch-001-notenames
-		./diatonic
-		./interval
-		./scales-basic
-		./scales-dorian
-		./scales-melodic
-		./scales-harmonic
-		./scales-melodic-s11
-		./scales-exercise
+		./ch-002-diatonic
+		./ch-004-scales-basic
+		./ch-005-scales-exercise
+		./ch-009-interval
 	)
 fi
 
