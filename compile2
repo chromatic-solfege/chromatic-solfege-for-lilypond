@@ -13,8 +13,8 @@ FILES=( "$@" )
 if [ ${#FILES[@]} -eq 0 ]; then
 	rm out/*
 	FILES=( 
-		./basic
-		./notenames
+		./ch-000-basic
+		./ch-001-notenames
 		./diatonic
 		./interval
 		./scales-basic
