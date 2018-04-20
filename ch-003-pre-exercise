@@ -1,0 +1,38 @@
+#!/usr/bin/nodejs
+
+var ch = require( 'chromatic' );
+var ScaleGenerator = require( 'scale-generator' );
+
+ScaleGenerator.prototype.writeScore1 = function ( notes ) {
+	var id = notes.split( /\s+/ ).shift();
+	var output = ScaleGenerator.applyTemplate( notes );
+
+	this.nextOutputFilename( id );
+	ScaleGenerator.writeFile( this.currentOutputFilename(), output );
+
+	this.writeIncludeText( '\\noindent ' );
+	this.writeIncludeText(  ch.note2alphabet_tex( id )
+			.replace( /\bflat\b/, "cflat" )
+			.replace( /\bsharp\b/, "csharp" )
+			.replace( /\bnatural\b/, "cnatural" )
+			) ;
+	this.writeIncludeText( '$\\vcenter{ \\hbox{ \\includegraphics[width=1.0 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n' );
+};
+
+var OUTPUT_PATH = 'out/'
+function batch() {
+//	var c = new ScaleGenerator( OUTPUT_PATH /*, 'diatonic' */ );
+//	c.writeHeader0( "Preexercise 1" );
+//	c.writeHeader1( "Natural" );
+//	c.writeScore1( "do do fa te me le ra se  " );
+//
+//	c.close();
+}
+
+batch();
+
+
+
+
+// vim: filetype=javascript :
+

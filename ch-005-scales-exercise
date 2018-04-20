@@ -5,6 +5,9 @@ var ScaleGenerator = require( 'scale-generator' );
 var OUTPUT_PATH = 'out/'
 var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-exercise' */ );
 
+c.writeHeader0( "Exercise to Acquire the Senses of Tonality" );
+
+
 function exec( id, keys, scale, pattern , title, comment ) {
 	if ( title ) {
 		c.writeHeader2( title );

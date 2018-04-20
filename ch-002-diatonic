@@ -22,17 +22,17 @@ ScaleGenerator.prototype.writeScore1 = function ( notes ) {
 var OUTPUT_PATH = 'out/'
 function batch() {
 	var c = new ScaleGenerator( OUTPUT_PATH /*, 'diatonic' */ );
-	c.writeHeader1( "Diatonic Scales" );
-	c.writeHeader2( "Natural" );
+	c.writeHeader0( "Diatonic Scales" );
+	c.writeHeader1( "Natural" );
 	c.writeScore1( "do  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeHeader2( "Sharp" );
+	c.writeHeader1( "Sharp" );
 	c.writeScore1( "sol do' re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "re  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "la  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "mi  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "ti  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "fi  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-	c.writeHeader2( "Flat" );
+	c.writeHeader1( "Flat" );
 	c.writeScore1( "fa  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "te  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "me  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
@@ -40,11 +40,11 @@ function batch() {
 	c.writeScore1( "ra  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "se  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
 
-	c.writeHeader2( "Special ( Flat )" );
+	c.writeHeader1( "Special ( Flat )" );
 	c.writeScore1( "de  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "fe  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
 
-	c.writeHeader2( "Special ( Sharp )" );
+	c.writeHeader1( "Special ( Sharp )" );
 	c.writeScore1( "di  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "si  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
 	c.writeScore1( "ri  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
