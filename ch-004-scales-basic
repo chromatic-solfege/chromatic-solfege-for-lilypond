@@ -7,7 +7,11 @@ var OUTPUT_PATH = 'out/';
 
 var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales' */ );
 
+c.writeHeader0( "Mode Scales" );
+c.writeTextBody( "In this theory, all scales are related to closest minor scale. Rotation is a method to derive all related scales on a scale. (under construction)\\" );
+
 // BASIC
+c.writeHeader1( "Basic Modes" );
 
 c.writeHeader3( "Dorian Scale" );
 c.writeScore(  "dorian-basic",                           "do@(do,re,me,fa,sol,la,te)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 " , s.scale, s.dimension );
@@ -31,7 +35,7 @@ c.writeScore(  'augumented-n13-basic',                   "do@(do,re,me,mi,se,le,
 
 
 // DORIAN
-c.writeHeader2( "Dorian Mode Derived Scales" );
+c.writeHeader1( "Dorian Mode Derived Scales" );
 c.writeHeader3( "Dorian Scale" );
 c.writeScore(  "dorian-01",                  "do@(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
 c.writeHeader3( "Phrygian Scale" );
@@ -49,7 +53,7 @@ c.writeScore(  "dorian-07",                  "re@(te,do,re,me,fa,sol,la)  1 2 3 
 
 
 // MELODIC
-c.writeHeader2( "Melodic Minor Mode Derived Scales" );
+c.writeHeader1( "Melodic Minor Mode Derived Scales" );
 
 c.writeHeader3( "Melodic Minor Scale" );
 c.writeScore(  "melodic-01",                  "do@(do,re,me,fa,sol,la,ti)  1 2 3 4 5 6 7 s 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
@@ -68,7 +72,7 @@ c.writeScore(  "melodic-07",                  "ra@(ti,do,re,me,fa,sol,la)  1 2 3
 
 
 // HARMONIC
-c.writeHeader2( "Harmonic Minor Mode Derived Scales" );
+c.writeHeader1( "Harmonic Minor Mode Derived Scales" );
 
 c.writeHeader3( "Harmonic Minor Scale" );
 c.writeScore(  "harmonic-01",                  "do@(do,re,me,fa,sol,le,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
@@ -79,7 +83,7 @@ c.writeScore(  "harmonic-03",                  "la@(me,fa,sol,le,ti,do,re)  1 2 
 c.writeHeader3( "Dorian \\sharp 11th Scale" );
 c.writeScore(  "harmonic-04",                   "sol@(fa,sol,le,ti,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
 c.writeHeader3( "Phrygian Major Scale ( Harmonic Minor Perfect 5th Below )" );
-c.writeTextBody( "(Mixolydian \\flat 9th \\flat 13th)" );
+c.writeTextBody( "(Mixolydian \\cflat 9th \\cflat 13th)" );
 c.writeScore(  "harmonic-05",                  "fa@(sol,le,ti,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
 c.writeHeader3( "Lydian \\sharp 9th Scale ( Super Locrian Scale )" );
 c.writeScore(  "harmonic-06",                  "mi@(le,ti,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
@@ -90,7 +94,7 @@ c.close();
 
 
 // MELODIC S11
-c.writeHeader2( "Melodic  Minor \\sharp 11th Mode Derived Scales" );
+c.writeHeader1( "Melodic  Minor \\sharp 11th Mode Derived Scales" );
 
 c.writeHeader3( "Melodic Minor \\sharp 11 ( Dorian \\sharp 11 \\natural 7)" );
 c.writeScore(  "melodic-s11-01",                  "do@(do,re,me,fi,sol,la,ti)  1 2 3 4 5 6 7 8 s 8 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
