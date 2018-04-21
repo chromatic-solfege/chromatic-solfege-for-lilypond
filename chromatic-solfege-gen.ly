@@ -77,7 +77,12 @@ uout = \stopTextSpan
 %asc=#(ch:transpose "se do re mi \\| do ti la" )
 %#(warn asc)
 
-makescore = #(define-scheme-function (parser location source-filename notes) ( string? ly:music? )
+makescore = #(define-scheme-function (parser location notes) ( ly:music? )
+   (define source-filename (car (ly:input-both-locations location) ) )
+   (write 'makescore )
+   (write " " )
+   (write source-filename )
+   (newline)
   #{
     \score {
       <<
