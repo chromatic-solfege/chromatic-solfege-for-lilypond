@@ -17,7 +17,7 @@ function exec( id, keys, scale, pattern , title, comment ) {
 	}
 	for ( var i of keys ) {
 		c.writeHeader3( 'Key ' + ita2ger[ i ] );
-		c.writeScore( id + '_' + i, `${i}@(${scale}) ${ pattern }` );
+		c.writeScore( id + '_' + i, `@${i}(${scale}) ${ pattern }` );
 	}
 }
 
