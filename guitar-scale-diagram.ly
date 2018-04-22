@@ -709,10 +709,14 @@ inputmusic = { do' re mi }
 
 #(define aaron-to-octave-offset (lambda (note )
                                   (cond
-                                    ((string=? note "de" )  -1  )
-                                    ((string=? note "ta" )  1  )
+                                    ((string=? note "de" )   -1  )
                                     ((string=? note "daw" )  -1  )
-                                    ((string=? note "tai" )  1  )
+                                    ((string=? note "dawf" ) -1  )
+                                    ((string=? note "rawf" ) -1  )
+
+                                    ((string=? note "ta" )    1  )
+                                    ((string=? note "tai" )   1  )
+                                    ((string=? note "taif" )  1  )
                                     (else 0 ))))
 
 #(define aaron-to-eng (lambda (note )
