@@ -35,7 +35,7 @@ function batch() {
 	c.writeScore2( "example", "do  de  ra me fe se  le te de" );
 	c.writeHeader1( "Sharp" );
 	c.writeTextBody( `Sharp is treated in the same manner except it will be replaced with “i”. In case the vowel is already “i”, it will be replaced with “a” as well as flat.` );
-	c.writeScore2( "example", "do  di  ri mi fi si  li ti di" );
+	c.writeScore2( "example", "do  di  ri mi fi si  li ta di" );
 	c.writeHeader1( "Double Flat" );
 	c.writeTextBody( `Double flat is also treated in the same manner as flat and sharp, except the vowel is replaced with “aw”.` );
 	c.writeScore2( "example", "do  daw  raw maw faw saw law taw daw" );
