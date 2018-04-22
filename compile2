@@ -12,16 +12,8 @@ FILES=( "$@" )
 # If no file is specified to the arguments, it should default to all scale generators.
 if [ ${#FILES[@]} -eq 0 ]; then
 	rm out/*
-	FILES=( 
-		./ch-000-basic
-		./ch-001-notenames
-		./ch-002-diatonic
-		./ch-004-scales-basic
-		./ch-005-scales-exercise
-		./ch-009-interval
-	)
+	FILES=( ./ch-* )
 fi
-
 
 # Remove the old generated files.
 for  i in  "${FILES[@]}" # "$@";
