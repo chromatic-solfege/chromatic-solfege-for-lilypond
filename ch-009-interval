@@ -599,6 +599,8 @@ var DESCEND_SHARP = 'do di re ri mi fa fi sol si la li ti do'.split(' ').reverse
 
 function batch() {
 	var batch_pg = [
+		[ '=' , 'Exercise to Acquire Better Understanding for Intervals' ],
+
 		[ '==' , 'Intervals' ],
 
 		// su:sharp ascend, sd:sharp descend, fu:flat ascend, fd:flat descend
@@ -815,6 +817,10 @@ function batch() {
 		for ( var i=0; i<batch_pg.length; i++ ) {
 			var arr = batch_pg[i];
 			switch ( arr[0] ) {
+				case '=' :
+					include_text+= '\\section{'    + arr[1] + '}\n';
+					console.error( '\\section{'    + arr[1] + '}' );
+					break;
 				case '==' :
 					include_text+= '\\subsection{'    + arr[1] + '}\n';
 					console.error( '\\subsection{'    + arr[1] + '}' );
