@@ -5,7 +5,8 @@ var fs = require( 'fs' );
 var applyTemplate = require( 'solfege-template' );
 var OUTPUT_PATH = 'out/'
 
-var FILENAME_PREFIX = 'ch-009-';
+// var FILENAME_PREFIX = 'ch-100-interval';
+var FILENAME_PREFIX = require('path').basename( __filename );
 
 function __applyTemplate( s, o ) {
 	return s.replace(  /\$\{([a-zA-Z0-9_]+)\}/g, function( s0, s1 ) {
@@ -804,7 +805,7 @@ function batch() {
 			let CNT=0;
 			let SEQ = 0;
 			function fname_generate(interval, category ) {
-				return FILENAME_PREFIX + 'interval-' + fmt(CNT,3) + "-" + interval + "-" + category + "-" + ( SEQ ++ ) + '.ly';
+				return FILENAME_PREFIX + '-' + fmt(CNT,3) + "-" + interval + "-" + category + "-" + ( SEQ ++ ) + '.ly';
 			}
 			function fname_next() {
 				CNT++;
@@ -885,8 +886,8 @@ function batch() {
 			}
 		}
 
-		console.error( OUTPUT_PATH + FILENAME_PREFIX + 'interval-output.tex' );
-		fs.writeFileSync( OUTPUT_PATH + FILENAME_PREFIX + 'interval-output.tex', include_text, 'utf8' );
+		console.error( OUTPUT_PATH + FILENAME_PREFIX + '-output.tex' );
+		fs.writeFileSync( OUTPUT_PATH + FILENAME_PREFIX + '-output.tex', include_text, 'utf8' );
 	}
 
 }
