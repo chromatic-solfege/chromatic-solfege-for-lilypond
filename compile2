@@ -36,8 +36,8 @@ echo 'Compiling the generated files...'
 echo '================================'
 echo
 
-function max2 {
-   while [ `jobs | wc -l` -ge 5 ]
+function max_proc_count {
+   while [ `jobs | wc -l` -gt $1 ]
    do
       sleep 0.5
    done
@@ -51,13 +51,15 @@ do
 	for  i in "${NAME}"-[0-9]*.ly # "$@";
 	do
 		# echo $i
-		max2
+		max_proc_count 5
 		echo "${i##*/}"
 		lilypond -I /home/ats/Documents/lilypond/include/ "${i##*/}" 2> /dev/null &
 	done;
 	echo 
 	echo 
 done;
+
+max_proc_count 1
 
 beep
 
