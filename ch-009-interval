@@ -20,17 +20,20 @@ function __applyTemplate( s, o ) {
 }
 
 function prefix( n ) {
-	if ( ch.isTripleSharp( n ) ) {
-		return '\\sharpdoublesharp ';
-	} else if ( ch.isTripleFlat( n ) ) {
-		return '\\flatdoubleflat ';
-	} else if ( ch.isQuadrupleSharp( n ) ) {
-		return '\\doublesharpdoublesharp ';
-	} else if ( ch.isQuadrupleFlat( n ) ) {
-		return '\\doubleflatdoubleflat ';
-	} else {
-		return "";
-	}
+	// >>> MODIFIED  (Sat, 21 Apr 2018 16:34:00 +0900)
+	// if ( ch.isTripleSharp( n ) ) {
+	// 	return '\\sharpdoublesharp ';
+	// } else if ( ch.isTripleFlat( n ) ) {
+	// 	return '\\flatdoubleflat ';
+	// } else if ( ch.isQuadrupleSharp( n ) ) {
+	// 	return '\\doublesharpdoublesharp ';
+	// } else if ( ch.isQuadrupleFlat( n ) ) {
+	// 	return '\\doubleflatdoubleflat ';
+	// } else {
+	// 	return "";
+	// }
+	// <<< MODIFIED  (Sat, 21 Apr 2018 16:34:00 +0900)
+	return "";
 }
 
 
@@ -56,6 +59,8 @@ function gen_sharp( args ) {
 	for ( var i=0; i<notes.length; i++ ) {
 		var note1 = notes[i];
 		var note2 = ch.transpose( note1, trans ).shift();
+		// console.error( "***" , ch.transpose( note1, trans ) );
+		// console.error( "***" , "note1", note1, "note2",note2 );
 
 		if ( ch.isIrregularAccidental( note2 ) || ch.isDoubleAccidental( note2 ) || ch.isTripleAccidental( note2 ) || ch.isQuadrupleAccidental( note2 )  ) {
 			is_irregular = true;
