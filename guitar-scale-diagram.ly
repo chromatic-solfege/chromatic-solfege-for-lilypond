@@ -689,6 +689,22 @@ inputmusic = { do' re mi }
                                     ((string=? note "lai" )  "lai"  )
                                     ((string=? note "tai" )  "tai"  )
 
+                                    ((string=? note "dawf" )  "dawf"  )
+                                    ((string=? note "rawf" )  "rawf"  )
+                                    ((string=? note "mawf" )  "mawf"  )
+                                    ((string=? note "fawf" )  "fawf"  )
+                                    ((string=? note "sawf" )  "sawf"  )
+                                    ((string=? note "lawf" )  "lawf"  )
+                                    ((string=? note "tawf" )  "tawf"  )
+
+                                    ((string=? note "daif" )  "daif"  )
+                                    ((string=? note "raif" )  "raif"  )
+                                    ((string=? note "maif" )  "maif"  )
+                                    ((string=? note "faif" )  "faif"  )
+                                    ((string=? note "saif" )  "saif"  )
+                                    ((string=? note "laif" )  "laif"  )
+                                    ((string=? note "taif" )  "taif"  )
+
                                     (else "hey!"))))
 
 #(define aaron-to-octave-offset (lambda (note )
@@ -738,6 +754,23 @@ inputmusic = { do' re mi }
                                     ((string=? note "sai" )  "A"  )
                                     ((string=? note "lai" )  "B"  )
                                     ((string=? note "tai" )  "C#"  )
+
+                                    ((string=? note "dawf" )  "A"  )
+                                    ((string=? note "rawf" )  "B"  )
+                                    ((string=? note "mawf" )  "C#"  )
+                                    ((string=? note "fawf" )  "D"  )
+                                    ((string=? note "sawf" )  "E"  )
+                                    ((string=? note "lawf" )  "F#"  )
+                                    ((string=? note "tawf" )  "G#"  )
+
+                                    ((string=? note "daif" )  "Eb"  )
+                                    ((string=? note "raif" )  "F"  )
+                                    ((string=? note "maif" )  "G"  )
+                                    ((string=? note "faif" )  "Ab"  )
+                                    ((string=? note "saif" )  "Bb"  )
+                                    ((string=? note "laif" )  "C"  )
+                                    ((string=? note "taif" )  "D"  )
+
                                     (else "ugh"))))
 
 
