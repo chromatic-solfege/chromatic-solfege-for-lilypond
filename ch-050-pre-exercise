@@ -3,25 +3,8 @@
 var ch = require( 'chromatic' );
 var ScaleGenerator = require( 'scale-generator' );
 var OUTPUT_PATH = 'out/'
-var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-exercise' */ );
 
-c.writeHeader0( "Exercise to Diatonic Scales" );
-
-function exec( id, keys, scale, pattern , title, comment ) {
-	if ( title ) {
-		c.writeHeader2( title );
-	}
-	if ( comment ) {
-		c.writeTextBody( title );
-	}
-	for ( var i of keys ) {
-		c.writeHeader3( 'Key ' + ita2ger[ i ] );
-		c.writeScore( id + '_' + i, `@${i}(${scale}) ${ pattern }` );
-	}
-}
-
-var keys = "do,fa,te,me,le,ra,se,sol,re,la,mi,ti,fi".split( ',' );
-var ita2ger = {
+var note2name = {
 	'do' : 'C',
 	'fa' : 'F',
 	'te' : 'B\\flat',
@@ -37,33 +20,40 @@ var ita2ger = {
 	'fi' : 'F\\sharp',
 };
 
-var scale_dorian      = "do,re,me,fa,sol,la,te";
-var scale_diminished  = "do,re,me,fa,se,le,la,ti";
-var scale_melodic     = "do,re,me,fa,sol,la,ti";
-var scale_harmonic    = "do,re,me,fa,sol,le,ti";
-var scale_melodic_s11 = "do,re,me,fi,sol,la,ti";
-
-var scale_wholetone = "do,re,mi,fi,si,li";
-var scale_augument = "do,me,mi,sol,le,ti";
-var scale_augument_ma7 = "do,re,me,mi,se,sol,le,te,ti";
-var scale_augument_n13 = "do,re,me,mi,se,le,la,te";
-
-var pattern6_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] "
-var pattern7_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ]"
-var pattern8_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ] s 9, [ 11 13 15 ]"
-var pattern9_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ] s 9, [ 11 13 15 ] s 10, [ 12 14 16 ]"
-
-pattern6_01 = pattern6_01.replace( /s/g , "" );
-pattern7_01 = pattern7_01.replace( /s/g , "" );
-pattern8_01 = pattern8_01.replace( /s/g , "" );
-pattern9_01 = pattern9_01.replace( /s/g , "" );
+var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-exercise' */ );
+c.writeHeader0( "Exercise to Chromatic Scales" );
 
 
-exec( "dor_3rd_lh",  keys, scale_dorian, "1 3   2 4   3 5   4 6   5 7   6 8   7 9   8 10  \n 8 10 7 9 6 8 5 7 4 6 3 5 2 4 1 3",
-		 "Dorian - Interval 3rd - Low High", "" );
 
-exec( "dor_3rd_hl", keys, scale_dorian, "3 1    4 2    5 3    6 4    7 5    8 6    9 7  10 8 \n 10 8 9 7 8 6  7 5  6 4  5 3  4 2  3 1", 
-		"Dorian - Interval 3rd - High Low", "" );
+function merge_with_offset( notes , offset, from, to, size  ) {
+	var result = [];
+	for ( var i=from; i!=to; from < to ? i++ : i-- ) {
+		result.push( notes[ ( i          ) ] + '8 [ ' );
+		result.push( notes[ ( i + offset ) ] + '8 ] ' );
+	}
+	return result.join( ' ') ;
+}
+
+var keys = "do,fa,te,me,le,ra,se,ti,mi,la,re,sol".split( ',' );
+
+var notes_u = proc( "do di re ri mi fa fi sol si la li ti".split( ' ' ) );
+
+function proc(arr) {
+	return [].concat( 
+		arr.map( (s)=> s + ""   ),
+		arr.map( (s)=> s + "'"   ),
+		arr.map( (s)=> s + "''"  ),
+		arr.map( (s)=> s + "'''" ),
+		arr.map( (s)=> s + "''''" )
+	)
+}
+
+for ( var i=0; i<12; i++ ) {
+	c.writeHeader3( 'Offset ' + i );
+	c.writeScore( i + '-01-u', `@do \\absolute \{ ${ merge_with_offset( notes_u,  i, 12 ,25 , 12 ) } \}` );
+	c.writeScore( i + '-02-d', `@do \\absolute \{ ${ merge_with_offset( notes_u,  i, 25 ,12 , 12 ) } \}` );
+}
+
 
 c.close();
 
