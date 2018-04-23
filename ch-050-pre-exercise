@@ -37,6 +37,7 @@ function merge_with_offset( notes , offset, from, to, size  ) {
 var keys = "do,fa,te,me,le,ra,se,ti,mi,la,re,sol".split( ',' );
 
 var notes_u = proc( "do di re ri mi fa fi sol si la li ti".split( ' ' ) );
+var notes_d = proc( "do ra re me mi fa se sol le la te ti".split( ' ' ) );
 
 function proc(arr) {
 	return [].concat( 
@@ -48,10 +49,10 @@ function proc(arr) {
 	)
 }
 
-for ( var i=0; i<12; i++ ) {
+for ( var i=0; i<21; i++ ) {
 	c.writeHeader3( 'Offset ' + i );
-	c.writeScore( i + '-01-u', `@do \\absolute \{ ${ merge_with_offset( notes_u,  i, 12 ,25 , 12 ) } \}` );
-	c.writeScore( i + '-02-d', `@do \\absolute \{ ${ merge_with_offset( notes_u,  i, 25 ,12 , 12 ) } \}` );
+	c.writeScore( i + '-01-u', `@do \\absolute \{ ${ merge_with_offset( notes_u,  i, 12 ,24 , 12 ) } do'' \}` );
+	c.writeScore( i + '-02-d', `@do \\absolute \{ ${ merge_with_offset( notes_d,  i, 24 ,12 , 12 ) } do' \}` );
 }
 
 
