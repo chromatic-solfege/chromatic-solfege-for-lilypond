@@ -1,0 +1,66 @@
+#!/bin/bash
+shopt -s nullglob
+
+echo
+echo '====================='
+echo 'Generating files...'
+echo '====================='
+echo
+
+FILES=( "$@" )
+
+# If no file is specified to the arguments, it should default to all scale generators.
+if [ ${#FILES[@]} -eq 0 ]; then
+	rm out/*
+	FILES=( ./ch-* )
+fi
+
+# Remove the old generated files.
+for  i in  "${FILES[@]}" # "$@";
+do
+	# echo "${i##*/}"
+	NAME="${i##*/}"
+	echo "Processing ${NAME} ..."
+	# echo "out/${NAME}"-[0-9]*
+	rm -v "out/${NAME}"-[0-9]*
+	./${NAME}
+	echo 
+	echo 
+done;
+
+# echo ${#FILES[@]}
+# echo ${FILES[*]}
+echo
+echo '================================'
+echo 'Compiling the generated files...'
+echo '================================'
+echo
+
+function max_proc_count {
+   while [ `jobs | wc -l` -gt $1 ]
+   do
+      sleep 0.5
+   done
+}
+
+cd out
+
+for NAME in  "${FILES[@]}" # "$@";
+do
+	echo "Compiling ${NAME} ..."
+	for  i in "${NAME}"-[0-9]*.ly # "$@";
+	do
+		# echo $i
+		max_proc_count 5
+		echo "${i##*/}"
+		lilypond -I /home/ats/Documents/lilypond/include/ "${i##*/}" 2> /dev/null &
+	done;
+	echo 
+	echo 
+done;
+
+max_proc_count 1
+
+beep
+
+# lilypond -I /home/ats/Documents/lilypond/include/ *.ly

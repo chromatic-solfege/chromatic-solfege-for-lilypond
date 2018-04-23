@@ -1,0 +1,120 @@
+#!/usr/bin/nodejs
+
+var ch = require( 'chromatic' );
+var ScaleGenerator = require( 'scale-generator' );
+var s = require( './scale-settings.js' );
+var OUTPUT_PATH = 'out/';
+
+var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales' */ );
+
+c.writeHeader0( "Mode Scales" );
+c.writeTextBody( "In this theory, all scales are related to closest minor scale. Rotation is a method to derive all related scales on a scale. (under construction)\\" );
+
+// BASIC
+c.writeHeader1( "Basic Modes" );
+
+c.writeHeader3( "Dorian Scale" );
+c.writeScore(  "dorian-basic",                           "do(do,re,me,fa,sol,la,te)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 " , s.scale, s.dimension );
+c.writeHeader3( "Diminished Scale" );
+c.writeScore(  'diminished-basic',                       "do(do,re,me,fa,se,le,la,ti)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 " , s.scale, s.dimension );
+c.writeHeader3( "Melodic Minor Scale" );
+c.writeScore(  'melodic-basic',                          "do(do,re,me,fa,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 " , s.scale, s.dimension );
+c.writeHeader3( "Harmonic Minor Scale" );
+c.writeScore(  'harmonic-basic',                         "do(do,re,me,fa,sol,le,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 " , s.scale, s.dimension );
+c.writeHeader3( "Melodic Minor \\sharp 11 Scale" );
+c.writeScore(  'melodic-s11-basic',                      "do(do,re,me,fi,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 " , s.scale, s.dimension );
+c.writeHeader3( "Wholetone Scale" );
+c.writeScore(  'wholetone-basic',                        "do(do,re,mi,fi,si,li)            1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 " , s.scale, s.dimension );
+c.writeHeader3( "Augumented Scale" );
+c.writeScore(  'augumented-basic',                       "do(do,me,mi,sol,le,ti)           1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 " , s.scale, s.dimension );
+c.writeHeader3( "Augumented Minor Major 7th Scale" );
+c.writeScore(  'augumented-ma7-basic',                   "do(do,re,me,mi,se,sol,le,te,ti)  1 2 3 4 5 6 7 8 9 1 s 1 9 8 7 6 5 4 3 2 1 " , s.scale, s.dimension );
+c.writeHeader3( "Augumented Natural 13th Scale" );
+c.writeScore(  'augumented-n13-basic',                   "do(do,re,me,mi,se,le,la,te)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 " , s.scale, s.dimension );
+
+
+
+// DORIAN
+c.writeHeader1( "Dorian Mode Derived Scales" );
+c.writeHeader3( "Dorian Scale" );
+c.writeScore(  "dorian-01",                  "do(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Phrygian Scale" );
+c.writeScore(  "dorian-02",                  "do(re,me,fa,sol,la,te,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Lydian Scale" );
+c.writeScore(  "dorian-03",                  "do(me,fa,sol,la,te,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Mixolydian Scale" );
+c.writeScore(  "dorian-04",                  "do(fa,sol,la,te,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Aeolian Scale" );
+c.writeScore(  "dorian-05",                  "do(sol,la,te,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Locrian Scale" );
+c.writeScore(  "dorian-06",                  "do(la,te,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Ionian Scale" );
+c.writeScore(  "dorian-07",                  "do(te,do,re,me,fa,sol,la)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+
+
+// MELODIC
+c.writeHeader1( "Melodic Minor Mode Derived Scales" );
+
+c.writeHeader3( "Melodic Minor Scale" );
+c.writeScore(  "melodic-01",                  "do(do,re,me,fa,sol,la,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Phrygian \\natural 13th Scale" );
+c.writeScore(  "melodic-02",                  "do(re,me,fa,sol,la,ti,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Lydian \\sharp 5th Scale" );
+c.writeScore(  "melodic-03",                  "do(me,fa,sol,la,ti,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Mixolydian \\sharp 11th Scale" );
+c.writeScore(  "melodic-04",                  "do(fa,sol,la,ti,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Aeolian Majour Scale ( Mixolydian \\flat 13th )" );
+c.writeScore(  "melodic-05",                  "do(sol,la,ti,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Locrian \\natural 9th Scale ( Super Locrian Scale )" );
+c.writeScore(  "melodic-06",                  "do(la,ti,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Ionian \\flat All Scale ( Altered Scale )" );
+c.writeScore(  "melodic-07",                  "do(ti,do,re,me,fa,sol,la)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+
+
+// HARMONIC
+c.writeHeader1( "Harmonic Minor Mode Derived Scales" );
+
+c.writeHeader3( "Harmonic Minor Scale" );
+c.writeScore(  "harmonic-01",                  "do(do,re,me,fa,sol,le,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Locrian \\natural 13th Scale" );
+c.writeScore(  "harmonic-02",                  "do(re,me,fa,sol,le,ti,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Ionian \\sharp 5th Scale" );
+c.writeScore(  "harmonic-03",                  "do(me,fa,sol,le,ti,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Dorian \\sharp 11th Scale" );
+c.writeScore(  "harmonic-04",                  "do(fa,sol,le,ti,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Phrygian Major Scale ( Harmonic Minor Perfect 5th Below )" );
+c.writeTextBody( "(Mixolydian \\cflat 9th \\cflat 13th)" );
+c.writeScore(  "harmonic-05",                  "do(sol,le,ti,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Lydian \\sharp 9th Scale ( Super Locrian Scale )" );
+c.writeScore(  "harmonic-06",                  "do(le,ti,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Ionian Diminished 7th Scale ( Altered Scale )" );
+c.writeScore(  "harmonic-07",                  "do(ti,do,re,me,fa,sol,le)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+
+c.close();
+
+
+// MELODIC S11
+c.writeHeader1( "Melodic  Minor \\sharp 11th Mode Derived Scales" );
+
+c.writeHeader3( "Melodic Minor \\sharp 11 ( Dorian \\sharp 11 \\natural 7)" );
+c.writeScore(  "melodic-s11-01",                  "do(do,re,me,fi,sol,la,ti)  1 2 3 4 5 6 7 8 s 8 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Phrygian Major \\natural 13th Scale" );
+c.writeScore(  "melodic-s11-02",                  "do(re,me,fi,sol,la,ti,do)  1 2 3 4 5 6 7 8 s 8 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Lydian \\flat 9th \\sharp 5th Scale" );
+c.writeScore(  "melodic-s11-03",                  "do(me,fi,sol,la,ti,do,re)  1 2 3 4 5 6 7 8 s 8 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Mixolydian \\sharp 11th Scale" );
+c.writeScore(  "melodic-s11-04",                 "do(fi,sol,la,ti,do,re,me)  1 2 3 4 5 6 7 8 s 8 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Aeolian Major Scale ( Mixolydian \\flat 13th )" );
+c.writeScore(  "melodic-s11-05",                  "do(sol,la,ti,do,re,me,fi)  1 2 3 4 5 6 7 8 s 8 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Locrian \\natural 9th Scale ( Super Locrian Scale )" );
+c.writeScore(  "melodic-s11-06",                  "do(la,ti,do,re,me,fi,sol)  1 2 3 4 5 6 7 8 s 8 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+c.writeHeader3( "Ionian \\flat All Scale ( Altered Scale )" );
+c.writeScore(  "melodic-s11-07",                  "do(ti,do,re,me,fi,sol,la)  1 2 3 4 5 6 7 8 s 8 7 6 5 4 3 2 1"   ,  s.scale, s.dimension );
+
+c.close();
+
+
+
+
+// vim: filetype=javascript :
+
