@@ -1,0 +1,64 @@
+#!/usr/bin/nodejs
+
+var ch = require( 'chromatic' );
+var ScaleGenerator = require( 'scale-generator' );
+
+ScaleGenerator.prototype.writeScore1 = function ( notes ) {
+	var id = notes.split( /\s+/ ).shift();
+	var output = ScaleGenerator.applyTemplate( notes );
+
+	this.nextOutputFilename( id );
+	ScaleGenerator.writeFile( this.currentOutputFilename(), output );
+
+	this.writeIncludeText( '\\noindent ' );
+	this.writeIncludeText(  ch.note2alphabet_tex( id )
+			.replace( /\bflat\b/, "cflat" )
+			.replace( /\bsharp\b/, "csharp" )
+			.replace( /\bnatural\b/, "cnatural" )
+			) ;
+	this.writeIncludeText( '$\\vcenter{ \\hbox{ \\includegraphics[width=1.0 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n' );
+};
+
+var OUTPUT_PATH = 'out/'
+function batch() {
+	var c = new ScaleGenerator( OUTPUT_PATH /*, 'diatonic' */ );
+	c.writeHeader0( "Diatonic Scales" );
+	c.writeHeader1( "Natural" );
+	c.writeScore1( "do  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeHeader1( "Sharp" );
+	c.writeScore1( "sol do' re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "re  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "la  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "mi  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "ti  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "fi  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeHeader1( "Flat" );
+	c.writeScore1( "fa  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "te  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "me  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "le  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "ra  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "se  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
+
+	c.writeHeader1( "Special ( Flat )" );
+	c.writeScore1( "de  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "fe  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+
+	c.writeHeader1( "Special ( Sharp )" );
+	c.writeScore1( "di  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "si  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "ri  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "li  do' re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "ma  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+	c.writeScore1( "ta  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
+
+	c.close();
+}
+
+batch();
+
+
+
+
+// vim: filetype=javascript :
+

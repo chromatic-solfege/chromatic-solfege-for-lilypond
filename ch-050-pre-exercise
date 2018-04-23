@@ -1,0 +1,61 @@
+#!/usr/bin/nodejs
+
+var ch = require( 'chromatic' );
+var ScaleGenerator = require( 'scale-generator' );
+var OUTPUT_PATH = 'out/'
+
+var note2name = {
+	'do' : 'C',
+	'fa' : 'F',
+	'te' : 'B\\flat',
+	'me' : 'E\\flat',
+	'le' : 'A\\flat',
+	'ra' : 'D\\flat',
+	'se' : 'G\\flat',
+	'sol': 'G',
+	're' : 'D',
+	'la' : 'A',
+	'mi' : 'E',
+	'ti' : 'B',
+	'fi' : 'F\\sharp',
+};
+
+var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-exercise' */ );
+c.writeHeader0( "Exercise to Chromatic Scales" );
+
+
+
+function merge_with_offset( notes , offset, from, to, size  ) {
+	var result = [];
+	for ( var i=from; i!=to; from < to ? i++ : i-- ) {
+		result.push( notes[ ( i          ) ] + '8 [ ' );
+		result.push( notes[ ( i + offset ) ] + '8 ] ' );
+	}
+	return result.join( ' ') ;
+}
+
+var keys = "do,fa,te,me,le,ra,se,ti,mi,la,re,sol".split( ',' );
+
+var notes_u = proc( "do di re ri mi fa fi sol si la li ti".split( ' ' ) );
+var notes_d = proc( "do ra re me mi fa se sol le la te ti".split( ' ' ) );
+
+function proc(arr) {
+	return [].concat( 
+		arr.map( (s)=> s + ""   ),
+		arr.map( (s)=> s + "'"   ),
+		arr.map( (s)=> s + "''"  ),
+		arr.map( (s)=> s + "'''" ),
+		arr.map( (s)=> s + "''''" )
+	)
+}
+
+for ( var i=0; i<21; i++ ) {
+	c.writeHeader3( 'Offset ' + i );
+	c.writeScore( i + '-01-u', `@do \\absolute \{ ${ merge_with_offset( notes_u,  i, 12 ,24 , 12 ) } do'' \}` );
+	c.writeScore( i + '-02-d', `@do \\absolute \{ ${ merge_with_offset( notes_d,  i, 24 ,12 , 12 ) } do' \}` );
+}
+
+
+c.close();
+
+// vim: filetype=javascript :
