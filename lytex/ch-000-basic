@@ -1,6 +1,6 @@
 #!/usr/bin/nodejs
 
-var ScaleGenerator = require( 'scale-generator' );
+var ScaleGenerator = require( 'chromatic/formatter' );
 
 var THE_TEXT = 
 `

@@ -1,7 +1,7 @@
 #!/usr/bin/nodejs
 
 var ch = require( 'chromatic' );
-var ScaleGenerator = require( 'scale-generator' );
+var ScaleGenerator = require( 'chromatic/formatter' );
 
 ScaleGenerator.prototype.writeScore1 = function ( notes ) {
 	var id = notes.split( /\s+/ ).shift();
