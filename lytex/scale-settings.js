@@ -1,5 +1,5 @@
 
-require( 'chromatic/formatter' ).voiceName = "voice_us3_mbrola";
+require( 'chromatic/formatter' ).voiceName = "voice_us1_mbrola";
 
 if ( module && module.exports ) {
 	module.exports.scale = 1.0;
