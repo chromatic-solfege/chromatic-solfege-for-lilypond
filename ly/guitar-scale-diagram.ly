@@ -904,7 +904,7 @@ inputmusic = { do' re mi }
 #(define compile-festival (lambda (input-file output-file voice )
                             (set! input-file (if (null? input-file ) "default.xml" input-file ))
                             (set! output-file (if (null? output-file ) "default.wav" output-file ))
-                            (set! voice (if (null? voice ) "voice_us1_mbrola" (string-append "voice_" voice ) ))
+                            (set! voice (if (null? voice ) "voice_us1_mbrola" voice ))
                             (system
                               (string-append "text2wave -eval \"("
                                              voice
