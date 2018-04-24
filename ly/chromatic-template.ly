@@ -86,7 +86,7 @@ makescore = #(define-scheme-function (parser location notes) ( ly:music? )
   #{
     \score {
       <<
-        \music-to-festival #notes #(string-append source-filename ".xml" ) #180 #""
+        \music-to-festival #notes #(string-append source-filename ".xml" ) #180 #"voice_us1_mbrola"
         \new Staff \relative do' {
           \clef "G"
           %\time 16/4
