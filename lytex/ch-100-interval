@@ -2,7 +2,7 @@
 
 var ch = require( 'chromatic' );
 var fs = require( 'fs' );
-var applyTemplate = require( 'solfege-template' );
+var applyTemplate = require( 'chromatic/template' );
 var OUTPUT_PATH = 'out/'
 
 // var FILENAME_PREFIX = 'ch-100-interval';
