@@ -1,6 +1,7 @@
 #!/bin/bash
 shopt -s nullglob
 
+
 echo
 echo '====================='
 echo 'Generating files...'
@@ -8,6 +9,13 @@ echo '====================='
 echo
 
 FILES=( "$@" )
+
+
+
+
+
+
+
 
 # If no file is specified to the arguments, it should default to all scale generators.
 if [ ${#FILES[@]} -eq 0 ]; then
@@ -62,5 +70,16 @@ done;
 max_proc_count 1
 
 beep
+
+WAV_OUTPUT_FILES=()
+for NAME in  "${FILES[@]}" 
+do
+	WAV_OUTPUT_FILES+=( $NAME-[0-9]*.wav )
+	echo "${WAV_OUTPUT_FILES[@]}"
+done
+
+vlc "${WAV_OUTPUT_FILES[@]}" &
+
+
 
 # lilypond -I /home/ats/Documents/lilypond/include/ *.ly
