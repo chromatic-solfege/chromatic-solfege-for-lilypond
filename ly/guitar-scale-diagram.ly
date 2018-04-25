@@ -697,6 +697,14 @@ inputmusic = { do' re mi }
                                     ((string=? note "lawf" )  "lawf"  )
                                     ((string=? note "tawf" )  "tawf"  )
 
+                                    ((string=? note "dais" )  "dais"  )
+                                    ((string=? note "rais" )  "rais"  )
+                                    ((string=? note "mais" )  "mais"  )
+                                    ((string=? note "fais" )  "fais"  )
+                                    ((string=? note "sais" )  "sais"  )
+                                    ((string=? note "lais" )  "lais"  )
+                                    ((string=? note "tais" )  "tais"  )
+
                                     ((string=? note "daif" )  "daif"  )
                                     ((string=? note "raif" )  "raif"  )
                                     ((string=? note "maif" )  "maif"  )
@@ -711,12 +719,16 @@ inputmusic = { do' re mi }
                                   (cond
                                     ((string=? note "de" )   -1  )
                                     ((string=? note "daw" )  -1  )
+                                    ((string=? note "daws" ) -1  )
                                     ((string=? note "dawf" ) -1  )
+                                    ((string=? note "raws" ) -1  )
                                     ((string=? note "rawf" ) -1  )
 
                                     ((string=? note "ta" )    1  )
                                     ((string=? note "tai" )   1  )
-                                    ((string=? note "taif" )  1  )
+                                    ((string=? note "tais" )  1  )
+                                    ((string=? note "lais" )  1  )
+                                    ((string=? note "laif" )  1  )
                                     (else 0 ))))
 
 #(define aaron-to-eng (lambda (note )

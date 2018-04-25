@@ -39,9 +39,9 @@ out( '\n' );
 
 {
 	let a = [
-		[ 'daws','raws','maws','faws','saws','laws','taws', ],
-		[ 'dawm','rawm','mawm','fawm','sawm','lawm','tawm', ],
 		[ 'dawf','rawf','mawf','fawf','sawf','lawf','tawf', ],
+		[ 'dawm','rawm','mawm','fawm','sawm','lawm','tawm', ],
+		[ 'daws','raws','maws','faws','saws','laws','taws', ],
 		[ 'dawn','rawn','mawn','fawn','sawn','lawn','tawn', ],
 		[ 'daw', 'raw', 'maw', 'faw', 'saw', 'law', 'taw',  ],
 		[ 'dem', 'ram', 'mem', 'fem', 'sem', 'lem', 'tem',  ],
@@ -53,9 +53,9 @@ out( '\n' );
 		[ 'dim', 'rim', 'mam', 'fim', 'sim', 'lim', 'tam',  ],
 		[ 'dai', 'rai', 'mai', 'fai', 'sai', 'lai', 'tai',  ],
 		[ 'dain','rain','main','fain','sain','lain','tain', ],
-		[ 'daif','raif','maif','faif','saif','laif','taif', ],
-		[ 'daim','raim','maim','faim','saim','laim','taim', ],
 		[ 'dais','rais','mais','fais','sais','lais','tais', ],
+		[ 'daim','raim','maim','faim','saim','laim','taim', ],
+		[ 'daif','raif','maif','faif','saif','laif','taif', ],
 	];
 
 	// Outer Loop

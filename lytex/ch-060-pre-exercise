@@ -7,13 +7,13 @@ var OUTPUT_PATH = 'out/'
 var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-exercise' */ );
 c.writeHeader0( "Build Fluency for accidentals" );
 
-c.writeScore( "@do  do di dai daif dai di do \n do de daw dawf daw de do" );
-c.writeScore( "@re  do di dai daif dai di do \n do de daw dawf daw de do" );
-c.writeScore( "@mi  do di dai daif dai di do \n do de daw dawf daw de do" );
-c.writeScore( "@fa  do di dai daif dai di do \n do de daw dawf daw de do" );
-c.writeScore( "@sol do di dai daif dai di do \n do de daw dawf daw de do" );
-c.writeScore( "@la  do di dai daif dai di do \n do de daw dawf daw de do" );
-c.writeScore( "@ti  do di dai daif dai di do \n do de daw dawf daw de do" );
+c.writeScore( "@do  do di dai dais dai di do \n do de daw daws daw de do" );
+c.writeScore( "@re  do di dai dais dai di do \n do de daw daws daw de do" );
+c.writeScore( "@mi  do di dai dais dai di do \n do de daw daws daw de do" );
+c.writeScore( "@fa  do di dai dais dai di do \n do de daw daws daw de do" );
+c.writeScore( "@sol do di dai dais dai di do \n do de daw daws daw de do" );
+c.writeScore( "@la  do di dai dais dai di do \n do de daw daws daw de do" );
+c.writeScore( "@ti  do di dai dais dai di do \n do de daw daws daw de do" );
 
 c.close();
 
