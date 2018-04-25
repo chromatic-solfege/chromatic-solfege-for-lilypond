@@ -944,21 +944,35 @@ inputmusic = { do' re mi }
                                (event-handler 'end '() )))
 
 
+#(define this-location #() )
+init-this-location = #(define-void-function (parser location)() (set! this-location location))
+\init-this-location
 
-#(define compile-festival (lambda (input-file output-file voice )
-                            (set! input-file (if (null? input-file ) "default.xml" input-file ))
-                            (set! output-file (if (null? output-file ) "default.wav" output-file ))
-                            (set! voice (if (null? voice ) "voice_us1_mbrola" voice ))
-                            (system
-                              (string-append "text2wave -eval \"("
-                                             voice
-                                             ")\" -mode singing \""
-                                             input-file
-                                             "\" > \""
-                                             output-file
-                                             "\""
+#(define compile-festival (lambda* (input-file output-file voice )
+                                   (let* ((source-filename (car (ly:input-both-locations this-location) ) )
+                                          (chromatic-festival-filename 
+                                            (regexp-substitute/global 
+                                              #f "[^/]*$"  
+                                              source-filename 'pre "chromatic-festival" 'post)))
 
-                                             ))))
+                                     (set! input-file (if (null? input-file ) "default.xml" input-file ))
+                                     (set! output-file (if (null? output-file ) "default.wav" output-file ))
+                                     (set! voice (if (null? voice ) "voice_us1_mbrola" voice ))
+                                     (system
+                                       (string-append "text2wave -eval \"(begin"
+                                                      "(require '"
+                                                      chromatic-festival-filename        
+                                                      ")"
+                                                      "("
+                                                      voice
+                                                      ")"
+                                                      ")\" -mode singing \""
+                                                      input-file
+                                                      "\" > \""
+                                                      output-file
+                                                      "\""
+
+                                                      )))))
 
 #(define read-aloud-music (lambda ( music output-file tempo voice)
                              (visit-music music (new-festival-formatter output-file tempo ) )
