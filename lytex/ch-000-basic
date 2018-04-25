@@ -1,7 +1,9 @@
 #!/usr/bin/nodejs
 
 require( './scale-settings.js' );
-var ScaleGenerator = require( 'chromatic/formatter' );
+var ScaleGenerator = require( 'chromatic/formatter' ).init( {
+	voiceFilter : (type, s )=> s.replace( /è/g, 'e' ),
+} );
 
 var THE_TEXT = 
 `
