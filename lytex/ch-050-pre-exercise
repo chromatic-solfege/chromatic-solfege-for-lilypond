@@ -49,6 +49,7 @@ function proc(arr) {
 	)
 }
 
+c.settings.tempo = 100;
 for ( var i=0; i<21; i++ ) {
 	c.writeHeader3( 'Offset ' + i );
 	c.writeScore( i + '-01-u', `@do \\absolute \{ ${ merge_with_offset( notes_u,  i, 12 ,24 , 12 ) } do'' \}` );

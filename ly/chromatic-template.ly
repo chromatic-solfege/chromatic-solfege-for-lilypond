@@ -77,16 +77,19 @@ uout = \stopTextSpan
 %asc=#(ch:transpose "se do re mi \\| do ti la" )
 %#(warn asc)
 
-makescore = #(define-scheme-function (parser location notes) ( ly:music? )
+makescore = #(define-scheme-function (parser location notes settings ) ( ly:music? list? )
    (define source-filename (car (ly:input-both-locations location) ) )
-   (write 'makescore )
-   (write " " )
-   (write source-filename )
-   (newline)
+   ; (write 'makescore )
+   ; (newline)
+   ; (write source-filename )
+   ; (newline)
+   ; (write 'setting )
+   ; (newline)
+   ; (write score-settings )
   #{
     \score {
       <<
-        \music-to-festival #notes #(string-append source-filename ".xml" ) #180 #"voice_us1_mbrola"
+        \music-to-festival #notes #(string-append source-filename ".xml" ) #settings
         \new Staff \relative do' {
           \clef "G"
           %\time 16/4
