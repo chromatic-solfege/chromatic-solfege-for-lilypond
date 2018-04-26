@@ -114,7 +114,13 @@ makescore = #(define-scheme-function (parser location notes) ( ly:music? )
 
       >>
       \midi { \tempo 4 = 180 }
-      \layout {}
+	  \layout {
+		\context {
+		  \Score
+		  \override NonMusicalPaperColumn.line-break-permission = ##f
+		  \override NonMusicalPaperColumn.page-break-permission = ##f
+		}
+	  }
     }
   #}
 )
