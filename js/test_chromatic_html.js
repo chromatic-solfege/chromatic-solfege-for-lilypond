@@ -26,9 +26,9 @@ var L = 4;
 
 {
 	let a = [
-		[ 'daws','raws','maws','faws','saws','laws','taws', ],
+		[ 'daes','raes','maes','faes','saes','laes','taes', ],
 		[ 'dawm','rawm','mawm','fawm','sawm','lawm','tawm', ],
-		[ 'dawf','rawf','mawf','fawf','sawf','lawf','tawf', ],
+		[ 'dae', 'rae', 'mae', 'fae', 'sae', 'lae', 'tae',  ],
 		[ 'dawn','rawn','mawn','fawn','sawn','lawn','tawn', ],
 		[ 'daw', 'raw', 'maw', 'faw', 'saw', 'law', 'taw',  ],
 		[ 'dem', 'ram', 'mem', 'fem', 'sem', 'lem', 'tem',  ],
@@ -40,9 +40,9 @@ var L = 4;
 		[ 'dim', 'rim', 'mam', 'fim', 'sim', 'lim', 'tam',  ],
 		[ 'dai', 'rai', 'mai', 'fai', 'sai', 'lai', 'tai',  ],
 		[ 'dain','rain','main','fain','sain','lain','tain', ],
-		[ 'daif','raif','maif','faif','saif','laif','taif', ],
+		[ 'dao', 'rao', 'mao', 'fao', 'sao', 'lao', 'tao',  ],
 		[ 'daim','raim','maim','faim','saim','laim','taim', ],
-		[ 'dais','rais','mais','fais','sais','lais','tais', ],
+		[ 'daos','raos','maos','faos','saos','laos','taos', ],
 	];
 
 	var TIN  = '<td>';

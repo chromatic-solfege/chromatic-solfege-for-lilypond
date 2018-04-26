@@ -53,11 +53,11 @@ function batch() {
 
 	c.writeHeader1( "Triple Flat" );
 	c.writeTextBody( 'Notes with triple flat are called similarily with notes with double flats, except their names end with “f”.' );
-	c.writeScore2( "example", "do  dawf  rawf mawf fawf sawf lawf tawf dawf" );
+	c.writeScore2( "example", "do  dae  rae mae fae sae lae tae dae" );
 
 	c.writeHeader1( "Triple Sharp" );
 	c.writeTextBody( 'Notes with triple sharp are called similarily with notes with double sharp, except their names end with “f”.' );
-	c.writeScore2( "example", "do  daif  raif maif faif saif laif taif daif" );
+	c.writeScore2( "example", "do  dao  rao mao fao sao lao tao dao" );
 
 
 	// c.writeScore2( "diatonic", "do  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
