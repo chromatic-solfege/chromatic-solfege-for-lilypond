@@ -5,21 +5,43 @@ var ScaleGenerator = require( 'chromatic/formatter' );
 var OUTPUT_PATH = 'out/'
 
 var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-exercise' */ );
-c.writeHeader0( "Build Fluency for accidentals" );
+c.writeHeader0( "4th/5th Motions" );
 
+c.writeHeader3( "4th Motion" );
 c.writeScore( 
-		"@do  do  fa te, me le | \n " +
-		"@ra  do, fa te, me le | \n " +
-		"@re  do, fa te, me le | \n " +
-		"@me  do, fa te, me le | \n " +
-		"@mi  do, fa te, me le | \n " +
-		"@fa  do, fa te, me le | \n " +
-		"@se  do, fa te, me le | \n " +
-		"@sol do, fa te, me le | \n " +
-		"@le  do, fa te, me le | \n " +
-		"@la  do, fa te, me le | \n " +
-		"@te  do, fa te, me le | \n " +
-		"@ti  do, fa te, me le | \n " +
+		"@do  do  fa te, me le  |           " +
+		"@ra  do, fa te, me le  |           " +
+		"@re  do, fa te, me le  |           " +
+		"@me  do, fa te, me le  | \\break   " +
+
+		"@mi  do, fa te, me le  |           " +
+		"@fa  do, fa te, me le  |           " +
+		"@se  do, fa te, me le  |           " +
+		"@sol do, fa te, me le  |  \\break  " +
+
+		"@le  do, fa te, me le  |           " +
+		"@la  do, fa te, me le  |           " +
+		"@te  do, fa te, me le  |           " +
+		"@ti  do, fa te, me le  |  \\break  " +
+		"@do  do1" 
+		);
+
+c.writeHeader3( "5th Motion" );
+c.writeScore( 
+		"@do   do' sol' re' la mi' |          " +
+		"@ti   do, sol' re' la mi' |          " +
+		"@li   do, sol' re' la mi' |          " +
+		"@la   do, sol' re' la mi' |  \\break " +
+
+		"@si   do, sol' re' la mi' |          " +
+		"@sol  do, sol' re' la mi' |          " +
+		"@fi   do, sol' re' la mi' |          " +
+		"@fa   do, sol' re' la mi' |  \\break " +
+
+		"@mi   do, sol' re' la mi' |          " +
+		"@ri   do, sol' re' la mi' |          " +
+		"@re   do, sol' re' la mi' |          " +
+		"@di   do, sol' re' la mi' |  \\break " +
 		"@do  do1" 
 		);
 
