@@ -738,11 +738,11 @@ inputmusic = { do' re mi }
                                     ((string=? note "ta"   )  1  )
 
                                     ((string=? note "tai"  )  1  )
-                                    ((string=? note "tau"  )  1  )
-                                    ((string=? note "taus" )  1  )
+                                    ((string=? note "tao"  )  1  )
+                                    ((string=? note "taos" )  1  )
 
-                                    ((string=? note "lau"  )  1  )
-                                    ((string=? note "laus" )  1  )
+                                    ((string=? note "lao"  )  1  )
+                                    ((string=? note "laos" )  1  )
                                     (else 0 ))))
 
 #(define aaron-to-eng (lambda (note )
@@ -787,13 +787,13 @@ inputmusic = { do' re mi }
                                     ((string=? note "tai" )  "C#"  )
 
                                     ; Triple Accidentals
-                                    ((string=? note "dea" )  "A"  )
-                                    ((string=? note "rea" )  "B"  )
-                                    ((string=? note "mea" )  "C#"  )
-                                    ((string=? note "fea" )  "D"  )
-                                    ((string=? note "sea" )  "E"  )
-                                    ((string=? note "lea" )  "F#"  )
-                                    ((string=? note "tea" )  "G#"  )
+                                    ((string=? note "dae" )  "A"  )
+                                    ((string=? note "rae" )  "B"  )
+                                    ((string=? note "mae" )  "C#"  )
+                                    ((string=? note "fae" )  "D"  )
+                                    ((string=? note "sae" )  "E"  )
+                                    ((string=? note "lae" )  "F#"  )
+                                    ((string=? note "tae" )  "G#"  )
 
                                     ((string=? note "dao" )  "Eb"  )
                                     ((string=? note "rao" )  "F"  )
