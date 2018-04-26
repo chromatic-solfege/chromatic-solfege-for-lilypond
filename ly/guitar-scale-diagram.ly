@@ -958,7 +958,7 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
 
                                      (set! input-file (if (null? input-file ) "default.xml" input-file ))
                                      (set! output-file (if (null? output-file ) "default.wav" output-file ))
-                                     (set! voice (if (null? voice ) "voice_us1_mbrola" voice ))
+                                     (set! voice (if (string-null? voice ) "voice_us1_mbrola" voice ))
                                      (system
                                        (string-append "text2wave -eval \"(begin"
                                                       "(require '"
@@ -975,14 +975,31 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
 
                                                       )))))
 
-#(define read-aloud-music (lambda ( music output-file tempo voice)
-                             (visit-music music (new-festival-formatter output-file tempo ) )
-                             (compile-festival output-file  (string-append output-file ".wav" )  voice )
+#(define read-aloud-music (lambda ( music output-file settings )
+                            ; (display 'two********************)
+                            ; (newline)
+                            ; (display-scheme-music settings )
+                            ; (newline)
+                            ; (display 'tempo )
+                            ; (display (assq 'tempo settings ) )
+                            ; (newline)
+                            (visit-music music (new-festival-formatter 
+                                                 output-file 
+                                                 (let ((tempo (assq 'tempo settings )))
+                                                   (if tempo (cdr tempo ) 180 ))))
+                            (compile-festival output-file  
+                                              (string-append output-file ".wav" )  
+                                              (let ((voice (assq 'voice settings )))
+                                                (if voice (cdr voice) "" )))
                              ; (system "gnome-open my.wav" )
                              ))
 
-music-to-festival = #(define-void-function (parser location music output-file tempo voice )(ly:music? string? number? string? )
-    (read-aloud-music music output-file tempo (if (string=? voice "" ) '() voice ) )
+music-to-festival = #(define-void-function (parser location music output-file settings )(ly:music? string? list? )
+                            (display 'one********************)
+                            (newline)
+                            (display-scheme-music settings )
+                            (newline)
+    (read-aloud-music music output-file settings )
 )
 
 music-to-aaron = #(define-music-function (parser location music)(ly:music?)

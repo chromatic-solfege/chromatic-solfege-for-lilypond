@@ -16,7 +16,7 @@ var THE_TEXT =
 
 ScaleGenerator.prototype.writeScore2 = function ( type, notes ) {
 	var id = notes.split( /\s+/ ).shift();
-	var output = ScaleGenerator.applyTemplate( notes );
+	var output = ScaleGenerator.applyTemplate( notes, null,null, this.settings );
 
 	output = output + "\n" + THE_TEXT + "\n";
 
