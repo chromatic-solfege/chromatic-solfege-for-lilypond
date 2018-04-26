@@ -10,13 +10,6 @@ echo
 
 FILES=( "$@" )
 
-
-
-
-
-
-
-
 # If no file is specified to the arguments, it should default to all scale generators.
 if [ ${#FILES[@]} -eq 0 ]; then
 	rm out/*
@@ -35,6 +28,15 @@ do
 	echo 
 	echo 
 done;
+
+# Create the file that include everything
+{
+	ALL=( ./ch-* )
+	for  i in  "${ALL[@]}" 
+	do
+		echo "\\input{ ly-generated/$(basename $i)-output.tex }"
+	done
+} > out/all-output.tex
 
 # echo ${#FILES[@]}
 # echo ${FILES[*]}
