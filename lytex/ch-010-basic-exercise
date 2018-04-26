@@ -13,46 +13,107 @@ function batch() {
 			"Read them aloud repeatedly until you can recite without seeing the actual spells."
 		);
 
-	// Note Names
-	c.writeHeader1( "Note Names" );
+	// Note Names 1
+	c.writeHeader1( "Note Names 1" );
+
 	c.writeHeader2( "Natural" );
 	c.writeScore( "notename-natural",      "do  do  re mi fa sol la ti do | do ti la sol fa mi re do" );
-
-	c.writeHeader2( "Flat" );
-	c.writeScore( "notename-flat",         "do  de  ra me fe se le te de | de te le se fe me ra de" );
-
-	c.writeHeader2( "Double Flat" );
-	c.writeScore( "notename-double-flat",  "do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw" );
-
-	c.writeHeader2( "Triple Flat" );
-	c.writeScore( "notename-double-flat",  "do  dae rae mae fae sae lae tae dae | dae tae lae sae fae mae rae dae" );
 
 	c.writeHeader2( "Sharp" );
 	c.writeScore( "notename-sharp",        "do  di  ri ma fi si li ta di | di ta li si fi ma ri di" );
 
-	c.writeHeader2( "Double Sharp" );
-	c.writeScore( "notename-double-sharp", "do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai" );
-
-	c.writeHeader2( "Triple Sharp" );
-	c.writeScore( "notename-double-sharp", "do  dao rao mao fao sao lao tao dao | dao tao lao sao fao mao rao dao" );
+	c.writeHeader2( "Flat" );
+	c.writeScore( "notename-flat",         "do  de  ra me fe se le te de | de te le se fe me ra de" );
 
 
-	// Enharmonicity
-	c.writeHeader1( "Enharmonically Equivalent Notes" );
-	c.writeHeader2( "Single Accidentals" );
+	// Chromatic Scale 1
+	c.writeHeader1( "Chromatic 1" );
+
+	c.writeHeader2( "Sharp Ascending And Flat Descending" );
+	c.writeScore( "chromatic-01-sf", "do  do di re ri mi fa fi sol si la li ti do | do ti te la le sol se fa mi me re ra do" );
+
+	c.writeHeader2( "Flat Ascending And Sharp Descending" );
+	c.writeScore( "chromatic-02-fs", "do  do ra re me mi fa se sol le la te ti do | do ti li la si sol fi fa mi ri re di do" );
+
+	c.writeHeader2( "Sharp" );
+	c.writeScore( "chromatic-01-sharp",    "do  do di re ri mi fa fi sol si la li ti do | do ti li la si sol fi fa mi ri re di do" );
+
+	c.writeHeader2( "Flat" );
+	c.writeScore( "chromatic-02-flat",     "do  do ra re me mi fa se sol le la te ti do | do ti te la le sol se fa mi me re ra do" );
+
+	// Enharmonicity 1
+	c.writeHeader1( "Enharmonically Equivalent Notes 1" );
+	c.writeHeader2( "Single Accidentals 1" );
 	c.writeScore( "enharmonic-single-accidentals-sf", "do " +
           "di ra  s  ri me  s  mi fe  s  ma fa  s  fi se  s  si le  s  li te  s  ti de  s  ta do  s  di ra \n" +
           "di ra  s  ta do  s  ti de  s  li te  s  si le  s  fi se  s  ma fa  s  mi fe  s  ri me  s  di ra"
 	);
+	c.writeHeader2( "Single Accidentals 2" );
 	c.writeScore( "enharmonic-single-accidentals-fs", "do " +
           "ra di  s  me ri  s  fe mi  s  fa ma  s  se fi  s  le si  s  te li  s  de ti  s  do ta  s  ra di \n" +
           "ra di  s  do ta  s  de ti  s  te li  s  le si  s  se fi  s  fa ma  s  fe mi  s  me ri  s  ra di"
 	);
 
+	// Note Names 2
+	c.writeHeader1( "Note Names 2" );
+
+	c.writeHeader2( "Double Sharp" );
+	c.writeScore( "notename-double-sharp", "do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai" );
+
+	c.writeHeader2( "Triple Sharp" );
+	c.writeScore( "notename-triple-sharp", "do  dao rao mao fao sao lao tao dao | dao tao lao sao fao mao rao dao" );
+
+	c.writeHeader2( "Double Flat" );
+	c.writeScore( "notename-double-flat",  "do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw" );
+
+	c.writeHeader2( "Triple Flat" );
+	c.writeScore( "notename-triple-flat",  "do  dae rae mae fae sae lae tae dae | dae tae lae sae fae mae rae dae" );
+
+
+	// Chromatic Scale 2
+
+	c.writeHeader1( "Chromatic 2" );
+	c.writeHeader2( "Exercise 1" );
+	c.writeScore( "notename-accidentals", 
+			"@do  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+			"@re  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+			"@mi  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+			"@fa  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+			"@sol do  di dai dao dai di do s do de daw dae daw de do \n " + 
+			"@la  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+			"@ti  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+			"@do  do  di dai dao dai di do s do de daw dae daw de do \n " 
+		);
+
+	c.writeHeader2( "Exercise 2" );
+	c.writeScore( "notename-accidentals", 
+			"@do  do  re mi fa sol la ti do       | do ti la sol fa mi re do \n" + 
+
+			"@do  di ri ma fi si li ta di         | di ta li si fi ma ri di  \n" +
+			"@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai\n" +
+			"@do  dao rao mao fao sao lao tao dao | dao tao lao sao fao mao rao dao\n"  +
+			"@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai\n" +
+			"@do  di ri ma fi si li ta di         | di ta li si fi ma ri di  \n" +
+
+			"@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n" + 
+
+			"@do  de  ra me fe se le te de         | de te le se  fe me ra de \n" + 
+			"@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n" + 
+			"@do  dae rae mae fae sae lae tae dae | dae tae lae sae fae mae rae dae\n"  +
+			"@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n" + 
+			"@do  de ra me fe se le te de         | de te le se  fe me ra de \n" + 
+
+			"@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n" + 
+			""
+			);
+
+
+	c.writeHeader1( "Enharmonically Equivalent Notes 2" );
+
 	c.writeHeader2( "Double Sharp" );
 	c.writeScore( "enharmonic-double-sharp-sn", "do " +
-          "dai re  s  rai mi  s  mai fi  s  fai sol  s  sai la  s  lai ti  s  tai di  s  dai re \n" +
-          "dai re  s  tai di  s  lai ti  s  sai la  s  fai sol  s  mai fi  s  rai mi  s  dai re" 
+          "dai re  s  rai mi  s  mai fi  s  fai sol  s  sai la   s  lai ti  s  tai di  s  dai re \n" +
+          "dai re  s  tai di  s  lai ti  s  sai la   s  fai sol  s  mai fi  s  rai mi  s  dai re " 
 	);
 	c.writeScore( "enharmonic-double-sharp-ns", "do " +
           "re dai  s  mi rai  s  fi mai  s  sol fai  s  la sai  s  ti lai  s  di tai  s  re dai \n" +
@@ -60,13 +121,13 @@ function batch() {
 	);
 
 	c.writeHeader2( "Double Flat" );
-	c.writeScore( "enharmonic-double-flat-nf", "do " +
-          "do raw  s  re maw  s me faw  s  fa saw  s  sol law  s  la taw  s  te daw  s  do raw \n" +
-          "do raw  s  te daw  s la taw  s  sol law  s  fa saw  s  me faw  s  re maw  s  do raw" 
-	);
 	c.writeScore( "enharmonic-double-flat-fn", "do " +
-          "raw do  s  maw re  s faw me  s  saw fa  s  law sol  s  taw la  s  daw te  s  raw do \n" +
-          "raw do  s  daw te  s taw la  s  law sol  s  saw fa  s  faw me  s  maw re  s  raw do" 
+          "daw te s raw do  s  maw re  s  faw me  s  saw fa  s  law sol  s  taw la  s  daw te   \n" +
+          "daw te s taw la  s  law sol s  saw fa  s  faw me  s  maw re   s  raw do  s  daw te " 
+	);
+	c.writeScore( "enharmonic-double-flat-nf", "do " +
+          "te daw  s do raw   s  re maw   s  me faw   s  fa saw   s  sol law   s  la taw   s  te daw    \n" +
+          "te daw  s la taw   s  sol law  s  fa saw   s  me faw   s  re maw    s  do raw   s  te daw  " 
 	);
 
 	c.writeHeader2( "Triple Sharp" );
@@ -90,42 +151,39 @@ function batch() {
 	);
 
 
-	c.writeHeader1( "Chromatic" );
-	c.writeHeader2( "Sharp Ascending And Flat Descending" );
-	c.writeScore( "chromatic-01", "do  do di re ri mi fa fi sol si la li ti do | do ti te la le sol se fa mi me re ra do" );
-	c.writeHeader2( "Flat Ascending And Sharp Descending" );
-	c.writeScore( "chromatic-02", "do  do ra re me mi fa se sol le la te ti do | do ti li la si sol fi fa mi ri re di do" );
 
-	c.writeHeader2( "Chromatically Ascending With Sharp– 1 Up 1 Down" );
+	// Chromatic
+	c.writeHeader1( "Chromatic 3" );
+
+	c.writeHeader2( "Chromatically Ascending With Sharp – 1 Up 1 Down" );
 	c.writeScore( "chromatic-03",  "do "+
 			"do di do s    di re di s    re ri re s  ri mi ri s   mi fa mi s   fa fi fa s \n" +
-			"fi sol fi s   sol si sol s  si la si s  la li la s   li ti li s   ti do ti s do di do s" );
+			"fi sol fi s   sol si sol s  si la si s  la li la s   li ti li s   ti do ti s do1" );
 
 	c.writeHeader2( "Chromatically Descending With Flat – 1 Down 1 Up" );
 	c.writeScore( "chromatic-04",  "do "+
 			"do' ti do  s  ti te ti  s  te la te  s  la le la  s  le sol le  s  sol se sol  s  se fa se  s \n " +
-			"fa mi fa  s  mi me mi  s  me re me  s  re ra re  s  ra do ra  s  do ti do" );
+			"fa mi fa  s  mi me mi  s  me re me  s  re ra re  s  ra do ra  s  do1 " );
 
 	c.writeHeader2( "Chromatically Ascending With Flat – 1 Up 1 Down" );
 	c.writeScore( "chromatic-04",  "do "+
 			"do ra do  s   ra re ra s    re me re  s me mi me  s  mi fa mi  s  fa se fa \n "+
-			"se sol se s   sol le sol s  le la le  s la te la  s  te ti te  s  ti do ti s do ra do" );
+			"se sol se s   sol le sol s  le la le  s la te la  s  te ti te  s  ti do ti s do1 " );
 
 	c.writeHeader2( "Chromatically Descending With Sharp– 1 Down 1 Up" );
 	c.writeScore( "chromatic-04",  "do "+
 			"do' ti do  s  ti li ti  s  li la li  s  la si la  s  si sol si  s  sol fi sol  s  fi fa fi \n "+
-			"fa mi fa  s  mi ri mi  s  ri re ri  s  re di re  s  di do di  s  do ti do" );
+			"fa mi fa  s  mi ri mi  s  ri re ri  s  re di re  s  di do di  s  do1 " );
 
 	c.writeHeader2( "Chromatically Ascending With Sharp –  2 Up 1 Down" );
 	c.writeScore( "chromatic-04",  "do "+
 			"do di re  s  di re ri  s  re ri mi  s  ri mi fa  s  mi fa fi  s  fa fi sol  s  fi sol si  s \n" +
-			"sol si la  s  si la li  s  la li ti  s  li ti do  s  ti do di  s  do di re \n" );
+			"sol si la  s  si la li  s  la li ti  s  li ti do  s  ti do di  s  do1  \n" );
 
 	c.writeHeader2( "Chromatically Descending With Flat – 2 Down 1 Up" );
 	c.writeScore( "chromatic-04",  "do "+
 			"do' ti te  s  ti te la  s  te la le  s  la le sol  s  le sol se  s  sol se fa  s  se fa mi  s  \n"+
-			"fa mi me  s  mi me re  s  me re ra  s  re ra do  s  ra do ti  s  do ti te" );
-
+			"fa mi me  s  mi me re  s  me re ra  s  re ra do  s  ra do ti  s  do1 " );
 
 	c.close();
 }
