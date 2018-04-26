@@ -1,0 +1,31 @@
+#!/bin/bash
+
+
+mkdir -p out/wav/
+rm -v out/wav/*
+
+ALL=( out/*.wav )
+cp -a "${ALL[@]}" out/wav
+cd out/wav
+
+function max_proc_count {
+   while [ `jobs | wc -l` -gt $1 ]
+   do
+      sleep 0.5
+   done
+}
+
+ALL=( *.wav )
+for i in "${ALL[@]}"
+do
+	music2mp3 $i &
+	max_proc_count 5 
+done;
+
+mkdir mp3
+mv *.mp3 mp3
+
+cd mp3
+tar -czvf chromatic.tar.gz mp3
+
+
