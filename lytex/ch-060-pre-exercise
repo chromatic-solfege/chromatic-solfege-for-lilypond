@@ -7,14 +7,21 @@ var OUTPUT_PATH = 'out/'
 var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-exercise' */ );
 c.writeHeader0( "Build Fluency for accidentals" );
 
-c.writeScore( "@do  do  di dai dao dai di do \n do de daw dae daw de do" );
-c.writeScore( "@re  do  di dai dao dai di do \n do de daw dae daw de do" );
-c.writeScore( "@mi  do  di dai dao dai di do \n do de daw dae daw de do" );
-c.writeScore( "@fa  do  di dai dao dai di do \n do de daw dae daw de do" );
-c.writeScore( "@sol do' di dai dao dai di do \n do de daw dae daw de do" );
-c.writeScore( "@la  do' di dai dao dai di do \n do de daw dae daw de do" );
-c.writeScore( "@ti  do' di dai dao dai di do \n do de daw dae daw de do" );
-c.writeScore( "@do  do' di dai dao dai di do \n do de daw dae daw de do" );
+c.writeScore( 
+		"@do  do  fa te, me le | \n " +
+		"@ra  do, fa te, me le | \n " +
+		"@re  do, fa te, me le | \n " +
+		"@me  do, fa te, me le | \n " +
+		"@mi  do, fa te, me le | \n " +
+		"@fa  do, fa te, me le | \n " +
+		"@se  do, fa te, me le | \n " +
+		"@sol do, fa te, me le | \n " +
+		"@le  do, fa te, me le | \n " +
+		"@la  do, fa te, me le | \n " +
+		"@te  do, fa te, me le | \n " +
+		"@ti  do, fa te, me le | \n " +
+		"@do  do1" 
+		);
 
 c.close();
 

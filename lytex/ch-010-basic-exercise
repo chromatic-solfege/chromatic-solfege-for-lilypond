@@ -87,23 +87,23 @@ function batch() {
 
 	c.writeHeader2( "Exercise 2" );
 	c.writeScore( "notename-accidentals", 
-			"@do  do  re mi fa sol la ti do       | do ti la sol fa mi re do \n" + 
+			"@do  do  re mi fa sol la ti do       | do ti la sol fa mi re do \n " + 
 
-			"@do  di ri ma fi si li ta di         | di ta li si fi ma ri di  \n" +
-			"@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai\n" +
-			"@do  dao rao mao fao sao lao tao dao | dao tao lao sao fao mao rao dao\n"  +
-			"@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai\n" +
-			"@do  di ri ma fi si li ta di         | di ta li si fi ma ri di  \n" +
+			"@do  di ri ma fi si li ta di         | di ta li si fi ma ri di   \n " +
+			"@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai \n " +
+			"@do  dao rao mao fao sao lao tao dao | dao tao lao sao fao mao rao dao \n "  +
+			"@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai \n " +
+			"@do  di ri ma fi si li ta di         | di ta li si fi ma ri di  \n " +
 
-			"@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n" + 
+			"@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n " + 
 
-			"@do  de  ra me fe se le te de         | de te le se  fe me ra de \n" + 
-			"@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n" + 
-			"@do  dae rae mae fae sae lae tae dae | dae tae lae sae fae mae rae dae\n"  +
-			"@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n" + 
-			"@do  de ra me fe se le te de         | de te le se  fe me ra de \n" + 
+			"@do  de  ra me fe se le te de         | de te le se  fe me ra de \n " + 
+			"@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n " + 
+			"@do  dae rae mae fae sae lae tae dae | dae tae lae sae fae mae rae dae \n "  +
+			"@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n " + 
+			"@do  de ra me fe se le te de         | de te le se  fe me ra de \n " + 
 
-			"@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n" + 
+			"@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n " + 
 			""
 			);
 
