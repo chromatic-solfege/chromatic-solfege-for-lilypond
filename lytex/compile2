@@ -71,6 +71,28 @@ done;
 
 max_proc_count 1
 
+echo
+echo '====================================='
+echo 'Compiling the Festival Header Voice  '
+echo '====================================='
+echo
+
+for NAME in  "${FILES[@]}"
+do
+	echo "Compiling ${NAME} ..."
+	for  i in "${NAME}"-[0-9]*.ftxt
+	do
+		# echo $i
+		max_proc_count 5
+		echo "${i##*/}"
+		text2wave -eval "(voice_us1_mbrola)"  "${i##*/}" > "${i##*/}.wav" &  # 2> /dev/null &
+	done;
+	echo 
+	echo 
+done;
+
+
+
 beep
 
 WAV_OUTPUT_FILES=()
