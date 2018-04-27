@@ -31,30 +31,40 @@ function merge_with_offset( notes , offset, from, to, size  ) {
 		result.push( notes[ ( i          ) ] + '8 [ ' );
 		result.push( notes[ ( i + offset ) ] + '8 ] ' );
 	}
+	result.push( notes[ ( to          ) ] + '8 ] ' );
+
 	return result.join( ' ') ;
 }
 
 var keys = "do,fa,te,me,le,ra,se,ti,mi,la,re,sol".split( ',' );
+var keys = "do,fa".split( ',' );
 
 var notes_u = proc( "do di re ri mi fa fi sol si la li ti".split( ' ' ) );
 var notes_d = proc( "do ra re me mi fa se sol le la te ti".split( ' ' ) );
 
 function proc(arr) {
 	return [].concat( 
-		arr.map( (s)=> s + ""   ),
-		arr.map( (s)=> s + "'"   ),
-		arr.map( (s)=> s + "''"  ),
-		arr.map( (s)=> s + "'''" ),
-		arr.map( (s)=> s + "''''" )
+		arr.map( (s)=> s + ",,"    ),
+		arr.map( (s)=> s + ","     ),
+		arr.map( (s)=> s + ""      ),
+		arr.map( (s)=> s + "'"     ),
+		arr.map( (s)=> s + "''"    ),
+		arr.map( (s)=> s + "'''"   ),
+		arr.map( (s)=> s + "''''"  ),
+		arr.map( (s)=> s + "'''''" )
 	)
 }
 
 c.settings.tempo = 100;
-for ( var i=0; i<21; i++ ) {
-	c.writeHeader3( 'Offset ' + i );
-	c.writeScore( i + '-01-u', `@do \\absolute \{ ${ merge_with_offset( notes_u,  i, 12 ,24 , 12 ) } do'' \}` );
-	c.writeScore( i + '-02-d', `@do \\absolute \{ ${ merge_with_offset( notes_d,  i, 24 ,12 , 12 ) } do' \}` );
+
+for ( var k of keys )  {
+	for ( var i=0; i<21; i++ ) {
+		c.writeHeader3( k + '' + ' Offset ' + i );
+		c.writeScore( i + '-01-u', `@${k} \\absolute \{ ${ merge_with_offset( notes_u,  i, 12 ,24 , 12 ) } do'' \}` );
+		c.writeScore( i + '-02-d', `@${k} \\absolute \{ ${ merge_with_offset( notes_d,  i, 24 ,12 , 12 ) } do' \}` );
+	}
 }
+
 
 
 c.close();
