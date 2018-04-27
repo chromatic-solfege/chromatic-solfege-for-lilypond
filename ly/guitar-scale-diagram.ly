@@ -995,10 +995,10 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
                              ))
 
 music-to-festival = #(define-void-function (parser location music output-file settings )(ly:music? string? list? )
-                            (display 'one********************)
-                            (newline)
-                            (display-scheme-music settings )
-                            (newline)
+                            ; (display 'one********************)
+                            ; (newline)
+                            ; (display-scheme-music settings )
+                            ; (newline)
     (read-aloud-music music output-file settings )
 )
 
