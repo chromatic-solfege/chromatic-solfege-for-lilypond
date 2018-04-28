@@ -21,20 +21,17 @@ function __applyTemplate( s, o ) {
 }
 
 function prefix( n ) {
-	// >>> MODIFIED  (Sat, 21 Apr 2018 16:34:00 +0900)
-	// if ( ch.isTripleSharp( n ) ) {
-	// 	return '\\sharpdoublesharp ';
-	// } else if ( ch.isTripleFlat( n ) ) {
-	// 	return '\\flatdoubleflat ';
-	// } else if ( ch.isQuadrupleSharp( n ) ) {
-	// 	return '\\doublesharpdoublesharp ';
-	// } else if ( ch.isQuadrupleFlat( n ) ) {
-	// 	return '\\doubleflatdoubleflat ';
-	// } else {
-	// 	return "";
-	// }
-	// <<< MODIFIED  (Sat, 21 Apr 2018 16:34:00 +0900)
-	return "";
+	if ( ch.isTripleSharp( n ) ) {
+		return '\\sharpdoublesharp ';
+	} else if ( ch.isTripleFlat( n ) ) {
+		return '\\flatdoubleflat ';
+	} else if ( ch.isQuadrupleSharp( n ) ) {
+		return '\\doublesharpdoublesharp ';
+	} else if ( ch.isQuadrupleFlat( n ) ) {
+		return '\\doubleflatdoubleflat ';
+	} else {
+		return "";
+	}
 }
 
 
@@ -59,7 +56,7 @@ function gen_sharp( args ) {
 	var is_irregular = false;
 	for ( var i=0; i<notes.length; i++ ) {
 		var note1 = notes[i];
-		var note2 = ch.transpose( note1, trans ).shift();
+		var note2 = ch.transpose( note1, trans );
 		// console.error( "***" , ch.transpose( note1, trans ) );
 		// console.error( "***" , "note1", note1, "note2",note2 );
 
