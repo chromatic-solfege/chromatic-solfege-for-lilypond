@@ -1,8 +1,8 @@
 #!/usr/bin/nodejs
 
 var ch = require( 'chromatic' );
-var ScaleGenerator = require( 'chromatic/formatter' );
-var s = require( './scale-settings.js' );
+var ScaleGenerator = require( 'local/chromatic/formatter' );
+var s = require( 'local/settings' );
 var OUTPUT_PATH = 'out/';
 
 var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales' */ );
