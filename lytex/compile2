@@ -64,7 +64,7 @@ do
 		# echo $i
 		max_proc_count 5
 		echo "${i##*/}"
-		lilypond -I /home/ats/Documents/lilypond/include/ "${i##*/}" 2> /dev/null &
+		lilypond -I /home/ats/Documents/lilypond/include/ "${i##*/}" 2> "${i##*/}.LOG" &
 	done;
 	echo 
 	echo 
