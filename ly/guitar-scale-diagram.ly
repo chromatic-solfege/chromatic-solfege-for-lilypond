@@ -959,6 +959,9 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
                                      (set! input-file (if (null? input-file ) "default.xml" input-file ))
                                      (set! output-file (if (null? output-file ) "default.wav" output-file ))
                                      (set! voice (if (null? voice ) "voice_us1_mbrola" (object->string voice)))
+                                     ; (write "voice: ")
+                                     ; (write (object->string voice))
+                                     (newline)
                                      (system
                                        (string-append "text2wave -eval \"(begin"
                                                       "(require '"
@@ -971,6 +974,9 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
                                                       input-file
                                                       "\" > \""
                                                       output-file
+                                                      "\" 2> \""
+                                                      output-file
+                                                      ".LOG"
                                                       "\""
 
                                                       )))))
@@ -990,7 +996,7 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
                             (compile-festival output-file  
                                               (string-append output-file ".wav" )  
                                               (let ((voice (assq 'voice settings )))
-                                                (if voice (cdr voice) "" )))
+                                                (if voice (cdr voice) '()  )))
                             (let ((play-after-compile (assq 'play-after-compile settings ))) 
                               (if (and play-after-compile (cdr play-after-compile))
                                 (system (string-append "gnome-open \"" output-file ".wav\"" ))
