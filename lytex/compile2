@@ -8,6 +8,7 @@ echo 'Generating files...'
 echo '====================='
 echo
 
+VOICE=$( nodejs -e 'console.log( require("local/settings").voice ) ')
 FILES=( "$@" )
 
 # If no file is specified to the arguments, it should default to all scale generators.
@@ -85,13 +86,13 @@ do
 		# echo $i
 		max_proc_count 5
 		echo "${i##*/}"
-		text2wave -eval "(voice_us1_mbrola)"  "${i##*/}" > "${i##*/}.wav" &  # 2> /dev/null &
+		text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" &  # 2> /dev/null &
 	done;
 	echo 
 	echo 
 done;
 
-
+max_proc_count 1
 
 beep
 

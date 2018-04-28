@@ -11,7 +11,7 @@ cd out/wav
 function max_proc_count {
    while [ `jobs | wc -l` -gt $1 ]
    do
-      sleep 0.5
+      sleep 0.1
    done
 }
 
@@ -19,7 +19,7 @@ ALL=( *.wav )
 for i in "${ALL[@]}"
 do
 	music2mp3 $i &
-	max_proc_count 5 
+	max_proc_count 10
 done;
 
 max_proc_count 1

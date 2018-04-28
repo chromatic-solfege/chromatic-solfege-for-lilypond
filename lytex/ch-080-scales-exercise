@@ -1,7 +1,7 @@
 #!/usr/bin/nodejs
 
 var ch = require( 'chromatic' );
-var ScaleGenerator = require( 'chromatic/formatter' );
+var ScaleGenerator = require( 'local/chromatic/formatter' );
 var OUTPUT_PATH = 'out/'
 var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-exercise' */ );
 

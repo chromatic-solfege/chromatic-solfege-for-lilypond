@@ -1,10 +1,7 @@
 #!/usr/bin/nodejs
 
-require( './scale-settings.js' );
-var ScaleGenerator = require( 'chromatic/formatter' ).init( {
-	voiceFilter : (type, s )=> 
-		s.replace( /è/g, 'e' ).replace( /”/g, '"' ),
-} );
+require( 'local/settings' );
+var ScaleGenerator = require( 'local/chromatic/formatter' );
 
 var THE_TEXT = 
 `
@@ -29,7 +26,9 @@ ScaleGenerator.prototype.writeScore2 = function ( type, notes ) {
 var OUTPUT_PATH = 'out/'
 function batch() {
 	var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
+
 	c.writeHeader0( "Basics" );
+	c.writeTextBody( 'Welcome to the world of chromatic solfège.' );
 
 	c.writeHeader1( "Natural" );
 	c.writeTextBody( 'The diatonic notes are named as the traditional solfège.' );
