@@ -1,6 +1,7 @@
 #!/usr/bin/nodejs
 
 var ch = require( 'chromatic' );
+var ScaleGenerator = require( 'chromatic/formatter' );
 var fs = require( 'fs' );
 var applyTemplate = require( 'chromatic/template' );
 var OUTPUT_PATH = 'out/'
@@ -90,47 +91,50 @@ function gen_sharp( args ) {
 	}
 
 	if ( is_irregular ) {
-		var fname_01 = args.fname_generate(); // LATE_GEN_2018
-		var fname_02 = args.fname_generate(); // LATE_GEN_2018
+		/// DISABLE_LAGE_GEN_2018  (Mon, 30 Apr 2018 23:42:19 +0900)
+		// var fname_01 = args.fname_generate(); // LATE_GEN_2018
+		// var fname_02 = args.fname_generate(); // LATE_GEN_2018
 		return [
 			{
+				caption  : 'Harmonic Spelling',
 				// caption  : '1. Harmonic Spelling',
 				text : applyTemplate([
 					{
 						// caption  : '', 
-						filename : fname_01, // LATE_GEN_2018
+						// filename : fname_01, // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
 						notes    : notes_01,
 						lyrics   : lyrics_01,
 					},
 				]),
-				filename : fname_01, // LATE_GEN_2018
+				// filename : fname_01, // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
 			},
 			{
+				caption  : 'Enharmonic Spelling',
 				// caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
 				// caption  : 'enharmonic spelling',
 				text : applyTemplate([
 					{
 						// caption  : 'enharmonic spelling', 
-						filename : fname_02, // LATE_GEN_2018
+						// filename : fname_02, // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
 						notes    : notes_02,
 						lyrics   : lyrics_02,
 					},
 				]),
-				filename : fname_02, // LATE_GEN_2018
+				// filename : fname_02, // LATE_GEN_2018  // DISABLE_LAGE_GEN_2018
 			},
 		];
 	} else {
-		var fname_01 = args.fname_generate(); // LATE_GEN_2018
+		// var fname_01 = args.fname_generate(); // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
 		return [
 			{
 				text : applyTemplate([
 					{
-						filename : fname_01, // LATE_GEN_2018
+						// filename : fname_01, // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
 						notes    : notes_01,
 						lyrics   : lyrics_01,
 					},
 				]),
-				filename : fname_01, // LATE_GEN_2018
+				// filename : fname_01, // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
 			},
 		];
 	}
@@ -799,41 +803,75 @@ function batch() {
 
 	{
 		{
-			let CNT=0;
+			let CNT=-1;
 			let SEQ = 0;
 			function fname_generate(interval, category ) {
-				return FILENAME_PREFIX + '-' + fmt(CNT,3) + "-" + interval + "-" + category + "-" + ( SEQ ++ ) + '.ly';
+				return FILENAME_PREFIX + '-' + fmt(CNT ++,3) + "-" + interval + "-" + category + "-" + ( SEQ ++ ) + '.ly';
 			}
 			function fname_next() {
-				CNT++;
+				// CNT++;
 				SEQ=0;
 			}
 		}
 
 		let include_text = "";
+		{
+			function writeHeaderVoice( caption ) {
+				var filename = fname_generate( 'header', ScaleGenerator.caption2id( caption ) );
+				filename = filename.replace( /.ly$/, '.ftxt' );
+
+				var filecontent = ScaleGenerator.caption2festival( caption );
+
+				fs.writeFileSync( OUTPUT_PATH + filename, filecontent, 'utf8' );
+				console.error( OUTPUT_PATH + filename , '(header)' );
+
+			}
+			function writeHeader0( caption ) {
+				writeHeaderVoice( caption );
+				include_text+= '\\section{'    + caption + '}\n';
+				// console.error( '\\section{'    + caption + '}' );
+			}
+			function writeHeader1( caption ) {
+				writeHeaderVoice( caption );
+				include_text+= '\\subsection{'    + caption + '}\n';
+				// console.error( '\\subsection{'    + caption + '}' );
+			}
+			function writeHeader2( caption ) {
+				writeHeaderVoice( caption );
+				include_text+= '\\subsubsection{'    + caption + '}\n';
+				// console.error( '\\subsubsection{'    + caption + '}' );
+			}
+			function writeHeader3( caption ) {
+				writeHeaderVoice( caption );
+				include_text+= '\\paragraph{'    + caption + '}\n';
+				// console.error( '\\paragraph{'    + caption + '}' );
+			}
+			function writeTextBody( caption ) {
+				// writeHeaderVoice( caption );
+				include_text+= ''    + caption + '\n';
+				// console.error( ''    + caption + '' );
+			};
+		}
 
 		for ( var i=0; i<batch_pg.length; i++ ) {
 			var arr = batch_pg[i];
 			switch ( arr[0] ) {
 				case '=' :
-					include_text+= '\\section{'    + arr[1] + '}\n';
-					console.error( '\\section{'    + arr[1] + '}' );
+					writeHeader0( arr[1] );
 					break;
 				case '==' :
-					include_text+= '\\subsection{'    + arr[1] + '}\n';
-					console.error( '\\subsection{'    + arr[1] + '}' );
+					writeHeader1( arr[1] );
 					break;
 				case '===' :
-					include_text+= '\\subsubsection{' + arr[1] + '}\n';
-					console.error( '\\subsubsection{' + arr[1] + '}' );
+					writeHeader2( arr[1] );
 					break;
 
 				case '*' :
-					console.error( "generating ", arr[1] +'-' + arr[2] );
+					// console.error( "generating ", arr[1] +'-' + arr[2] );
 
 					// LATE_GEN_2018 ... ADDED (Wed, 18 Apr 2018 17:33:36 +0900)  
 					var output_arr = gen_sharp({
-						fname_generate : ()=> fname_generate( arr[1], arr[2] ) , // LATE_GEN_2018 
+						// fname_generate : ()=> fname_generate( arr[1], arr[2] ) , // LATE_GEN_2018  // DISABLE_LAGE_GEN_2018
 						notes    : arr[5],
 						trans    : arr[1],
 						isSharp  : arr[4],
@@ -846,16 +884,16 @@ function batch() {
 					
 					switch ( arr[2] ) {
 						case 'fu' :
-							include_text+= '\\paragraph{Flat Ascending}\n';
+							writeHeader3( 'Flat Ascending' );
 							break;
 						case 'fd' :
-							include_text+= '\\paragraph{Flat Descending}\n';
+							writeHeader3( 'Flat Descending' );
 							break;
 						case 'su' :
-							include_text+= '\\paragraph{Sharp Ascending}\n';
+							writeHeader3( 'Sharp Ascending' );
 							break;
 						case 'sd' :
-							include_text+= '\\paragraph{Sharp Descending}\n';
+							writeHeader3( 'Sharp Descending' );
 							break;
 					}
 
@@ -863,24 +901,26 @@ function batch() {
 						let o = output_arr[oi];
 						// console.error( "oi=",oi, "o.filename", o.filename );// LATE_GEN_2018
 
-						// let filename = fname_generate( arr[1], arr[2] ); // LATE_GEN_2018
-						let filename = o.filename; // LATE_GEN_2018
+						// let filename = fname_generate( arr[1], arr[2] ); // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
+						// let filename = o.filename; // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
+						let filename = fname_generate( arr[1], arr[2] ); 
 						fs.writeFileSync( OUTPUT_PATH + filename, o.text, 'utf8' );
 						console.error( OUTPUT_PATH + filename );
 
 						if ( o.caption )
-							include_text+= '\\paragraph{' + o.caption + '}\n';
+							writeHeader3( o.caption );
 
 
 						let filename2 = filename.replace( /\.ly$/, '.pdf' );
-						include_text+= '\\noindent\\includegraphics[width=1.0\\textwidth]{' + filename2 + '}\n';
+						writeTextBody( '\\noindent\\includegraphics[width=1.0\\textwidth]{' + filename2 + '}' );
 					}
-					fname_next();
 
 					break;
 				default :
 					//
 			}
+			fname_next();
+
 		}
 
 		console.error( OUTPUT_PATH + FILENAME_PREFIX + '-output.tex' );
