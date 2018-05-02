@@ -961,7 +961,7 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
                                      (set! voice (if (null? voice ) "voice_us1_mbrola" (object->string voice)))
                                      ; (write "voice: ")
                                      ; (write (object->string voice))
-                                     (newline)
+                                     ;(newline)
                                      (system
                                        (string-append "text2wave -eval \"(begin"
                                                       "(require '"
