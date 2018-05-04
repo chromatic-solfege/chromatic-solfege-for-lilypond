@@ -980,6 +980,10 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
                                                       "\""
 
                                                       )))))
+#(define assq-get (lambda( key default alist )
+                    (let ((cell (assq key alist)))
+                      (if cell (cdr cell) default ))))
+
 
 #(define read-aloud-music (lambda ( music output-file settings )
                             ; (display 'two********************)
@@ -989,18 +993,25 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
                             ; (display 'tempo )
                             ; (display (assq 'tempo settings ) )
                             ; (newline)
-                            (visit-music music (new-festival-formatter 
-                                                 output-file 
-                                                 (let ((tempo (assq 'tempo settings )))
-                                                   (if tempo (cdr tempo ) 180 ))))
-                            (compile-festival output-file  
-                                              (string-append output-file ".wav" )  
-                                              (let ((voice (assq 'voice settings )))
-                                                (if voice (cdr voice) '()  )))
-                            (let ((play-after-compile (assq 'play-after-compile settings ))) 
-                              (if (and play-after-compile (cdr play-after-compile))
-                                (system (string-append "gnome-open \"" output-file ".wav\"" ))
-                                #f))))
+
+                            (and 
+                              (assq-get 'do-convert #t settings)
+                              (visit-music music (new-festival-formatter 
+                                                   output-file 
+                                                   (let ((tempo (assq 'tempo settings )))
+                                                     (if tempo (cdr tempo ) 180 )))))
+                            
+                            (and 
+                              (assq-get 'do-compile #t settings)
+                              (compile-festival output-file  
+                                                (string-append output-file ".wav" )  
+                                                (assq-get 'voice '() settings)))
+
+                            (and 
+                              (assq-get 'do-play #f settings)
+                              (system (string-append "gnome-open \"" output-file ".wav\"" )))
+                            
+                            ))
 
 
 music-to-festival = #(define-void-function (parser location music output-file settings )(ly:music? string? list? )
