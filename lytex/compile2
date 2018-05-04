@@ -8,8 +8,9 @@ echo 'Generating files...'
 echo '====================='
 echo
 
-VOICE=$( nodejs -e 'console.log( require("local/settings").voice ) ')
+VOICE=$( nodejs -e 'console.log( require("local/settings").scmFestivalVoice ) ')
 FILES=( "$@" )
+
 
 # If no file is specified to the arguments, it should default to all scale generators.
 if [ ${#FILES[@]} -eq 0 ]; then
@@ -91,6 +92,27 @@ do
 	echo 
 	echo 
 done;
+
+# echo
+# echo '================================================'
+# echo 'Compiling the Festival Header Voice SINGING MODE'
+# echo '================================================'
+# echo
+# 
+# for NAME in  "${FILES[@]}"
+# do
+# 	echo "Compiling ${NAME} ..."
+# 	for  i in "${NAME}"-[0-9]*.ftxt
+# 	do
+# 		# echo $i
+# 		max_proc_count 5
+# 		echo "${i##*/}"
+# 		text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" &  # 2> /dev/null &
+# 	done;
+# 	echo 
+# 	echo 
+# done;
+
 
 max_proc_count 1
 
