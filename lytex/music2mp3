@@ -28,5 +28,5 @@ rm -r mp3
 mkdir mp3
 mv *.mp3 mp3
 
-tar -czvf chromatic.tar.gz mp3
+tar -czvf chromatic-`date +%Y%m%d`.tar.gz mp3
 
