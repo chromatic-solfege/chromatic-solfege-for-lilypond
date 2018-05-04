@@ -998,14 +998,13 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
                               (assq-get 'do-convert #t settings)
                               (visit-music music (new-festival-formatter 
                                                    output-file 
-                                                   (let ((tempo (assq 'tempo settings )))
-                                                     (if tempo (cdr tempo ) 180 )))))
+                                                   (assq-get 'festival-tempo 180 settings))))
                             
                             (and 
                               (assq-get 'do-compile #t settings)
                               (compile-festival output-file  
                                                 (string-append output-file ".wav" )  
-                                                (assq-get 'voice '() settings)))
+                                                (assq-get 'festival-voice '() settings)))
 
                             (and 
                               (assq-get 'do-play #f settings)
