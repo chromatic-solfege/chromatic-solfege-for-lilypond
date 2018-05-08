@@ -1,0 +1,81 @@
+#!/usr/bin/nodejs
+
+var ch = require( 'chromatic' );
+var ScaleGenerator = require( 'local/chromatic/formatter' );
+
+/*
+ScaleGenerator.prototype.writeScore1 = function ( notes ) {
+	var id = notes.split( /\s+/ ).shift();
+	var output = ScaleGenerator.applyTemplate( notes );
+
+	this.nextOutputFilename( id );
+	ScaleGenerator.writeFile( this.currentOutputFilename(), output );
+
+	this.writeIncludeText( '\\noindent ' );
+	this.writeIncludeText(  ch.note2alphabet_tex( id )
+			.replace( /\bflat\b/, "cflat" )
+			.replace( /\bsharp\b/, "csharp" )
+			.replace( /\bnatural\b/, "cnatural" )
+			) ;
+	this.writeIncludeText( '$\\vcenter{ \\hbox{ \\includegraphics[width=1.0 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n' );
+};
+*/
+
+var OUTPUT_PATH = 'out/'
+function batch() {
+	function eventhandler( eventtype, id, notes, text ) {
+		if ( eventtype == 'tex' ) {
+			return (
+				'\\noindent ' + 
+				ch.note2alphabet_tex( id )
+					.replace( /\bflat\b/, "cflat" )
+					.replace( /\bsharp\b/, "csharp" )
+					.replace( /\bnatural\b/, "cnatural" ) +
+				'$\\vcenter{ \\hbox{ \\includegraphics[width=1.0 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n'
+		   );
+		} else {
+			return text;
+		}
+	}
+
+	var c = new ScaleGenerator( OUTPUT_PATH /*, 'diatonic' */ );
+	c.writeHeader0( "Diatonic Scales" );
+	c.writeHeader1( "Natural" );
+	c.writeScore( null, "do  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeHeader1( "Sharp" );
+	c.writeScore( null, "sol do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "re  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "la  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "mi  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "ti  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "fi  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeHeader1( "Flat" );
+	c.writeScore( null, "fa  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "te  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "me  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "le  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "ra  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "se  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
+	c.writeHeader1( "Special ( Flat )" );
+	c.writeScore( null, "de  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "fe  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
+	c.writeHeader1( "Special ( Sharp )" );
+	c.writeScore( null, "di  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "si  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "ri  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "li  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "ma  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+	c.writeScore( null, "ta  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
+	c.close();
+}
+
+batch();
+
+
+
+
+// vim: filetype=javascript :
+
