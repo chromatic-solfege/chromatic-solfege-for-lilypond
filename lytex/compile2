@@ -36,7 +36,7 @@ done;
 	ALL=( ./ch-* )
 	for  i in  "${ALL[@]}" 
 	do
-		echo "\\input{ ly-generated/$(basename $i)-output.tex }"
+		echo "\\input{ly-generated/$(basename $i)-output.tex}"
 	done
 } > out/all-output.tex
 
