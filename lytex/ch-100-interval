@@ -3,7 +3,7 @@
 var ch = require( 'chromatic' );
 var ScaleGenerator = require( 'chromatic/formatter' );
 var fs = require( 'fs' );
-var applyTemplate = require( 'chromatic/template' );
+var cht = require( 'chromatic/template' );
 var OUTPUT_PATH = 'out/'
 
 // var FILENAME_PREFIX = 'ch-100-interval';
@@ -33,6 +33,11 @@ function prefix( n ) {
 	} else {
 		return "";
 	}
+}
+
+function toNotes(s) {
+	// return ScaleGenerator.toNotes( s );
+	return s;
 }
 
 
@@ -98,11 +103,11 @@ function gen_sharp( args ) {
 			{
 				caption  : 'Harmonic Spelling',
 				// caption  : '1. Harmonic Spelling',
-				text : applyTemplate([
+				text : cht.template([
 					{
 						// caption  : '', 
 						// filename : fname_01, // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
-						notes    : notes_01,
+						notes    : toNotes( notes_01 ),
 						lyrics   : lyrics_01,
 					},
 				]),
@@ -112,11 +117,11 @@ function gen_sharp( args ) {
 				caption  : 'Enharmonic Spelling',
 				// caption  : '2. Enharmonic Spelling with Horizontal Interval Correctness',
 				// caption  : 'enharmonic spelling',
-				text : applyTemplate([
+				text : cht.template([
 					{
 						// caption  : 'enharmonic spelling', 
 						// filename : fname_02, // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
-						notes    : notes_02,
+						notes    : toNotes( notes_02 ),
 						lyrics   : lyrics_02,
 					},
 				]),
@@ -127,10 +132,10 @@ function gen_sharp( args ) {
 		// var fname_01 = args.fname_generate(); // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
 		return [
 			{
-				text : applyTemplate([
+				text : cht.template([
 					{
 						// filename : fname_01, // LATE_GEN_2018 // DISABLE_LAGE_GEN_2018
-						notes    : notes_01,
+						notes    : toNotes( notes_01 ),
 						lyrics   : lyrics_01,
 					},
 				]),
