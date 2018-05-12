@@ -93,6 +93,107 @@ doubleflatdoubleflat = {
 % var NOTE_7QTR_SHARP   = triple( [  daim   raim   maim   faim   saim   laim   taim   ] );
 % var NOTE_TRIPLE_SHARP = triple( [  dao    rao    mao    fao    sao    lao    tao    ] );
 
+process-triple-accidentals = 
+#(define-scheme-function (parser location music) (ly:music?)
+                         (letrec ((proc-e (lambda(music-e)
+                                            ; (display-scheme-music music-e)
+
+                                            (or
+                                              ; ``or''
+                                              ; If the return value is :
+                                              ;               #t         then 'break'
+                                              ;               #f         then 'continue'
+                                              ;               (list xxx) then 'break' and replace the 
+                                              ;                                current element with the 
+                                              ;                                returned value
+                                              ; ... that's it.
+
+                                              (if (eq? (ly:music-property music-e 'name) 'NoteEvent ) 
+                                                (let* ((pitch-e (ly:music-property music-e 'pitch))
+                                                       (pitch-alteration (ly:pitch-alteration pitch-e )))
+
+                                                  (cond
+                                                    ((< pitch-alteration -1 )
+                                                     (list
+                                                       #{ \flatdoubleflat #}
+                                                       music-e))
+                                                    ((< 1  pitch-alteration  )
+                                                     (list
+                                                       #{ \sharpdoublesharp #}
+                                                       music-e))
+                                                    (else #t)))
+                                                #f)
+                                              (let ((e (ly:music-property music-e 'element  )))
+                                                (if (null? e) #f (begin (proc-e e) #t )))
+                                              (let ((e (ly:music-property  music-e 'elements)))
+                                                (if (null? e) #f (begin (proc-l e) #t ))))
+                                            ))
+                                  (proc-l (lambda(music-l) 
+                                            (let loop ((in-music music-l))
+                                              (let ((next-music           (cdr in-music))
+                                                    (result-music (proc-e (car in-music))))
+
+                                                (if (list? result-music)
+                                                  (let ((new-list (append result-music next-music )))
+                                                    (set-car! in-music (car new-list))
+                                                    (set-cdr! in-music (cdr new-list))
+                                                    )
+                                                  #f)
+                                                (or (null? next-music) 
+                                                    (loop next-music)))
+                                              )
+                                            #t)
+                                          ))
+                           (proc-e music))
+                         music) 
+
+process-marking-irregular-accidentals-bak = 
+#(define-scheme-function (parser location music) (ly:music?)
+                         (letrec ((proc-e (lambda(music-e back-music )
+                                            ;(display-scheme-music music-e)
+                                            (or
+                                              (if (eq? (ly:music-property music-e 'name) 'NoteEvent )
+                                                (let ((pitch (ly:music-property music-e 'pitch ) ))
+                                                  (if (<= 1 (abs (ly:pitch-alteration pitch )))
+                                                    (begin
+                                                      (display-scheme-music pitch)
+                                                      (ly:music-set-property! music-e 'articulations (list #{ \uout #}) )
+                                                      (let ((found (find (lambda(v)
+                                                                           (eq? 
+                                                                             (ly:music-property (car v) 'name)
+                                                                             'NoteEvent ))
+                                                                         back-music)))
+                                                        (if (not (null? found))
+                                                          (begin
+                                                            (ly:music-set-property! 
+                                                              (car found )
+                                                              'articulations 
+                                                              (list #{ \uin #})))))))
+
+                                                  #t);break;
+                                                #f);continue;
+                                              (let ((e (ly:music-property music-e 'element  )))
+                                                (if (null? e) #f (begin (proc-e e '() ) #t )))
+                                              (let ((e (ly:music-property  music-e 'elements)))
+                                                (if (null? e) #f (begin (proc-l e) #t ))))))
+
+                                  (proc-l (lambda(music-l) 
+                                            (let loop ((in-music music-l)(back-music '()))
+                                              (let ((next-music           (cdr in-music))
+                                                    (result-music (proc-e (car in-music) back-music )))
+
+                                                (if (list? result-music)
+                                                  (let ((new-list (append result-music next-music )))
+                                                    (set-car! in-music (car new-list))
+                                                    (set-cdr! in-music (cdr new-list))
+                                                    )
+                                                  #f)
+                                                (or (null? next-music) 
+                                                    (loop next-music (cons in-music back-music)))))
+                                            #t)))
+
+                           (proc-e music '()))
+                         music)
 
 
 

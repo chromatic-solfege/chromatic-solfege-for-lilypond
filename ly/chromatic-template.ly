@@ -31,6 +31,106 @@ textSpanColorB = {
 uin = \startTextSpan
 uout = \stopTextSpan
 
+#(define 
+   process-mark-irregular-accidentals
+   (lambda (music) 
+     (letrec ((proc-e (lambda ( music-e back-music )
+                        ;(display-scheme-music music-e)
+                        (or
+                          (if (eq? (ly:music-property music-e 'name) 'NoteEvent )
+                            ;then
+                            (let ((pitch (ly:music-property music-e 'pitch ) ))
+                              (if (<= 1 (abs (ly:pitch-alteration pitch )))
+                                ;then
+                                (begin
+                                  ; (display-scheme-music pitch)
+                                  (ly:music-set-property! music-e 'articulations (list #{ \uout #}) )
+                                  (let ((found (find-tail (lambda(v)
+                                                            (eq? 
+                                                              (ly:music-property v 'name)
+                                                              'NoteEvent ))
+                                                          back-music)))
+                                    (if found
+                                      (begin 
+                                        (ly:music-set-property! 
+                                          (car found )
+                                          'articulations 
+                                          (list #{ \uin #}))
+
+                                        (let ((new-element #{ \textSpanColorB  #})
+                                              (next (cdr found)))
+                                          ;(display-scheme-music next)
+
+                                          ; Create new cell and add it to the end of the list
+                                          (if (null? next )
+                                            ;then
+                                            (begin 
+                                              (set! next  (cons new-element '() ))
+                                              (set-cdr! found next))
+                                            ;else
+                                            (begin
+                                              ; clone the cons cell and set it as cdr
+                                              (set-cdr!
+                                                next
+                                                (cons
+                                                  (car next)
+                                                  (cdr next)))
+
+                                              ; set-car! the new element on the cons cell.
+                                              (set-car!  next new-element )))))))
+                                  ;
+                                  (list music-e))
+                                ;else
+                                (list music-e )))
+                            ;else
+                            #f)
+                          (let ((e (ly:music-property music-e 'element  )))
+                            (if (null? e) #f (begin (proc-e e '() ) #t )))
+                          (let ((e (ly:music-property  music-e 'elements)))
+                            (if (null? e) #f (let ((proc-l-result (proc-l e)))
+                                               ; (write '**********************************)
+                                               ; (newline)
+                                               ; (display-scheme-music proc-l-result)
+                                               ; (write '**********************************)
+                                               ; (newline)
+                                               (ly:music-set-property! music-e 'elements proc-l-result )
+                                               #t ))))))
+
+              (proc-l (lambda(music-l) 
+                        (let loop ((in-music music-l)(back-music '()))
+                          (let ((next-music           (cdr in-music))
+                                (result-music (proc-e (car in-music) back-music )))
+
+                            ; (write '******************** )
+                            ; (newline) 
+                            ; (display-scheme-music result-music)
+                            (if (list? result-music)
+                              (begin (set! back-music (append (reverse result-music) back-music ))
+                                     ; (write '***************' )
+                                     ; (newline)
+                                     ; (display-scheme-music back-music )
+                                     )
+                              (begin (set! back-music (append (list (car in-music)) back-music ))))
+                            (if (null? next-music) 
+                              (reverse back-music)
+                              (loop next-music back-music)))
+                          ))))
+
+       (proc-e music '()))
+     ;return
+     (display-scheme-music music)
+	 music
+	 
+	 ))
+
+mark-irregular-accidentals = 
+#(define-scheme-function (parser location music) (ly:music?)
+                         (process-mark-irregular-accidentals music))
+
+
+
+
+
 \layout {
       indent = #0
       ragged-right = ##f
@@ -86,9 +186,16 @@ makescore = #(define-scheme-function (parser location notes settings ) ( ly:musi
    ; (write 'setting )
    ; (newline)
    ; (write score-settings )
-  #{
+
+   (let ((v (assq 'mark-irregular-accidentals settings )))
+    (if (and v (cdr v))
+     (set! notes (process-mark-irregular-accidentals notes))))
+
+     #{
     \score {
       <<
+
+
         \music-to-festival #notes #(string-append source-filename ".xml" ) #settings
         \new Staff \relative do' {
           \clef "G"
@@ -104,7 +211,7 @@ makescore = #(define-scheme-function (parser location notes settings ) ( ly:musi
               %\hide Stem
               \textSpannerDown
               \cadenzaOn
-              #notes
+              \process-triple-accidentals #notes
           }
         }
         \new Lyrics {
