@@ -443,8 +443,135 @@ process-marking-irregular-accidentals-bak =
               (ly:pitch-alteration note )))))
 
 
-% #(write (pitch-equal? (ly:make-pitch -1 1  -2/4 ) (ly:make-pitch -1 1  -2/4 )) )
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TRANSPOSE (Mon, 14 May 2018 03:21:16 +0900)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% (newline)
+% (write 'notename:)
+% (write  notename)
+% (newline)
+% (write 'octave:)
+% (write octave)
+% (newline)
+% (write 'alter:)
+% (write  alter)
+% (newline)
+#(define ch:pitch-semitones-proc 
+   (lambda( octave notename alter )
+
+     (let ((octave-in-chromatic 12)
+           (diatonic-count 7)
+           (diatonic-to-chromatic '((0 .  0)
+                                    (1 .  2)
+                                    (2 .  4)
+                                    (3 .  5)
+                                    (4 .  7)
+                                    (5 .  9)
+                                    (6 . 11))
+                                  ))
+       (+
+         (*         (quotient  notename diatonic-count) octave-in-chromatic   )
+         (cdr (assv (remainder notename diatonic-count) diatonic-to-chromatic ))
+         (*                    octave                   octave-in-chromatic   )
+         (*                    alter  2)))))
+
+#(define ch:pitch-semitones 
+   (lambda (n) 
+     (ch:pitch-semitones-proc
+       (ly:pitch-octave     n)
+       (ly:pitch-notename   n)
+       (ly:pitch-alteration n)
+       )))
+
+
+#(define ch:pitch-transpose
+   (lambda ( p delta ) 
+     (or (ly:pitch? p)     (error "Wrong argument error : the passed argument should be a music object." ))
+     (or (ly:pitch? delta) (error "Wrong argument error : the passed argument should be a music object." ))
+
+     (let* ((    p-semitones (ch:pitch-semitones p          ))
+            (delta-semitones (ch:pitch-semitones delta      ))
+            (  new-semitones (+ p-semitones delta-semitones ))
+            (  tmp           (ly:make-pitch
+                               (+ (ly:pitch-octave     p) (ly:pitch-octave     delta))
+                               (+ (ly:pitch-notename   p) (ly:pitch-notename   delta))
+                               (+ (ly:pitch-alteration p) (ly:pitch-alteration delta))))
+            (  tmp-semitones (ch:pitch-semitones tmp ))
+            (  difference    (- new-semitones tmp-semitones )) 
+            (  result        (ly:make-pitch 
+                               (ly:pitch-octave     tmp) 
+                               (ly:pitch-notename   tmp) 
+                               (+ (ly:pitch-alteration tmp) (/ difference 2) )
+                               )))
+
+       ; (primitive-eval ch:pitch-transpose-test )
+       result)))
+
+
+#(define ch:pitch-transpose-test '(begin
+                                    (write 'p:)
+                                    (write  p)
+                                    (newline)
+                                    (write 'delta:)
+                                    (write  delta)
+                                    (newline)
+                                    (write 'p-semitones:)
+                                    (write  p-semitones)
+                                    (newline)
+                                    (write 'delta-semitones:)
+                                    (write  delta-semitones)
+                                    (newline)
+                                    (write 'new-semitones:)
+                                    (write  new-semitones)
+                                    (newline)
+                                    (write 'tmp:)
+                                    (write  tmp)
+                                    (newline)
+                                    (write 'tmp-semitones:)
+                                    (write  tmp-semitones)
+                                    (newline)
+                                    (write 'differenece:)
+                                    (write  difference )
+                                    (newline)
+                                    (write 'result:)
+                                    (write  result )
+                                    (newline)
+                                    ))
+
+
+#(define ch:music-transpose (lambda ( music delta )
+                              (letrec ((proc-e (lambda(music-e)
+                                                 (or
+                                                   (if (eq? (ly:music-property music-e 'name) 'NoteEvent ) 
+                                                     (let* ((pitch            (ly:music-property music-e 'pitch ))
+                                                            (pitch-transposed (ch:pitch-transpose pitch delta  )))
+                                                       (ly:music-set-property! music-e 'pitch pitch-transposed )
+                                                       #t)
+                                                     #f)
+                                                   (let ((e (ly:music-property music-e 'element  )))
+                                                     (if (null? e) #f (begin (proc-e e) #t )))
+                                                   (let ((e (ly:music-property  music-e 'elements)))
+                                                     (if (null? e) #f (begin (proc-l e) #t ))))
+                                                 ))
+                                       (proc-l (lambda(music-l) 
+                                                 (let loop ((in-music music-l))
+                                                     (proc-e (car in-music))
+                                                     (or (null? (cdr in-music)) 
+                                                         (loop (cdr in-music))))
+                                                 #t)
+                                               ))
+                                (proc-e music))
+                              music))
+
+transpose-ch = 
+#(define-scheme-function (parser location from to music )(ly:pitch? ly:pitch? ly:music?) 
+                         (ch:music-transpose 
+                           music
+                           (ch:pitch-transpose to (ly:pitch-negate from))))
+
+% #(write (pitch-equal? (ly:make-pitch -1 1  -2/4 ) (ly:make-pitch -1 1  -2/4 )) )
 
 
 % #(display-scheme-music (equal? (ly:make-pitch -1 0  -8/4 ) (ly:make-pitch -1 0  -8/4 )))
