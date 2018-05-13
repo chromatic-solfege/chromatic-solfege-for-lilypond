@@ -22,6 +22,13 @@ textSpanColorA = {
   \once \override TextSpanner.color = #red
 }
 textSpanColorB = {
+  \once \override TextSpanner.style = #'trill
+  \once \override TextSpanner.thickness = #5
+  \once \override TextSpanner.bound-details.right.padding = #-1
+  \once \override TextSpanner.bound-details.left.padding = #0
+  \once \override TextSpanner.color = #red
+}
+textSpanColorC = {
   \once \override TextSpanner.style = #'zigzag
   \once \override TextSpanner.thickness = #4
   \once \override TextSpanner.bound-details.right.padding = #-1
@@ -39,8 +46,19 @@ uout = \stopTextSpan
                         (or
                           (if (eq? (ly:music-property music-e 'name) 'NoteEvent )
                             ;then
-                            (let ((pitch (ly:music-property music-e 'pitch ) ))
-                              (if (<= 1 (abs (ly:pitch-alteration pitch )))
+                            (let* ((pitch    (ly:music-property music-e 'pitch ) )
+                                   (notename (ly:pitch-notename pitch ) )
+                                   (alt      (ly:pitch-alteration pitch )))
+                              (if (or 
+                                    (<= 1 (abs alt))
+                                    (and (= -0.5 alt) 
+                                         (= 0  notename ))
+                                    (and (= -0.5 alt) 
+                                         (= 3  notename ))
+                                    (and (= 0.5  alt) 
+                                         (= 6  notename ))
+                                    (and (= 0.5 alt) 
+                                         (= 2  notename )))
                                 ;then
                                 (begin
                                   ; (display-scheme-music pitch)
@@ -57,7 +75,12 @@ uout = \stopTextSpan
                                           'articulations 
                                           (list #{ \uin #}))
 
-                                        (let ((new-element #{ \textSpanColorB  #})
+                                        (let ((new-element
+                                                (let ((alt (abs alt)))
+                                                  (cond
+                                                    ((< alt  1) #{ \textSpanColorA #} )
+                                                    ((= 1 alt ) #{ \textSpanColorB #} )
+                                                    (else       #{ \textSpanColorC #} ))))
                                               (next (cdr found)))
                                           ;(display-scheme-music next)
 
