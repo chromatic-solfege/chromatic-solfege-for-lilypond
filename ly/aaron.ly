@@ -76,7 +76,7 @@ doubleflatdoubleflat = {
 
 
 % var NOTE_TRIPLE_FLAT  = triple( [  dae    rae    mae    fae    sae    lae    tae    ] );
-% var NOTE_7QTR_FLAT    = triple( [  dawm   rawm   mawm   fawm   sawm   lawm   tawm   ] );
+% var NOTE_7QTR_FLAT    = triple( [  daem   raem   maem   faem   saem   laem   taem   ] );
 % var NOTE_6QTR_FLAT    = triple( [  daes   raes   maes   faes   saes   laes   taes   ] );
 % var NOTE_5QTR_FLAT    = triple( [  dawn   rawn   mawn   fawn   sawn   lawn   tawn   ] );
 % var NOTE_DOUBLE_FLAT  = triple( [  daw    raw    maw    faw    saw    law    taw    ] );
@@ -90,7 +90,7 @@ doubleflatdoubleflat = {
 % var NOTE_DOUBLE_SHARP = triple( [  dai    rai    mai    fai    sai    lai    tai    ] );
 % var NOTE_5QTR_SHARP   = triple( [  dain   rain   main   fain   sain   lain   tain   ] );
 % var NOTE_6QTR_SHARP   = triple( [  daos   raos   maos   faos   saos   laos   taos   ] );
-% var NOTE_7QTR_SHARP   = triple( [  daim   raim   maim   faim   saim   laim   taim   ] );
+% var NOTE_7QTR_SHARP   = triple( [  daom   raom   maom   faom   saom   laom   taom   ] );
 % var NOTE_TRIPLE_SHARP = triple( [  dao    rao    mao    fao    sao    lao    tao    ] );
 
 process-triple-accidentals = 
@@ -200,7 +200,7 @@ process-marking-irregular-accidentals-bak =
 
 #(define aaron-c `(aaron . (
                               (daes   . ,(ly:make-pitch -1 0  -8/4 ))
-                              (dawm   . ,(ly:make-pitch -1 0  -7/4 ))
+                              (daem   . ,(ly:make-pitch -1 0  -7/4 ))
                               (dae    . ,(ly:make-pitch -1 0  -6/4 ))
                               (dawn   . ,(ly:make-pitch -1 0  -5/4 ))
                               (daw    . ,(ly:make-pitch -1 0  -4/4 ))
@@ -214,11 +214,11 @@ process-marking-irregular-accidentals-bak =
                               (dai    . ,(ly:make-pitch -1 0   4/4 ))
                               (dain   . ,(ly:make-pitch -1 0   5/4 ))
                               (dao    . ,(ly:make-pitch -1 0   6/4 ))
-                              (daim   . ,(ly:make-pitch -1 0   7/4 ))
+                              (daom   . ,(ly:make-pitch -1 0   7/4 ))
                               (daos   . ,(ly:make-pitch -1 0   8/4 ))
 
                               (raes   . ,(ly:make-pitch -1 1  -8/4 ))
-                              (rawm   . ,(ly:make-pitch -1 1  -7/4 ))
+                              (raem   . ,(ly:make-pitch -1 1  -7/4 ))
                               (rae    . ,(ly:make-pitch -1 1  -6/4 ))
                               (rawn   . ,(ly:make-pitch -1 1  -5/4 ))
                               (raw    . ,(ly:make-pitch -1 1  -4/4 ))
@@ -232,11 +232,11 @@ process-marking-irregular-accidentals-bak =
                               (rai    . ,(ly:make-pitch -1 1   4/4 ))
                               (rain   . ,(ly:make-pitch -1 1   5/4 ))
                               (rao    . ,(ly:make-pitch -1 1   6/4 ))
-                              (raim   . ,(ly:make-pitch -1 1   7/4 ))
+                              (raom   . ,(ly:make-pitch -1 1   7/4 ))
                               (raos   . ,(ly:make-pitch -1 1   8/4 ))
 
                               (maes   . ,(ly:make-pitch -1 2  -8/4 ))
-                              (mawm   . ,(ly:make-pitch -1 2  -7/4 ))
+                              (maem   . ,(ly:make-pitch -1 2  -7/4 ))
                               (mae    . ,(ly:make-pitch -1 2  -6/4 ))
                               (mawn   . ,(ly:make-pitch -1 2  -5/4 ))
                               (maw    . ,(ly:make-pitch -1 2  -4/4 ))
@@ -250,11 +250,11 @@ process-marking-irregular-accidentals-bak =
                               (mai    . ,(ly:make-pitch -1 2   4/4 ))
                               (main   . ,(ly:make-pitch -1 2   5/4 ))
                               (mao    . ,(ly:make-pitch -1 2   6/4 ))
-                              (maim   . ,(ly:make-pitch -1 2   7/4 ))
+                              (maom   . ,(ly:make-pitch -1 2   7/4 ))
                               (maos   . ,(ly:make-pitch -1 2   8/4 ))
 
                               (faes   . ,(ly:make-pitch -1 3  -8/4 ))
-                              (fawm   . ,(ly:make-pitch -1 3  -7/4 ))
+                              (faem   . ,(ly:make-pitch -1 3  -7/4 ))
                               (fae    . ,(ly:make-pitch -1 3  -6/4 ))
                               (fawn   . ,(ly:make-pitch -1 3  -5/4 ))
                               (faw    . ,(ly:make-pitch -1 3  -4/4 ))
@@ -268,11 +268,11 @@ process-marking-irregular-accidentals-bak =
                               (fai    . ,(ly:make-pitch -1 3   4/4 ))
                               (fain   . ,(ly:make-pitch -1 3   5/4 ))
                               (fao    . ,(ly:make-pitch -1 3   6/4 ))
-                              (faim   . ,(ly:make-pitch -1 3   7/4 ))
+                              (faom   . ,(ly:make-pitch -1 3   7/4 ))
                               (faos   . ,(ly:make-pitch -1 3   8/4 ))
 
                               (saes   . ,(ly:make-pitch -1 4  -8/4 ))
-                              (sawm   . ,(ly:make-pitch -1 4  -7/4 ))
+                              (saem   . ,(ly:make-pitch -1 4  -7/4 ))
                               (sae    . ,(ly:make-pitch -1 4  -6/4 ))
                               (sawn   . ,(ly:make-pitch -1 4  -5/4 ))
                               (saw    . ,(ly:make-pitch -1 4  -4/4 ))
@@ -286,11 +286,11 @@ process-marking-irregular-accidentals-bak =
                               (sai    . ,(ly:make-pitch -1 4   4/4 ))
                               (sain   . ,(ly:make-pitch -1 4   5/4 ))
                               (sao    . ,(ly:make-pitch -1 4   6/4 ))
-                              (saim   . ,(ly:make-pitch -1 4   7/4 ))
+                              (saom   . ,(ly:make-pitch -1 4   7/4 ))
                               (saos   . ,(ly:make-pitch -1 4   8/4 ))
 
                               (laes   . ,(ly:make-pitch -1 5  -8/4 ))
-                              (lawm   . ,(ly:make-pitch -1 5  -7/4 ))
+                              (laem   . ,(ly:make-pitch -1 5  -7/4 ))
                               (lae    . ,(ly:make-pitch -1 5  -6/4 ))
                               (lawn   . ,(ly:make-pitch -1 5  -5/4 ))
                               (law    . ,(ly:make-pitch -1 5  -4/4 ))
@@ -304,11 +304,11 @@ process-marking-irregular-accidentals-bak =
                               (lai    . ,(ly:make-pitch -1 5   4/4 ))
                               (lain   . ,(ly:make-pitch -1 5   5/4 ))
                               (lao    . ,(ly:make-pitch -1 5   6/4 ))
-                              (laim   . ,(ly:make-pitch -1 5   7/4 ))
+                              (laom   . ,(ly:make-pitch -1 5   7/4 ))
                               (laos   . ,(ly:make-pitch -1 5   8/4 ))
 
                               (taes   . ,(ly:make-pitch -1 6  -8/4 ))
-                              (tawm   . ,(ly:make-pitch -1 6  -7/4 ))
+                              (taem   . ,(ly:make-pitch -1 6  -7/4 ))
                               (tae    . ,(ly:make-pitch -1 6  -6/4 ))
                               (tawn   . ,(ly:make-pitch -1 6  -5/4 ))
                               (taw    . ,(ly:make-pitch -1 6  -4/4 ))
@@ -322,7 +322,7 @@ process-marking-irregular-accidentals-bak =
                               (tai    . ,(ly:make-pitch -1 6   4/4 ))
                               (tain   . ,(ly:make-pitch -1 6   5/4 ))
                               (tao    . ,(ly:make-pitch -1 6   6/4 ))
-                              (taim   . ,(ly:make-pitch -1 6   7/4 ))
+                              (taom   . ,(ly:make-pitch -1 6   7/4 ))
                               (taos   . ,(ly:make-pitch -1 6   8/4 ))
 
 
