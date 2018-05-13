@@ -77,7 +77,7 @@ doubleflatdoubleflat = {
 
 % var NOTE_TRIPLE_FLAT  = triple( [  dae    rae    mae    fae    sae    lae    tae    ] );
 % var NOTE_7QTR_FLAT    = triple( [  daem   raem   maem   faem   saem   laem   taem   ] );
-% var NOTE_6QTR_FLAT    = triple( [  daes   raes   maes   faes   saes   laes   taes   ] );
+% var NOTE_8QTR_FLAT    = triple( [  daes   raes   maes   faes   saes   laes   taes   ] );
 % var NOTE_5QTR_FLAT    = triple( [  dawn   rawn   mawn   fawn   sawn   lawn   tawn   ] );
 % var NOTE_DOUBLE_FLAT  = triple( [  daw    raw    maw    faw    saw    law    taw    ] );
 % var NOTE_3QTR_FLAT    = triple( [  dem    ram    mem    fem    sem    lem    tem    ] );
@@ -89,7 +89,7 @@ doubleflatdoubleflat = {
 % var NOTE_3QTR_SHARP   = triple( [  dim    rim    mam    fim    sim    lim    tam    ] );
 % var NOTE_DOUBLE_SHARP = triple( [  dai    rai    mai    fai    sai    lai    tai    ] );
 % var NOTE_5QTR_SHARP   = triple( [  dain   rain   main   fain   sain   lain   tain   ] );
-% var NOTE_6QTR_SHARP   = triple( [  daos   raos   maos   faos   saos   laos   taos   ] );
+% var NOTE_8QTR_SHARP   = triple( [  daos   raos   maos   faos   saos   laos   taos   ] );
 % var NOTE_7QTR_SHARP   = triple( [  daom   raom   maom   faom   saom   laom   taom   ] );
 % var NOTE_TRIPLE_SHARP = triple( [  dao    rao    mao    fao    sao    lao    tao    ] );
 
