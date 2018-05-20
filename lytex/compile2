@@ -51,7 +51,7 @@ echo
 function max_proc_count {
    while [ `jobs | wc -l` -gt $1 ]
    do
-      sleep 0.5
+      sleep 0.1
    done
 }
 
