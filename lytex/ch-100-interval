@@ -600,9 +600,7 @@ var PF_INT_A7FD = create_pf3([
 
 
 var ASCEND_SHARP  = 'do di re ri mi fa fi sol si la li ti do'.split(' ');
-var DESCEND_FLAT  = 'do ra re me mi fa se sol le la te ti do'.split(' ').reverse()
 var ASCEND_FLAT   = 'do ra re me mi fa se sol le la te ti do'.split(' ');
-var DESCEND_SHARP = 'do di re ri mi fa fi sol si la li ti do'.split(' ').reverse();
 
 function batch() {
 	var batch_pg = [
@@ -613,195 +611,147 @@ function batch() {
 		// su:sharp ascend, sd:sharp descend, fu:flat ascend, fd:flat descend
 	
 		// mark, trans, id, prefix_formatter,  sharp=1/flat=0,  note_list, filename(generated later)
-		// Major 2nd
-		[ '===' , 'Major 2nd' ],
-		[ '*', 're', 'su', PF_NULL,      1, ASCEND_SHARP ,    "",  ],
-		[ '*', 're', 'sd', PF_FIRST,     1, DESCEND_SHARP,    "",  ],
-		[ '*', 're', 'fu', PF_NULL,      1, ASCEND_FLAT,      "",  ],
-		[ '*', 're', 'fd', PF_FIRST,     1, DESCEND_FLAT,     "",  ],
 
 		// Minor 2nd
 		[ '===' , 'Minor 2nd' ],
 		[ '*', 'ra', 'su', PF_NULL,      1, ASCEND_SHARP ,    "",  ],
-		[ '*', 'ra', 'sd', PF_FIRST,     1, DESCEND_SHARP,    "",  ],
 		[ '*', 'ra', 'fu', PF_NULL,      1, ASCEND_FLAT,      "",  ],
-		[ '*', 'ra', 'fd', PF_FIRST,     1, DESCEND_FLAT,     "",  ],
+
+		// Major 2nd
+		[ '===' , 'Major 2nd' ],
+		[ '*', 're', 'su', PF_NULL,      1, ASCEND_SHARP ,    "",  ],
+		[ '*', 're', 'fu', PF_NULL,      1, ASCEND_FLAT,      "",  ],
 
 		// Minor 3rd
 		[ '===' , 'Minor 3nd' ],
 		[ '*', 'me', 'su', PF_NULL ,     1, ASCEND_SHARP,     "",  ],
-		[ '*', 'me', 'sd', PF_FIRST,     1, DESCEND_SHARP,    "",  ],
 		[ '*', 'me', 'fu', PF_NULL ,     1, ASCEND_FLAT,      "",  ],
-		[ '*', 'me', 'fd', PF_FIRST,     1, DESCEND_FLAT,     "",  ],
 
 		// Major 3rd
 		[ '===' , 'Major 3nd' ],
 		[ '*', 'mi', 'su', PF_NULL ,     1, ASCEND_SHARP,     "",  ],
-		[ '*', 'mi', 'sd', PF_FIRST,     1, DESCEND_SHARP,    "",  ],
 		[ '*', 'mi', 'fu', PF_NULL,      1, ASCEND_FLAT,      "",  ],
-		[ '*', 'mi', 'fd', PF_FIRST,     1, DESCEND_FLAT,     "",  ],
 
 		// Perfect 4th
 		[ '===' , 'Perfect 4th' ],
 		[ '*', 'fa', 'su', PF_INT_P4SU,  1, ASCEND_SHARP,     "",  ],
-		[ '*', 'fa', 'sd', PF_INT_P4SD,  1, DESCEND_SHARP,    "",  ],
 		[ '*', 'fa', 'fu', PF_NULL    ,  1, ASCEND_FLAT ,     "",  ],
-		[ '*', 'fa', 'fd', PF_INT_P4FD,  1, DESCEND_FLAT ,    "",  ],
 
 		// Augumented 4th
 		[ '===' , 'Augumented 4th' ],
 		[ '*', 'fi', 'su', PF_INT_A4SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'fi', 'sd', PF_INT_A4SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'fi', 'fu', PF_INT_A4FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'fi', 'fd', PF_INT_A4FD, 1, DESCEND_FLAT ,     "",  ],
 
 		// Diminished 5th
 		[ '===' , 'Diminished 5th' ],
 		[ '*', 'se', 'su', PF_INT_D5SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'se', 'sd', PF_INT_D5SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'se', 'fu', PF_INT_D5FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'se', 'fd', PF_INT_D5FD, 1, DESCEND_FLAT ,     "",  ],
 
 		// Perfect 5th
 		[ '===' , 'Perfect 5th' ],
 		[ '*', 'sol', 'su', PF_INT_5SU,    1, ASCEND_SHARP,   "",  ],
-		[ '*', 'sol', 'sd', PF_INT_5SD,    1, DESCEND_SHARP,  "",  ],
 		[ '*', 'sol', 'fu', PF_INT_5FU,    1, ASCEND_FLAT ,   "",  ],
-		[ '*', 'sol', 'fd', PF_INT_5SD,    1, DESCEND_FLAT ,  "",  ],
 
 		// Augumented 5th
 		[ '===' , 'Augumented 5th' ],
 		[ '*', 'si', 'su', PF_INT_S5SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'si', 'sd', PF_INT_S5SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'si', 'fu', PF_INT_S5FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'si', 'fd', PF_INT_S5FD, 1, DESCEND_FLAT ,     "",  ],
 
 		// Minor 6th
 		[ '===' , 'Minor 6th' ],
 		[ '*', 'le', 'su', PF_INT_F6SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'le', 'sd', PF_INT_F6SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'le', 'fu', PF_INT_F6FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'le', 'fd', PF_INT_F6FD, 1, DESCEND_FLAT ,     "",  ],
 
 		// Major 6th
 		[ '===' , 'Major 6th' ],
 		[ '*', 'la', 'su', PF_INT_N6SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'la', 'sd', PF_INT_N6SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'la', 'fu', PF_INT_N6FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'la', 'fd', PF_INT_N6FD, 1, DESCEND_FLAT ,     "",  ],
 
 		// Minor 7th
 		[ '===' , 'Minor 7th' ],
 		[ '*', 'te', 'su', PF_INT_7SU, 1, ASCEND_SHARP ,      "",  ],
-		[ '*', 'te', 'sd', PF_INT_7SD, 1, DESCEND_SHARP ,     "",  ],
 		[ '*', 'te', 'fu', PF_INT_7FU, 1, ASCEND_FLAT ,       "",  ],
-		[ '*', 'te', 'fd', PF_INT_7FD, 1, DESCEND_FLAT ,      "",  ],
 
 		// Major 7th
 		[ '===' , 'Major 7th' ],
 		[ '*', 'ti', 'su', PF_INT_M7SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'ti', 'sd', PF_INT_M7SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'ti', 'fu', PF_INT_M7FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'ti', 'fd', PF_INT_M7FD, 1, DESCEND_FLAT ,     "",  ],
 
+		//
 		// Tensions
-
+		//
 		[ '==' , 'Intervals Larger Than Octave' ],
-		[ '===' , 'Sharp 9th' ],
-		// Sharp 9th
-		[ '*', 'ri', 'su', PF_INT_A9SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'ri', 'sd', PF_INT_A9SD, 1, DESCEND_SHARP ,    "",  ],
-		[ '*', 'ri', 'fu', PF_INT_A9FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'ri', 'fd', PF_INT_A9FD, 1, DESCEND_FLAT ,     "",  ],
 
 		// Flat 9th
 		[ '===' , 'Flat 9th' ],
 		[ '*', 'ra', 'su', PF_INT_D9SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'ra', 'sd', PF_INT_D9SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'ra', 'fu', PF_INT_D9FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'ra', 'fd', PF_INT_D9FD, 1, DESCEND_FLAT ,     "",  ],
+
+		[ '===' , 'Sharp 9th' ],
+		// Sharp 9th
+		[ '*', 'ri', 'su', PF_INT_A9SU, 1, ASCEND_SHARP ,     "",  ],
+		[ '*', 'ri', 'fu', PF_INT_A9FU, 1, ASCEND_FLAT ,      "",  ],
+
 
 		//
-		// Special
+		// Theoretical Intervals
 		//
 		[ '==' , 'Theoretical Intervals' ],
 
 		// Augumented 1st
 		[ '===' , 'Augumented 1st' ],
 		[ '*', 'di', 'su', PF_NULL,  1, ASCEND_SHARP ,        "",  ],
-		[ '*', 'di', 'sd', PF_FIRST, 1, DESCEND_SHARP ,       "",  ],
 		[ '*', 'di', 'fu', PF_NULL,  1, ASCEND_FLAT ,         "",  ],
-		[ '*', 'di', 'fd', PF_FIRST, 1, DESCEND_FLAT ,        "",  ],
 
 		// Diminished 1st
 		[ '===' , 'Diminished 1st' ],
 		[ '*', 'de', 'su', PF_NULL,  1, ASCEND_SHARP ,        "",  ],
-		[ '*', 'de', 'sd', PF_FIRST, 1, DESCEND_SHARP ,       "",  ],
 		[ '*', 'de', 'fu', PF_NULL,  1, ASCEND_FLAT ,         "",  ],
-		[ '*', 'de', 'fd', PF_FIRST, 1, DESCEND_FLAT ,        "",  ],
 
 		// Augumented 2th
 		[ '===' , 'Augumented 2st' ],
 		[ '*', 'ri', 'su', PF_NULL,      1, ASCEND_SHARP ,    "",  ],
-		[ '*', 'ri', 'sd', PF_FIRST,     1, DESCEND_SHARP ,   "",  ],
 		[ '*', 'ri', 'fu', PF_NULL,      1, ASCEND_FLAT ,     "",  ],
-		[ '*', 'ri', 'fd', PF_FIRST,     1, DESCEND_FLAT ,    "",  ],
 
 		// Diminished 2nd
 		[ '===' , 'Diminished 2st' ],
 		[ '*', 'raw', 'su', PF_NULL,  1, ASCEND_SHARP ,       "",  ],
-		[ '*', 'raw', 'sd', PF_FIRST, 1, DESCEND_SHARP ,      "",  ],
 		[ '*', 'raw', 'fu', PF_NULL,  1, ASCEND_FLAT ,        "",  ],
-		[ '*', 'raw', 'fd', PF_FIRST, 1, DESCEND_FLAT ,       "",  ],
 
 		// Augumented 3nd
 		[ '===' , 'Augumented 3st' ],
 		[ '*', 'ma', 'su', PF_INT_A3SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'ma', 'sd', PF_INT_A3SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'ma', 'fu', PF_INT_A3FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'ma', 'fd', PF_INT_A3FD, 1, DESCEND_FLAT ,     "",  ],
 	
 		// Diminished 3nd
 		[ '===' , 'Diminished 3st' ],
 		[ '*', 'maw', 'su', PF_NULL,  1, ASCEND_SHARP ,       "",  ],
-		[ '*', 'maw', 'sd', PF_FIRST, 1, DESCEND_SHARP ,      "",  ],
 		[ '*', 'maw', 'fu', PF_NULL,  1, ASCEND_FLAT ,        "",  ],
-		[ '*', 'maw', 'fd', PF_FIRST, 1, DESCEND_FLAT ,       "",  ],
 
 		// Diminished 4th
 		[ '===' , 'Diminished 4st' ],
 		[ '*', 'fe', 'su', PF_NULL,     1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'fe', 'sd', PF_INT_D4SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'fe', 'fu', PF_INT_D4FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'fe', 'fd', PF_INT_D4FD, 1, DESCEND_FLAT ,     "",  ],
 	
 		// Augumented 6th
 		[ '===' , 'Augumented 6th' ],
 		[ '*', 'li', 'su', PF_INT_A6SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'li', 'sd', PF_INT_A6SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'li', 'fu', PF_INT_A6FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'li', 'fd', PF_INT_A6FD, 1, DESCEND_FLAT ,     "",  ],
 
 		// Diminished  6th
 		[ '===' , 'Diminished 6th' ],
 		[ '*', 'law', 'su', PF_INT_D6SU, 1, ASCEND_SHARP ,    "",  ],
-		[ '*', 'law', 'sd', PF_INT_D6SD, 1, DESCEND_SHARP ,   "",  ],
 		[ '*', 'law', 'fu', PF_INT_D6FU, 1, ASCEND_FLAT ,     "",  ],
-		[ '*', 'law', 'fd', PF_INT_D6FD, 1, DESCEND_FLAT ,    "",  ],
 
 		// Augumented 7th
 		[ '===' , 'Augumented 7th' ],
 		[ '*', 'ta', 'su', PF_INT_A7SU, 1, ASCEND_SHARP ,     "",  ],
-		[ '*', 'ta', 'sd', PF_INT_A7SD, 1, DESCEND_SHARP ,    "",  ],
 		[ '*', 'ta', 'fu', PF_INT_A7FU, 1, ASCEND_FLAT ,      "",  ],
-		[ '*', 'ta', 'fd', PF_INT_A7FD, 1, DESCEND_FLAT ,     "",  ],
 
 		// Diminished 7th
 		[ '===' , 'Diminished 7th' ],
 		[ '*', 'taw', 'su', PF_INT_A7SU, 1, ASCEND_SHARP ,    "",  ],
-		[ '*', 'taw', 'sd', PF_INT_A7SD, 1, DESCEND_SHARP ,   "",  ],
 		[ '*', 'taw', 'fu', PF_INT_A7FU, 1, ASCEND_FLAT ,     "",  ],
-		[ '*', 'taw', 'fd', PF_INT_A7FD, 1, DESCEND_FLAT ,    "",  ],
 
 	];
 
@@ -889,16 +839,20 @@ function batch() {
 					
 					switch ( arr[2] ) {
 						case 'fu' :
-							writeHeader3( 'Flat Ascending' );
+							// writeHeader3( 'Flat Ascending' );
+							writeHeader3( 'Flat' );
 							break;
 						case 'fd' :
-							writeHeader3( 'Flat Descending' );
+							// writeHeader3( 'Flat Descending' );
+							writeHeader3( 'Flat' );
 							break;
 						case 'su' :
-							writeHeader3( 'Sharp Ascending' );
+							// writeHeader3( 'Sharp Ascending' );
+							writeHeader3( 'Sharp' );
 							break;
 						case 'sd' :
-							writeHeader3( 'Sharp Descending' );
+							// writeHeader3( 'Sharp Descending' );
+							writeHeader3( 'Sharp' );
 							break;
 					}
 

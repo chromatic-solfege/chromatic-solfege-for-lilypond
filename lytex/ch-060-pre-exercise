@@ -59,19 +59,19 @@ c.writeScore(
 c.writeHeader3( "Minor 3rd Motion 2" );
 c.writeScore( 
 		`\
-		@do do me se taw s
-		@di do, me se taw s
-		@re do, me se taw s | \\break
-		@ri do, me se taw s 
-		@mi do, me se taw s
-		@fa do, me se taw s| \\break
-		@fi do, me se taw s
-		@sol do, me se taw s
-		@si do, me se taw s| \\break
-		@la do, me se taw s
-		@li do, me se taw s
-		@ti do, me se taw s| \\break
-		@do do, me se taw s s
+		@do  do  me se taw s
+		@di  do, me se taw s
+		@re  do, me se taw s | \\break
+		@ri  do, me se taw s 
+		@mi  do, me se taw s 
+		@fa  do, me se taw s | \\break
+		@fi  do, me se taw s 
+		@sol do, me se taw s 
+		@si  do, me se taw s | \\break
+		@la  do, me se taw s 
+		@li  do, me se taw s 
+		@ti  do, me se taw s | \\break
+		@do  do, me se taw s s
 
 		`.replace( /\n|\t\t/g, ' ' )
 		);
