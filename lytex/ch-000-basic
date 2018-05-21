@@ -10,7 +10,6 @@ var MSG_ENHARMONIC_TO_HARMONIC = 'Enharmonic First, Harmonic Last';
 
 function batch() {
 	var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
-
 	c.disableDisabled();
 	c.disable();
 
@@ -256,7 +255,6 @@ function batch() {
 		},
 	};
 
-	c.enable();
 	// Chromatic Scale 1
 	c.writeHeader1( "Exercise for Flat, Sharp and Natural" );
 	{
@@ -282,7 +280,6 @@ function batch() {
 		chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 0, 1, 2, 3, 4 ],  6 );
 		chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 4, 3, 2, 1, 0 ],  6 );
 	}
-	c.disable();
 
 	// Enharmonicity 1
 	c.writeHeader1( "Exercise to Remember All Enharmonically Equivalent Notes Occured by Flat and Sharp" );
@@ -386,6 +383,7 @@ function batch() {
 
 	c.writeHeader1( "Diatonic Scales" );
 	{
+		var ch = require( 'chromatic' );
 		function eventhandler( eventtype, id, notes, text ) {
 			if ( eventtype == 'tex' ) {
 				return (
@@ -403,6 +401,7 @@ function batch() {
 
 		c.writeHeader2( "Natural" );
 		c.writeScore( null, "do  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
 		c.writeHeader2( "Sharp" );
 		c.writeScore( null, "sol do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
 		c.writeScore( null, "re  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
@@ -410,6 +409,7 @@ function batch() {
 		c.writeScore( null, "mi  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
 		c.writeScore( null, "ti  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
 		c.writeScore( null, "fi  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
 		c.writeHeader2( "Flat" );
 		c.writeScore( null, "fa  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
 		c.writeScore( null, "te  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
@@ -429,6 +429,69 @@ function batch() {
 		c.writeScore( null, "li  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
 		c.writeScore( null, "ma  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
 		c.writeScore( null, "ta  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
+		c.enable();
+
+		c.writeHeader2( "Exercise of Fourth Motion" );
+
+		c.writeScore( null, "@do'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@fa'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@te'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@me'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@le'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@ra'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@se'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@de'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@fe'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@taw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@maw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@law' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@raw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@saw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@daw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@faw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@tae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@mae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@lae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@rae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@sae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@dae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@fae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@fae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+		c.writeScore( null, "@sol' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+
+		c.writeHeader2( "Exercise of Fifth Motion" );
+
+		c.writeScore( null, "@do'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@sol' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@re'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@la'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@mi'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@ti'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@fi'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@di'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@si'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@ri'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@li'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@ma'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@ta'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@fai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@dai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@sai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@rai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@lai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@mai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@tai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@fao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@dao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@sao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@rao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@lao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@mao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@tao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+		c.writeScore( null, "@si'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+
+		c.disable();
 	}
 
 
