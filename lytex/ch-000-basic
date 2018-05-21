@@ -10,7 +10,7 @@ var MSG_ENHARMONIC_TO_HARMONIC = 'Enharmonic First, Harmonic Last';
 
 function batch() {
 	var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
-	c.disableDisabled();
+	// c.disableDisabled();
 	c.disable();
 
 	// Note Name Tool Kit (NNTK)
@@ -379,6 +379,11 @@ function batch() {
 	}
 
 
+	c.writeHeader0( "Advanced Exercises" );
+	c.writeTextBody( 
+			"This section introduces some exercises to build fluency. " +
+			"Read them aloud repeatedly until you can recite without seeing the actual spells."
+		);
 
 
 	c.writeHeader1( "Diatonic Scales" );
@@ -492,7 +497,7 @@ function batch() {
 	}
 
 	c.enable();
-	c.writeHeader0( "Exercise to Chromatic Scales" );
+	c.writeHeader1( "Transposed Chromatic Scales" );
 	{
 		var note2name = {
 			'do' : 'C',
@@ -517,7 +522,6 @@ function batch() {
 		}
 	}
 	c.disable();
-
 
 
 
