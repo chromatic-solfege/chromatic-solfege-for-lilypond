@@ -9,6 +9,8 @@
 
     (1 . "accidentals.doublesharp")
     (3/2 . "accidentals.doublesharp")
+    (4/2 . "accidentals.doublesharp")
+    (-4/2 . "accidentals.flatflat")
     (-3/2 . "accidentals.flatflat")
     (-1 . "accidentals.flatflat")
 
@@ -71,7 +73,7 @@ doubleflatdoubleflat = {
     \musicglyph #"accidentals.flatflat"
     }
   }
-  \once \override Staff.AccidentalPlacement #'right-padding = #1.25
+  \once \override Staff.AccidentalPlacement #'right-padding = #1.5
 }
 
 
@@ -113,9 +115,17 @@ process-triple-accidentals =
                                                        (pitch-alteration (ly:pitch-alteration pitch-e )))
 
                                                   (cond
+                                                    ((< pitch-alteration -3/2 )
+                                                     (list
+                                                       #{ \doubleflatdoubleflat #}
+                                                       music-e))
                                                     ((< pitch-alteration -1 )
                                                      (list
                                                        #{ \flatdoubleflat #}
+                                                       music-e))
+                                                    ((< 3/2  pitch-alteration  )
+                                                     (list
+                                                       #{ \doublesharpdoublesharp #}
                                                        music-e))
                                                     ((< 1  pitch-alteration  )
                                                      (list
