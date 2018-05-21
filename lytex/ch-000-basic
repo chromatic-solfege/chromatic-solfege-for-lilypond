@@ -384,41 +384,6 @@ function batch() {
 
 
 
-	// Chromatic
-	c.writeHeader1( "Chromatic 3" );
-
-	c.writeHeader2( "Chromatically Ascending With Sharp – 1 Up 1 Down" );
-	c.writeScore( "chromatic-03",  "do "+
-			"do di do s    di re di s    re ri re s  ri mi ri s   mi fa mi s   fa fi fa s \n" +
-			"fi sol fi s   sol si sol s  si la si s  la li la s   li ti li s   ti do ti s do1" );
-
-	c.writeHeader2( "Chromatically Descending With Flat – 1 Down 1 Up" );
-	c.writeScore( "chromatic-04",  "do "+
-			"do' ti do  s  ti te ti  s  te la te  s  la le la  s  le sol le  s  sol se sol  s  se fa se  s \n " +
-			"fa mi fa  s  mi me mi  s  me re me  s  re ra re  s  ra do ra  s  do1 " );
-
-	c.writeHeader2( "Chromatically Ascending With Flat – 1 Up 1 Down" );
-	c.writeScore( "chromatic-04",  "do "+
-			"do ra do  s   ra re ra s    re me re  s me mi me  s  mi fa mi  s  fa se fa \n "+
-			"se sol se s   sol le sol s  le la le  s la te la  s  te ti te  s  ti do ti s do1 " );
-
-	c.writeHeader2( "Chromatically Descending With Sharp– 1 Down 1 Up" );
-	c.writeScore( "chromatic-04",  "do "+
-			"do' ti do  s  ti li ti  s  li la li  s  la si la  s  si sol si  s  sol fi sol  s  fi fa fi \n "+
-			"fa mi fa  s  mi ri mi  s  ri re ri  s  re di re  s  di do di  s  do1 " );
-
-	c.writeHeader2( "Chromatically Ascending With Sharp –  2 Up 1 Down" );
-	c.writeScore( "chromatic-04",  "do "+
-			"do di re  s  di re ri  s  re ri mi  s  ri mi fa  s  mi fa fi  s  fa fi sol  s  fi sol si  s \n" +
-			"sol si la  s  si la li  s  la li ti  s  li ti do  s  ti do di  s  do1  \n" );
-
-	c.writeHeader2( "Chromatically Descending With Flat – 2 Down 1 Up" );
-	c.writeScore( "chromatic-04",  "do "+
-			"do' ti te  s  ti te la  s  te la le  s  la le sol  s  le sol se  s  sol se fa  s  se fa mi  s  \n"+
-			"fa mi me  s  mi me re  s  me re ra  s  re ra do  s  ra do ti  s  do1 " );
-
-
-
 
 
 
