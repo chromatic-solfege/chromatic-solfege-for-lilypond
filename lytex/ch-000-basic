@@ -457,7 +457,6 @@ function batch() {
 		c.writeScore( null, "@sae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
 		c.writeScore( null, "@dae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
 		c.writeScore( null, "@fae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-		c.writeScore( null, "@fae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
 		c.writeScore( null, "@sol' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
 
 		c.writeHeader2( "Exercise of Fifth Motion" );
