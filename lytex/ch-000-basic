@@ -3,36 +3,15 @@
 require( 'local/settings' );
 var ScaleGenerator = require( 'local/chromatic/formatter' );
 
-var THE_TEXT = 
-`
-\\paper  {
-    #(set! paper-alist (cons '("a4insides" . (cons (* 5 in) (* 3 in))) paper-alist))
-    #(set-paper-size "a4insides")
-}
-`;
-
-ScaleGenerator.prototype.writeScore2 = function ( type, notes ) {
-	var id = notes.split( /\s+/ ).shift();
-	var output = ScaleGenerator.applyTemplate( notes, null,null, this.settings );
-
-	output = output + "\n" + THE_TEXT + "\n";
-
-	this.nextOutputFilename( type + '-' + id );
-	ScaleGenerator.writeFile( this.currentOutputFilename(), output );
-
-	this.writeIncludeText( '\\noindent $\\vcenter{ \\hbox{ \\includegraphics[width=0.6 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n' );
-};
-
-
-
+// Common Constant Values
+var OUTPUT_PATH = 'out/'
 var MSG_HARMONIC_TO_ENHARMONIC = 'Harmonic First, Enharmonic Last';
 var MSG_ENHARMONIC_TO_HARMONIC = 'Enharmonic First, Harmonic Last';
 
-var OUTPUT_PATH = 'out/'
-
 function batch() {
 	var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
-	// c.disableDisabled();
+
+	c.disableDisabled();
 	c.disable();
 
 	// Note Name Tool Kit (NNTK)
