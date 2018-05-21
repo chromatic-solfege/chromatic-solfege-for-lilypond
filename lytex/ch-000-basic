@@ -496,7 +496,6 @@ function batch() {
 
 	}
 
-	c.enable();
 	c.writeHeader1( "Transposed Chromatic Scales" );
 	{
 		var note2name = {
@@ -521,13 +520,105 @@ function batch() {
 			c.writeScore( i + '-02', `@${i} do di re ri mi fa fi sol si la li ti do s do ti te la le sol se fa mi me re ra do` );
 		}
 	}
+
+	c.enable();
+	{
+		var note2name = {
+			'do' : 'C',
+			'fa' : 'F',
+			'te' : 'B\\flat',
+			'me' : 'E\\flat',
+			'le' : 'A\\flat',
+			'ra' : 'D\\flat',
+			'se' : 'G\\flat',
+			'sol': 'G',
+			're' : 'D',
+			'la' : 'A',
+			'mi' : 'E',
+			'ti' : 'B',
+			'fi' : 'F\\sharp',
+		};
+
+		function merge_with_offset( notes , offset, from, to, size  ) {
+			var result = [];
+			for ( var i=from; i!=to; from < to ? i++ : i-- ) {
+				result.push( notes[ ( i          ) ] + '8 [ ' );
+				result.push( notes[ ( i + offset ) ] + '8 ] ' );
+			}
+			result.push( notes[ ( to          ) ] + '8 ] ' );
+
+			return result.join( ' ') ;
+		}
+		function blowup(arr) {
+			return [].concat( 
+				arr.map( (s)=> s + ","     ),
+				arr.map( (s)=> s + ""      ),
+				arr.map( (s)=> s + "'"     ),
+				arr.map( (s)=> s + "''"    ),
+				arr.map( (s)=> s + "'''"   ),
+				arr.map( (s)=> s + "''''"  ),
+				arr.map( (s)=> s + "'''''" )
+			)
+		}
+
+		function rotate(arr,offset) {
+			console.error( 'rotate', offset );
+			return arr.concat( arr.splice( 0, offset ) );
+		}
+
+		function checkKey( key ) {
+			if ( key == 'do' ) {
+				return 'natural';
+			} else if ( 0<= ( "ti mi la re sol".split( ' ' ).indexOf( key )  ) ) {
+				return 'sharp';
+			} else if ( 0<= ( "fa te me le ra se".split( ' ' ).indexOf( key )  ) ) {
+				return 'flat';
+			} else {
+				throw new Error( `unknown key ${key}` );
+			}
+		}
+
+
+		var c = new ScaleGenerator( OUTPUT_PATH /*, 'scales-exercise' */ );
+		c.writeHeader0( "Exercise to Chromatic Scales" );
+
+		var keys = "do,fa,te,me,le,ra,se,ti,mi,la,re,sol".split( ',' );
+		// var keys = "do,fa,te".split( ',' ); // DEBUG
+
+		function key2offset(key) {
+			return ( keys.indexOf( key ) * 5 ) % 12;
+		}
+
+
+		c.settings.tempo = 100;
+
+		for ( var k of keys )  {
+			var notes_u;
+			var notes_d;
+
+			switch ( checkKey( k ) ) {
+				case 'natural':
+				case 'flat':
+					notes_u = rotate( blowup( "do ra re me mi fa se sol le la te ti".split( ' ' ) ), key2offset( k ) ) ;
+					notes_d = rotate( blowup( "do ra re me mi fa se sol le la te ti".split( ' ' ) ), key2offset( k ) ) ;
+					break;
+				case 'sharp' :
+					notes_u = rotate( blowup( "do di re ri mi fa fi sol si la li ti".split( ' ' ) ), key2offset( k ) ) ;
+					notes_d = rotate( blowup( "do di re ri mi fa fi sol si la li ti".split( ' ' ) ), key2offset( k ) ) ;
+					break;
+				default :
+					throw new Error( 'never reach here' );
+			}
+
+			for ( var i=0; i<21; i++ ) {
+				c.writeHeader3( k + '' + ' Offset ' + i );
+				c.writeScore( i + '-01-u', `@do \\absolute \{ ${ merge_with_offset( notes_u,  i, 12 ,24 , 12 ) } \}` );
+				c.writeScore( i + '-02-d', `@do \\absolute \{ ${ merge_with_offset( notes_d,  i, 24 ,12 , 12 ) } \}` );
+			}
+		}
+
+	}
 	c.disable();
-
-
-
-
-
-
 
 
 
