@@ -9,7 +9,7 @@
 (lex.add.entry '( "lae" nil  (((l ae ) 0.1 )           )))
 (lex.add.entry '( "tae" nil  (((t ae ) 0.1 )           )))
 
-(SayText "dae rae mae fae sae lae tae dae" )
+; (SayText "dae rae mae fae sae lae tae dae" )
 
 ; (lex.add.entry '( "daiu" nil  (((d ey ) 0.1 )           )))
 ; (lex.add.entry '( "raiu" nil  (((r ey ) 0.1 )           )))
