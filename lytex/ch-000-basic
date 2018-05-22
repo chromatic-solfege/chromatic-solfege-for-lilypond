@@ -10,7 +10,7 @@ var MSG_ENHARMONIC_TO_HARMONIC = 'Enharmonic First, Harmonic Last';
 
 function batch() {
 	var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
-	// c.disableDisabled();
+	c.disableDisabled();
 	c.disable();
 
 	// Note Name Tool Kit (NNTK)
@@ -587,7 +587,6 @@ function batch() {
 		},
 	};
 
-	c.enable();
 	c.writeHeader1( "Enharmonic Intervals on the Chromatic Scale" );
 	{
 		c.writeHeader3( 'Sharp Chromatic Scale' );
@@ -595,7 +594,6 @@ function batch() {
 		c.writeHeader3( 'Flat Chromatic Scale' );
 		ehtk.exec( 'do ra re me mi fa se sol le la te ti',  0 );
 	}
-	c.disable();
 
 
 	c.writeHeader1( "Transposed Chromatic Scales" );
@@ -622,6 +620,16 @@ function batch() {
 			c.writeScore( i + '-02', `@${i} do di re ri mi fa fi sol si la li ti do s do ti te la le sol se fa mi me re ra do` );
 		}
 	}
+
+	c.enable();
+	c.writeHeader1( "Strict Fourth/Fifth Motions" );
+	{
+		c.writeHeader3( "Strict Fourth Motion" );
+		c.writeScore( "fourth" , "\\abs @do' \\absolute { do fa te me' le ra' se' de fe taw maw' law raw' saw'  daw faw tae mae' lae rae' sae' dae fae }" , {scmFestivalTempo:100} );
+		c.writeHeader3( "Strict Fifth Motion" );
+		c.writeScore( "fourth" , "\\abs @do' \\absolute { do sol re' la' mi' ti' fi''  di si ri' li' ma' ta' fai''  dai sai rai' lai' mai' tai' fao''  dao sao rao' lao' mao' tao' la'' }", {scmFestivalTempo:100} );
+	}
+	c.disable();
 
 
 	c.writeHeader1( "Applied Motions of Fourth/Fifth" );
