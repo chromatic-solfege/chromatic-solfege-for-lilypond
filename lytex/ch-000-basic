@@ -624,7 +624,39 @@ function batch() {
 	}
 
 
+	c.writeHeader1( "Applied Motions of Fourth/Fifth" );
+	{
+		c.writeHeader3( "Minor 3rd Motion 1" );
+		c.writeScore( 
+				`\
+				@do \
+				do  me se taw s  te sol mi ra  s  re fa le de s 
+				do  la fi ri  s  mi sol te ra  s  re ti si ma s 
+				fi  li di mi  s  fa re  ti si  s  la do me se s
+				sol mi di li  s  ti re  fa le  s  la fi ri ta 
+				`.replace( /\t\t/g, '' ).replace( /\n/g, ' ' )
+				);
 
+		c.writeHeader3( "Minor 3rd Motion 2" );
+		c.writeScore( 
+				`\
+				@do  do  me se taw s
+				@di  do, me se taw s
+				@re  do, me se taw s | \\break
+				@ri  do, me se taw s 
+				@mi  do, me se taw s 
+				@fa  do, me se taw s | \\break
+				@fi  do, me se taw s 
+				@sol do, me se taw s 
+				@si  do, me se taw s | \\break
+				@la  do, me se taw s 
+				@li  do, me se taw s 
+				@ti  do, me se taw s | \\break
+				@do  do, me se taw s s
+
+				`.replace( /\n|\t\t/g, ' ' )
+				);
+	}
 
 
 	c.close();
