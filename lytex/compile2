@@ -1,6 +1,27 @@
 #!/bin/bash
 shopt -s nullglob
 
+VOICE=$( nodejs -e 'console.log( require("local/settings").scmFestivalVoice ) ')
+# FILES=( "$@" )
+FILES=()
+FLG_VOICE="YES"
+
+
+while [[ 0 < "$#"  ]]; 
+do 
+  case "$1" in
+    -v|--voice) 
+      FLG_VOICE="YES";;
+    -nv|--no-voice) 
+      FLG_VOICE="NO";;
+    *) 
+      FILES+=("$1")
+      ;;
+  esac; 
+  shift; 
+done
+
+
 
 echo
 echo '====================='
@@ -8,28 +29,30 @@ echo 'Generating files...'
 echo '====================='
 echo
 
-VOICE=$( nodejs -e 'console.log( require("local/settings").scmFestivalVoice ) ')
-FILES=( "$@" )
 
 
 # If no file is specified to the arguments, it should default to all scale generators.
 if [ ${#FILES[@]} -eq 0 ]; then
-	rm out/*
-	FILES=( ./ch-* )
+  FILES=( ./ch-* )
+  if [[ $FLG_VOICE == "YES" ]]; then
+    rm out/*
+  fi
 fi
 
 # Remove the old generated files.
-for  i in  "${FILES[@]}" # "$@";
-do
-	# echo "${i##*/}"
-	NAME="${i##*/}"
-	echo "Processing ${NAME} ..."
-	# echo "out/${NAME}"-[0-9]*
-	rm -v "out/${NAME}"-[0-9]*
-	./${NAME}
-	echo 
-	echo 
-done;
+if [[ $FLG_VOICE == "YES" ]]; then
+  for  i in  "${FILES[@]}" # "$@";
+  do
+      # echo "${i##*/}"
+      NAME="${i##*/}"
+      echo "Processing ${NAME} ..."
+      # echo "out/${NAME}"-[0-9]*
+      rm -v "out/${NAME}"-[0-9]*
+      ./${NAME}
+      echo 
+      echo 
+  done
+fi
 
 # Create the file that include everything
 {
@@ -79,19 +102,21 @@ echo 'Compiling the Festival Header Voice  '
 echo '====================================='
 echo
 
-for NAME in  "${FILES[@]}"
-do
-	echo "Compiling ${NAME} ..."
-	for  i in "${NAME}"-[0-9]*.ftxt
-	do
-		# echo $i
-		max_proc_count 5
-		echo "${i##*/}"
-		text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" &  # 2> /dev/null &
-	done;
-	echo 
-	echo 
-done;
+if [[ $FLG_VOICE == "YES" ]]; then
+  for NAME in  "${FILES[@]}"
+  do
+      echo "Compiling ${NAME} ..."
+      for  i in "${NAME}"-[0-9]*.ftxt
+      do
+          # echo $i
+          max_proc_count 5
+          echo "${i##*/}"
+          text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" &  # 2> /dev/null &
+      done;
+      echo 
+      echo 
+  done;
+fi;
 
 # echo
 # echo '================================================'
@@ -130,3 +155,4 @@ vlc "${WAV_OUTPUT_FILES[@]}" &
 
 
 # lilypond -I /home/ats/Documents/lilypond/include/ *.ly
+# vim: expandtab sw=2:
