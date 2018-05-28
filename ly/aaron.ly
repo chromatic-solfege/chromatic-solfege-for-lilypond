@@ -166,7 +166,7 @@ process-marking-irregular-accidentals-bak =
                                                 (let ((pitch (ly:music-property music-e 'pitch ) ))
                                                   (if (<= 1 (abs (ly:pitch-alteration pitch )))
                                                     (begin
-                                                      (display-scheme-music pitch)
+                                                      ; (display-scheme-music pitch)
                                                       (ly:music-set-property! music-e 'articulations (list #{ \uout #}) )
                                                       (let ((found (find (lambda(v)
                                                                            (eq? 
