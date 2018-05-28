@@ -10,8 +10,9 @@ var MSG_ENHARMONIC_TO_HARMONIC = 'Enharmonic First, Harmonic Last';
 
 function batch() {
     var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
-    c.disableDisabled();
+    c.setDevelopmentMode( true );
     c.disable();
+    // c.setAlwaysOutputHeader( true );
 
     c.writeHeader0( "Accidentals" );
     {
@@ -172,7 +173,6 @@ function batch() {
             },
         };
 
-        c.enable();
         // Note Names 1
         c.writeHeader1( "Natural" );
         {
@@ -301,7 +301,6 @@ function batch() {
             }
         }
 
-        c.disable();
 
         // Note Names 2
         c.writeHeader1( "Double Flat" );
@@ -788,8 +787,8 @@ function batch() {
 
     }
 
-    c.writeHeader0( "Any Key" );
-    c.writeTextBody( "TODO" );
+    c.writeHeader0( "Transposing to Every Keys" );
+    c.writeTextBody( "Freeing you from the single key." );
     {
         c.writeHeader1( "Exercise to Acquire the Senses of Tonality" );
 
@@ -934,21 +933,119 @@ function batch() {
     }
 
 
+    c.enable();
+    c.writeHeader0( "Advanced Intervals" );
+    c.writeTextBody( 
+            "TODO"
+        );
+    {
+        var scale_s = "do di re ri mi fa fi sol si la li ti".split( ' ' ).map( (s)=> s+"'" ) ;
+        var scale_f = "do ra re me mi fa se sol le la te ti".split( ' ' ).map( (s)=> s+"'" ) ;
 
+        function advancedIntervals( interval, caption ) {
+            caption = caption.trim().replace( / +/, " " );
 
+            var notes_f = "";
+            var notes_s = "";
+            var options  = { scmFestivalTempo:170, scmMarkIrregularAccidentals:true };
+            for ( var i=0; i<12; i++ ) {
+                if ( 0 < i ) {
+                    notes_f += ' s ';
+                    notes_s += ' s ';
+                }
+                notes_f += "@" + scale_f[i] + ' ' + interval;
+                notes_s += "@" + scale_s[i] + ' ' + interval;
+            }
 
+            // Added the last note to both flat-series and sharp-series.
+            notes_f += "@do' do'";
+            notes_s += "@do' do'";
 
+            c.writeHeader2( caption );
+            c.writeHeader3( caption + " in the Flat Chromatic Scale" );
+            c.writeScore( "advanced-intervals", "\\absolute { \\abs " + notes_f + " } ", options );
+            c.writeHeader3( caption + " in the Sharp Chromatic Scale" );
+            c.writeScore( "advanced-intervals", "\\absolute { \\abs " + notes_s + " } ", options );
+        }
 
+        c.writeHeader1( "Practical Intervals" );
+        advancedIntervals( "do de"   , "Diminished Unison"        );
+        advancedIntervals( "do do"   , "Perfect    Unison"        );
+        advancedIntervals( "do di"   , "Augumented Unison"        );
+        advancedIntervals( "do ra"   , "Minor      Second"        );
+        advancedIntervals( "do re"   , "Major      Second"        );
+        advancedIntervals( "do ri"   , "Augumented Second"        );
+        advancedIntervals( "do me"   , "Minor      Third"         );
+        advancedIntervals( "do mi"   , "Major      Third"         );
+        advancedIntervals( "do ma"   , "Augumented Third"         );
+        advancedIntervals( "do fa"   , "Perfect    Fourth"        );
+        advancedIntervals( "do fi"   , "Augumented Fourth"        );
+        advancedIntervals( "do se"   , "Diminished Fifth"         );
+        advancedIntervals( "do sol"  , "Perfect    Fifth"         );
+        advancedIntervals( "do si"   , "Augumented Fifth"         );
+        advancedIntervals( "do le"   , "Minor      Sixth"         );
+        advancedIntervals( "do la"   , "Major      Sixth"         );
+        advancedIntervals( "do li"   , "Augumented Sixth"         );
+        advancedIntervals( "do te"   , "Minor      Seventh"       );
+        advancedIntervals( "do ti"   , "Major      Seventh"       );
+        advancedIntervals( "do ta"   , "Augumented Seventh"       );
+        advancedIntervals( "do de'"  , "Diminished Octave"        );
+        advancedIntervals( "do do'"  , "Perfect    Octave"        );
+        advancedIntervals( "do di'"  , "Augumented Octave"        );
+        advancedIntervals( "do ra'"  , "Minor      Ninth"         );
+        advancedIntervals( "do re'"  , "Major      Ninth"         );
+        advancedIntervals( "do ri'"  , "Augumented Ninth"         );
+        advancedIntervals( "do me'"  , "Minor      Tenth"         );
+        advancedIntervals( "do mi'"  , "Major      Tenth"         );
+        advancedIntervals( "do ma'"  , "Augumented Tenth"         );
+        advancedIntervals( "do fa'"  , "Perfect    Eleventh"      );
+        advancedIntervals( "do fi'"  , "Augumented Eleventh"      );
+        advancedIntervals( "do se'"  , "Diminished Twelveth"      );
+        advancedIntervals( "do sol'" , "Perfect    Twelveth"      );
+        advancedIntervals( "do si'"  , "Augumented Twelveth"      );
+        advancedIntervals( "do le'"  , "Minor      Thirteenth"    );
+        advancedIntervals( "do la'"  , "Major      Thirteenth"    );
+        advancedIntervals( "do li'"  , "Augumented Thirteenth"    );
+        advancedIntervals( "do te'"  , "Minor      Fourteenth"    );
+        advancedIntervals( "do ti'"  , "Major      Fourteenth"    );
+        advancedIntervals( "do ta'"  , "Augumented Fourteenth"    );
+        advancedIntervals( "do de'"  , "Diminished Double Octave" );
+        advancedIntervals( "do do''" , "Double     Octave"        );
 
+        c.writeHeader1( "Theoretecal Intervals - Double Diminished" );
+        advancedIntervals( "do daw"   , "Double Diminished Unison"        );
+        advancedIntervals( "do raw"   , "Double Diminished Second"        );
+        advancedIntervals( "do maw"   , "Double Diminished Third"         );
+        advancedIntervals( "do faw"   , "Double Diminished Fourth"        );
+        advancedIntervals( "do saw"   , "Double Diminished Fifth"         );
+        advancedIntervals( "do law"   , "Double Diminished Sixth"         );
+        advancedIntervals( "do taw"   , "Double Diminished Seventh"       );
+        advancedIntervals( "do daw'"  , "Double Diminished Octave"        );
+        advancedIntervals( "do raw'"  , "Double Diminished Ninth"         );
+        advancedIntervals( "do maw'"  , "Double Diminished Tenth"         );
+        advancedIntervals( "do faw'"  , "Double Diminished Eleventh"      );
+        advancedIntervals( "do saw'"  , "Double Diminished Twelveth"      );
+        advancedIntervals( "do law'"  , "Double Diminished Thirteenth"    );
+        advancedIntervals( "do taw'"  , "Double Diminished Fourteenth"    );
 
+        c.writeHeader1( "Theoretecal Intervals - Double Augumented" );
+        advancedIntervals( "do dai"   , "Double Augumented Unison"        );
+        advancedIntervals( "do rai"   , "Double Augumented Second"        );
+        advancedIntervals( "do mai"   , "Double Augumented Third"         );
+        advancedIntervals( "do fai"   , "Double Augumented Fourth"        );
+        advancedIntervals( "do sai"   , "Double Augumented Fifth"         );
+        advancedIntervals( "do lai"   , "Double Augumented Sixth"         );
+        advancedIntervals( "do tai"   , "Double Augumented Seventh"       );
+        advancedIntervals( "do dai'"  , "Double Augumented Octave"        );
+        advancedIntervals( "do rai'"  , "Double Augumented Ninth"         );
+        advancedIntervals( "do mai'"  , "Double Augumented Tenth"         );
+        advancedIntervals( "do fai'"  , "Double Augumented Eleventh"      );
+        advancedIntervals( "do sai'"  , "Double Augumented Twelveth"      );
+        advancedIntervals( "do lai'"  , "Double Augumented Thirteenth"    );
+        advancedIntervals( "do tai'"  , "Double Augumented Fourteenth"    );
+    }
 
-
-
-
-
-
-
-
+    c.disable();
 
 
 
