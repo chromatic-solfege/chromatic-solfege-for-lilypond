@@ -141,7 +141,7 @@ uout = \stopTextSpan
 
        (proc-e music '()))
      ;return
-     (display-scheme-music music)
+     ; (display-scheme-music music)
 	 music
 	 
 	 ))
