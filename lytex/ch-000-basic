@@ -10,8 +10,8 @@ var MSG_ENHARMONIC_TO_HARMONIC = 'Enharmonic First, Harmonic Last';
 
 function batch() {
     var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
-    c.setDevelopmentMode( true );
-    c.disable();
+    // c.setDevelopmentMode( true );
+    // c.disable();
     // c.setAlwaysOutputHeader( true );
 
     c.writeHeader0( "Accidentals" );
@@ -934,9 +934,29 @@ function batch() {
 
 
     c.enable();
+
+    // c.writeCommands(
+    //         `
+    //         \\begin\{tabular\}\{ l | c | r \}
+    //           1 & 2 & 3 \\\\
+    //           4 & 5 & 6 \\\\
+    //           7 & 8 & 9 \\\\
+    //         \\end\{tabular\}
+    //         `.replace( /^\s*/, "" )
+    //         );
+
     c.writeHeader0( "Advanced Intervals" );
     c.writeTextBody( 
-            "TODO"
+            "In this section, we will mathmatically permutate every possible combinations of any two notes to reveal every possible absolute intervals. " +
+            "In order to acquire the absolute intervals, we transpose every possible relative intervals to every possible keys. " +
+            "\n\n" +
+            "In modern music, most instruments are equally tempered and thus there are only twelve notes in an octave. " +
+            "In musical notation, however, it presumes that there could be instruments which are not based on equal temparaments; " +
+            "in such case, semitones vary in size. Therefore it is not possible to assume that flat and sharp are always same size. " +
+            "Thus there are two instances of the chromatic scale in the world of musical notation " + 
+            "even though the existence of the chromatic scale is always one and only. "+ 
+            "\n\n" +
+            ""
         );
     {
         var scale_s = "do di re ri mi fa fi sol si la li ti".split( ' ' ).map( (s)=> s+"'" ) ;
@@ -958,10 +978,10 @@ function batch() {
             }
 
             // Added the last note to both flat-series and sharp-series.
-            notes_f += "@do' do'";
-            notes_s += "@do' do'";
+            notes_f += "@do' s do'";
+            notes_s += "@do' s do'";
 
-            c.writeHeader2( caption );
+            c.writeHeader2( caption + ` ([${interval}])`);
             c.writeHeader3( caption + " in the Flat Chromatic Scale" );
             c.writeScore( "advanced-intervals", "\\absolute { \\abs " + notes_f + " } ", options );
             c.writeHeader3( caption + " in the Sharp Chromatic Scale" );
@@ -969,6 +989,7 @@ function batch() {
         }
 
         c.writeHeader1( "Practical Intervals" );
+
         advancedIntervals( "do de"   , "Diminished Unison"        );
         advancedIntervals( "do do"   , "Perfect    Unison"        );
         advancedIntervals( "do di"   , "Augumented Unison"        );
