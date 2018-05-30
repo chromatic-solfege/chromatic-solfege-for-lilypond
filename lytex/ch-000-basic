@@ -10,9 +10,185 @@ var MSG_ENHARMONIC_TO_HARMONIC = 'Enharmonic First, Harmonic Last';
 
 function batch() {
     var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
-    // c.setDevelopmentMode( true );
+
+    // c.writeNewPage();
+    // c.t_abstract`Hey foo bar`;
+    // c.writeNewPage();
+
+    c.setDevelopmentMode( true );
     // c.disable();
     // c.setAlwaysOutputHeader( true );
+    
+    // TODO Write descriptions to every harmonic intervals.
+    // TODO Scales with Guitar Diagram
+
+    c.enable();
+
+    c.t_abstract`
+            \textbf{\textit{ UNFINISHED 1 Apr 2018 }} \\
+
+            In modern music, many compositions are polymodal. In order to obtain better
+            understanding for polymodality, let’s extend traditional diatonic solfège to
+            chromatic. This article will explain a method to extend the traditional solfège
+            into chromatic by introducing new note names which was invented by Aaron
+            Shearer and show how to build fluency with the notes by enumerating all the
+            irregular cases which the current diatonic based interval system consists.
+        `;
+
+    c.t_header0`Introduction`;
+    c.t_textBody`
+            In the modern diatonic based interval system, there are certain missing
+            intervals which do not exist without irregular accidentals such as
+            double flat, double sharp, C\cflat , F\cflat. E\csharp and B\csharp.
+            For example G\cflat does not have the perfect 4th interval without an
+            irregular flatted note C\cflat.  Enharmonically speaking, C\cflat is
+            B\cnatural; but harmonically speaking, B\cnatural from G\cflat is the
+            augmented major 3rd rather than the perfect 4th. 
+
+            In modern music, most tunes are played in equal temperament. Especially
+            in jazz music in 1980’s or later, the scales are premised equal
+            temperament and players frequently modulate tonality of tunes. However,
+            the music notation is still using the diatonic based interval system;
+            therefore it is still necessary to go through the complication of the
+            missing intervals.
+
+            In general, it is preferable to write intervals with harmonically
+            correct name; for example, writing G\cflat major scale’s 4th note as
+            C\cflat rather than B\cnatural is preferable because B\cnatural is not
+            4th but augmented major 3rd. In practical use,  However, harmonic
+            correctness is often intentionally disregarded because it does not
+            employ how to play on musical instruments; therefore it is also very
+            common to write C\cflat as B\cnatural in this case. The modern musical
+            instruments are based on equal temperament; in spite of the note that a
+            player should play is harmonically C\cflat, the player has to
+            manipulate their instrument as if the note is B\cnatural.
+
+            There are many inconsistently written notes in practical world. In
+            order to obtain faster reading ability, let’s name all the intervals
+            chromatically at first; then enumerate all the possible irregular
+            intervals, and we categorize them into three classes, and train
+            ourselves to build fluency to irregularity.
+        `;
+
+    c.writeNewPage();
+    c.writeTOC();
+    c.writeNewPage();
+
+    c.t_header1`Diatonic-Based Notation System`;
+    c.t_textBody`
+        Modern European music notation is based on a diatonic scale; that is,
+        it presumes that there are seven notes in an octave. In practical world,
+        scales are not always diatonic. For example, rock music is often based on a
+        pentatonic scale which consists five notes in an octave. Jazz music
+        often uses intervals which are based on the diminished scale which
+        consists eight notes in an octave. 
+
+        In a diatonic scale, if third intervals are stacked repeatedly, the
+        entire note group spans two octaves as \textit{ [ do mi sol ti re fa la do]}. 
+        \\~
+        `;
+
+    c.writeScore( 'example01', `@do do mi sol ti re fa la do`, { texGraphicWidth : 0.6 , lyTextAfter : [5,3]} );
+            
+    c.t_textBody`
+        \\~
+        \\~
+
+        This property is also inherited to the notation system.  Therefore,
+        when it comes to write intervals which are not based on a diatonic
+        based scale, it will be problematic.  
+
+        For example, the diminished scale is an octatonic scale.  The
+        diminished scale is a compound of two diminished 7th chords. The
+        diminished 7th chord consists four notes; thus the diminished scale
+        consists eight notes. The four notes which belong to diminished 7th
+        chord are considered that the intervals between the notes are always
+        minor 3rd.  As mentioned above, repeatedly stacking third intervals in
+        diatonic scale spans two octaves; but in octatonic scales, stacking 3rd
+        intervals spans only an octave. There is a gap between two.
+        \\~
+        `;
+
+    c.writeScore( 'example01', `@do do me se la`,   { texGraphicWidth : 0.6 , lyTextAfter : [5,3]} );
+
+    c.t_textBody`
+        \\~
+        \\~
+
+        Interval between G\cflat and A is not minor third, but augmented
+        second. In order to follow the harmonic correctness, this interval
+        should be written as G\cflat and B\cdoubleflat.
+
+        \\~
+    `;
+
+    c.writeScore( 'example01', `@do do me se taw `, { texGraphicWidth : 0.6 , lyTextAfter : [5,3]} );
+
+    c.t_textBody`
+        \\~
+        \\~
+
+        The modern European music notation system always yields such "gaps"
+        when it is used for writing intervals which are based on non-diatonic
+        scale. Such gaps become "wrinkles" on the notation system and one will
+        see them as irregular accidentals such as double-sharp, double-flat,
+        triple-sharp, triple-flat.
+
+        `;
+    c.t_header1`Necessity of Irregular Accidental`;
+    c.t_textBody`
+        Diminished fifth and augmented fourth are enharmonically equivalent.
+        Diminished fifth is an interval which consists six semitones. And so is
+        augmented fourth; it is an interval which consists same six semitones. 
+
+        But those two differ in context. Diminished fifth has a function to
+        provoke listeners want to hear smaller intervals such as major third at
+        the next.
+
+        \\~
+        `;
+
+    c.writeScore( 'example01', `@do do4 re mi fa sol la ti do || ti,4 fa' do mi `, { texGraphicWidth : 0.6 , lyTextAfter : [5,3], scmFestivalTempo:150} );
+    c.t_textBody`
+        \\~
+        \\~
+
+        But augmented fourth does not has such a function; it will stay in the
+        same intervals.
+
+        \\~
+    `;
+    c.writeScore( 'example01', `@do fa4 sol la ti do re mi fa || fa,4 ti fa ti`, { texGraphicWidth : 0.6 , lyTextAfter : [5,3], scmFestivalTempo:150 } );
+
+    c.t_textBody`
+        \\~
+        \\~
+
+        Therefore, any notation system should be able to distinctly show this
+        functional difference. But often many musical instrumental players
+        do not prefer to follow the interval correctness.
+
+        Because most instruments are not based on intervals but absolute note
+        name. In such instruments, interval correctness does not employ how to
+        play it.
+
+        The exception is guitars.  Rarely are guitarists aware what note they
+        are playing. In most of time, the only thing what guitarists care is
+        what "intervals" they are playing. 
+        `;
+    c.t_header1`Theoretical Intervals`;
+    c.t_textBody`
+            ( Under Construction )
+            Intervals ri fa are not major 2nd but diminished 3rd. In order to
+            keep consistency of intervals, it is considered more consistent to
+            write ri fa as ri ma or me fa. In the same manner, li do may be
+            written as li ta or te do.
+        `;
+
+    c.disable();
+
+    c.writeNewPage();
+
 
     c.writeHeader0( "Accidentals" );
     {
@@ -555,6 +731,7 @@ function batch() {
     }
 
     c.writeHeader0( "Transposing" );
+    // TODO
     c.writeTextBody( "TODO.");
     {
         c.writeHeader1( "Diatonic Scales" );
@@ -693,247 +870,7 @@ function batch() {
         }
     }
 
-    c.writeHeader0( "Scales" );
-    c.writeTextBody( 
-            "This section introduces some exercises to build fluency. " +
-            "Read them aloud repeatedly until you can recite without seeing the actual spells."
-        );
-    {
-        // ch-070 =============================================
-        c.writeHeader1( "Modal Scales" );
-        c.writeTextBody( "In this theory, all scales are related to closest minor scale. Rotation is a method to derive all related scales on a scale. (under construction)\\" );
-        {
-            // BASIC
-            c.writeHeader2( "Basic Modes" );
 
-            c.writeHeader3( "Dorian Scale" );
-            c.writeScore(  "dorian-basic",                           "do(do,re,me,fa,sol,la,te)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Diminished Scale" );
-            c.writeScore(  'diminished-basic',                       "do(do,re,me,fa,se,le,la,ti)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Melodic Minor Scale" );
-            c.writeScore(  'melodic-basic',                          "do(do,re,me,fa,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Harmonic Minor Scale" );
-            c.writeScore(  'harmonic-basic',                         "do(do,re,me,fa,sol,le,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Melodic Minor \\sharp 11 Scale" );
-            c.writeScore(  'melodic-s11-basic',                      "do(do,re,me,fi,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Wholetone Scale" );
-            c.writeScore(  'wholetone-basic',                        "do(do,re,mi,fi,si,li)            1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
-            c.writeHeader3( "Augumented Scale" );
-            c.writeScore(  'augumented-basic',                       "do(do,me,mi,sol,le,ti)           1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
-            c.writeHeader3( "Augumented Minor Major 7th Scale" );
-            c.writeScore(  'augumented-ma7-basic',                   "do(do,re,me,mi,se,sol,le,te,ti)  1 2 3 4 5 6 7 8 9 1 s 1 9 8 7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Augumented Natural 13th Scale" );
-            c.writeScore(  'augumented-n13-basic',                   "do(do,re,me,mi,se,le,la,te)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 "  );
-
-
-
-            // DORIAN
-            c.writeHeader2( "Dorian Mode Derived Scales" );
-            c.writeHeader3( "Dorian Scale" );
-            c.writeScore(  "dorian-01",                  "do(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Phrygian Scale" );
-            c.writeScore(  "dorian-02",                  "do(re,me,fa,sol,la,te,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Lydian Scale" );
-            c.writeScore(  "dorian-03",                  "do(me,fa,sol,la,te,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Mixolydian Scale" );
-            c.writeScore(  "dorian-04",                  "do(fa,sol,la,te,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Aeolian Scale" );
-            c.writeScore(  "dorian-05",                  "do(sol,la,te,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Locrian Scale" );
-            c.writeScore(  "dorian-06",                  "do(la,te,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Ionian Scale" );
-            c.writeScore(  "dorian-07",                  "do(te,do,re,me,fa,sol,la)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-
-
-            // MELODIC
-            c.writeHeader2( "Melodic Minor Mode Derived Scales" );
-
-            c.writeHeader3( "Melodic Minor Scale" );
-            c.writeScore(  "melodic-01",                  "do(do,re,me,fa,sol,la,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Phrygian \\natural 13th Scale" );
-            c.writeScore(  "melodic-02",                  "do(re,me,fa,sol,la,ti,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Lydian \\sharp 5th Scale" );
-            c.writeScore(  "melodic-03",                  "do(me,fa,sol,la,ti,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Mixolydian \\sharp 11th Scale" );
-            c.writeScore(  "melodic-04",                  "do(fa,sol,la,ti,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Aeolian Majour Scale ( Mixolydian \\flat 13th )" );
-            c.writeScore(  "melodic-05",                  "do(sol,la,ti,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Locrian \\natural 9th Scale ( Super Locrian Scale )" );
-            c.writeScore(  "melodic-06",                  "do(la,ti,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Ionian \\flat All Scale ( Altered Scale )" );
-            c.writeScore(  "melodic-07",                  "do(ti,do,re,me,fa,sol,la)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-
-
-            // HARMONIC
-            c.writeHeader2( "Harmonic Minor Mode Derived Scales" );
-
-            c.writeHeader3( "Harmonic Minor Scale" );
-            c.writeScore(  "harmonic-01",                  "do(do,re,me,fa,sol,le,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Locrian \\natural 13th Scale" );
-            c.writeScore(  "harmonic-02",                  "do(re,me,fa,sol,le,ti,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Ionian \\sharp 5th Scale" );
-            c.writeScore(  "harmonic-03",                  "do(me,fa,sol,le,ti,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Dorian \\sharp 11th Scale" );
-            c.writeScore(  "harmonic-04",                  "do(fa,sol,le,ti,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Phrygian Major Scale ( Harmonic Minor Perfect 5th Below )" );
-            c.writeTextBody( "(Mixolydian \\cflat 9th \\cflat 13th)" );
-            c.writeScore(  "harmonic-05",                  "do(sol,le,ti,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Lydian \\sharp 9th Scale ( Super Locrian Scale )" );
-            c.writeScore(  "harmonic-06",                  "do(le,ti,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Ionian Diminished 7th Scale ( Altered Scale )" );
-            c.writeScore(  "harmonic-07",                  "do(ti,do,re,me,fa,sol,le)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-        }
-
-
-    }
-
-    c.writeHeader0( "Transposing to Every Keys" );
-    c.writeTextBody( "Freeing you from the single key." );
-    {
-        c.writeHeader1( "Exercise to Acquire the Senses of Tonality" );
-
-        function exec( id, keys, scale, pattern , title, comment ) {
-            if ( title ) {
-                c.writeHeader2( title );
-            }
-            if ( comment ) {
-                c.writeTextBody( title );
-            }
-            for ( var i of keys ) {
-                c.writeHeader3( 'Key ' + ita2ger[ i ] );
-                c.writeScore( id + '_' + i, `@${i}(${scale}) ${ pattern }` );
-            }
-        }
-
-        var keys = "do,fa,te,me,le,ra,se,sol,re,la,mi,ti,fi".split( ',' );
-        var ita2ger = {
-            'do' : 'C',
-            'fa' : 'F',
-            'te' : 'B\\flat',
-            'me' : 'E\\flat',
-            'le' : 'A\\flat',
-            'ra' : 'D\\flat',
-            'se' : 'G\\flat',
-            'sol': 'G',
-            're' : 'D',
-            'la' : 'A',
-            'mi' : 'E',
-            'ti' : 'B',
-            'fi' : 'F\\sharp',
-        };
-
-        var scale_dorian      = "do,re,me,fa,sol,la,te";
-        var scale_diminished  = "do,re,me,fa,se,le,la,ti";
-        var scale_melodic     = "do,re,me,fa,sol,la,ti";
-        var scale_harmonic    = "do,re,me,fa,sol,le,ti";
-        var scale_melodic_s11 = "do,re,me,fi,sol,la,ti";
-
-        var scale_wholetone = "do,re,mi,fi,si,li";
-        var scale_augument = "do,me,mi,sol,le,ti";
-        var scale_augument_ma7 = "do,re,me,mi,se,sol,le,te,ti";
-        var scale_augument_n13 = "do,re,me,mi,se,le,la,te";
-
-        var pattern6_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] "
-        var pattern7_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ]"
-        var pattern8_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ] s 9, [ 11 13 15 ]"
-        var pattern9_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ] s 9, [ 11 13 15 ] s 10, [ 12 14 16 ]"
-
-        pattern6_01 = pattern6_01.replace( /s/g , "" );
-        pattern7_01 = pattern7_01.replace( /s/g , "" );
-        pattern8_01 = pattern8_01.replace( /s/g , "" );
-        pattern9_01 = pattern9_01.replace( /s/g , "" );
-
-        // 1
-        // exec( "dor_br1", keys, scale_dorian,  pattern7_01, "Dorian - Broken Chord Movement 1", "" );
-
-
-        // var pattern7_02 = "1 7   2 1   3 2   4 3   5 4   6 5   7 6   8 7    9 8  10 9 \n 8 9 7 8 6 7 5 6 4 5 3 4 2 3 1 2 7 1";
-        // exec( keys, scale_dorian,       pattern7_02, "dor_2nd",     "Dorian - Interval 2nd ", "" );
-
-        exec( "dor_3rd_lh",  keys, scale_dorian, "1 3   2 4   3 5   4 6   5 7   6 8   7 9   8 10  \n 8 10 7 9 6 8 5 7 4 6 3 5 2 4 1 3",
-                 "Dorian - Interval 3rd - Low High", "" );
-
-        exec( "dor_3rd_hl", keys, scale_dorian, "3 1    4 2    5 3    6 4    7 5    8 6    9 7  10 8 \n 10 8 9 7 8 6  7 5  6 4  5 3  4 2  3 1", 
-                "Dorian - Interval 3rd - High Low", "" );
-
-        // exec( "dor_4th", keys, scale_dorian,  "1 4   2 5   3 6   4 7   5 8   6 9   7 10   8 11  9 12 \n 11 8 10 7 9 6 8 5 7 4 6 3 5 2 4 1",
-        // 		"Dorian - Interval 4th ", "" );
-        // 
-        // exec( "dor_5th", keys, scale_dorian,  "1 5' 2 6' 3 7' 4 8' 5 9' 6 10' 7 11' 8 12' 9 13' \n 12 8, 11 7, 10 6, 9 5, 8 4, 7 3, 6 2, 5 1,",
-        // 		"Dorian - Interval 5th ", "" );
-        // 
-        // exec( "dor_6th", keys, scale_dorian,  "3 1' 4, 2' 5, 3' 6, 4' 7, 5' 1, 6' 2, 7' 3, 1'",
-        // 		"Dorian - Interval 6th ", "" );
-
-
-
-
-
-
-
-        // 
-        // exec( keys, scale_melodic ,     pattern7_01, "mel",     "Melodic Minor - Broken Chord Movement 1", "" );
-        // exec( keys, scale_harmonic,     pattern7_01, "har",     "Harmonic Minor - Broken Chord Movement 1", "" );
-        // exec( keys, scale_melodic_s11 , pattern7_01, "mel_s11", "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
-        // 
-        // 
-        // 
-        // 
-        // 
-        // exec( keys, scale_diminished,   pattern8_01, "dim",     "Diminished - Broken Chord Movement 1", "" );
-        // exec( keys, scale_wholetone ,   pattern6_01, "who",     "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
-        // exec( keys, scale_augument ,    pattern6_01, "aug",     "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
-        // exec( keys, scale_augument_ma7, pattern9_01, "aug_ma7", "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
-        // exec( keys, scale_augument_n13, pattern8_01, "aug_n13", "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
-        // 
-    }
-
-    c.writeHeader0( "Advanced Exercises" );
-    c.writeTextBody( 
-            "This section introduces some exercises to build fluency. " +
-            "Read them aloud repeatedly until you can recite without seeing the actual spells."
-        );
-    {
-
-
-        c.writeHeader1( "Applied Motions of Fourth/Fifth" );
-        {
-            c.writeHeader3( "Minor 3rd Motion 1" );
-            c.writeScore( 
-                    `\
-                    @do \
-                    do  me se taw s  te sol mi ra  s  re fa le de s 
-                    do  la fi ri  s  mi sol te ra  s  re ti si ma s 
-                    fi  li di mi  s  fa re  ti si  s  la do me se s
-                    sol mi di li  s  ti re  fa le  s  la fi ri ta 
-                    `.replace( /\t\t/g, '' ).replace( /\n/g, ' ' )
-                    );
-
-            c.writeHeader3( "Minor 3rd Motion 2" );
-            c.writeScore( 
-                    `\
-                    @do  do  me se taw s
-                    @di  do, me se taw s
-                    @re  do, me se taw s | \\break
-                    @ri  do, me se taw s 
-                    @mi  do, me se taw s 
-                    @fa  do, me se taw s | \\break
-                    @fi  do, me se taw s 
-                    @sol do, me se taw s 
-                    @si  do, me se taw s | \\break
-                    @la  do, me se taw s 
-                    @li  do, me se taw s 
-                    @ti  do, me se taw s | \\break
-                    @do  do, me se taw s s
-
-                    `.replace( /\n|\t\t/g, ' ' )
-                    );
-        }
-
-    }
-
-
-    c.enable();
 
     // c.writeCommands(
     //         `
@@ -946,7 +883,7 @@ function batch() {
     //         );
 
     c.writeHeader0( "Advanced Intervals" );
-    c.writeTextBody( 
+    c.writeTextBody(
             "In this section, we will mathmatically permutate every possible combinations of any two notes to reveal every possible absolute intervals. " +
             "In order to acquire the absolute intervals, we transpose every possible relative intervals to every possible keys. " +
             "\n\n" +
@@ -1066,7 +1003,178 @@ function batch() {
         advancedIntervals( "do tai'"  , "Double Augumented Fourteenth"    );
     }
 
-    c.disable();
+    c.writeHeader0( "Scales" );
+    // TODO
+    c.writeTextBody( 
+            "This section introduces some exercises to build fluency. " +
+            "Read them aloud repeatedly until you can recite without seeing the actual spells."
+        );
+    {
+        // ch-070 =============================================
+        c.writeHeader1( "Modal Scales" );
+        c.writeTextBody( "In this theory, all scales are related to closest minor scale. Rotation is a method to derive all related scales on a scale. (under construction)\\" );
+        {
+            // BASIC
+            c.writeHeader2( "Basic Modes" );
+
+            c.writeHeader3( "Dorian Scale" );
+            c.writeScore(  "dorian-basic",                           "do(do,re,me,fa,sol,la,te)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
+            c.writeHeader3( "Diminished Scale" );
+            c.writeScore(  'diminished-basic',                       "do(do,re,me,fa,se,le,la,ti)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 "  );
+            c.writeHeader3( "Melodic Minor Scale" );
+            c.writeScore(  'melodic-basic',                          "do(do,re,me,fa,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
+            c.writeHeader3( "Harmonic Minor Scale" );
+            c.writeScore(  'harmonic-basic',                         "do(do,re,me,fa,sol,le,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
+            c.writeHeader3( "Melodic Minor \\sharp 11 Scale" );
+            c.writeScore(  'melodic-s11-basic',                      "do(do,re,me,fi,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
+            c.writeHeader3( "Wholetone Scale" );
+            c.writeScore(  'wholetone-basic',                        "do(do,re,mi,fi,si,li)            1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
+            c.writeHeader3( "Augumented Scale" );
+            c.writeScore(  'augmented-basic',                       "do(do,me,mi,sol,le,ti)           1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
+            c.writeHeader3( "Augumented Minor Major 7th Scale" );
+            c.writeScore(  'augmented-ma7-basic',                   "do(do,re,me,mi,se,sol,le,te,ti)  1 2 3 4 5 6 7 8 9 1 s 1 9 8 7 6 5 4 3 2 1 "  );
+            c.writeHeader3( "Augumented Natural 13th Scale" );
+            c.writeScore(  'augmented-n13-basic',                   "do(do,re,me,mi,se,le,la,te)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 "  );
+
+
+
+            // DORIAN
+            c.writeHeader2( "Dorian Mode Derived Scales" );
+            c.writeHeader3( "Dorian Scale" );
+            c.writeScore(  "dorian-01",                  "do(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
+            c.writeHeader3( "Phrygian Scale" );
+            c.writeScore(  "dorian-02",                  "do(re,me,fa,sol,la,te,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
+            c.writeHeader3( "Lydian Scale" );
+            c.writeScore(  "dorian-03",                  "do(me,fa,sol,la,te,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
+            c.writeHeader3( "Mixolydian Scale" );
+            c.writeScore(  "dorian-04",                  "do(fa,sol,la,te,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
+            c.writeHeader3( "Aeolian Scale" );
+            c.writeScore(  "dorian-05",                  "do(sol,la,te,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
+            c.writeHeader3( "Locrian Scale" );
+            c.writeScore(  "dorian-06",                  "do(la,te,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
+            c.writeHeader3( "Ionian Scale" );
+            c.writeScore(  "dorian-07",                  "do(te,do,re,me,fa,sol,la)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
+
+
+            // MELODIC
+            c.writeHeader2( "Melodic Minor Mode Derived Scales" );
+
+            c.writeHeader3( "Melodic Minor Scale" );
+            c.writeScore(  "melodic-01",                  "do(do,re,me,fa,sol,la,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
+            c.writeHeader3( "Phrygian \\natural 13th Scale" );
+            c.writeScore(  "melodic-02",                  "do(re,me,fa,sol,la,ti,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
+            c.writeHeader3( "Lydian \\sharp 5th Scale" );
+            c.writeScore(  "melodic-03",                  "do(me,fa,sol,la,ti,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
+            c.writeHeader3( "Mixolydian \\sharp 11th Scale" );
+            c.writeScore(  "melodic-04",                  "do(fa,sol,la,ti,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
+            c.writeHeader3( "Aeolian Majour Scale ( Mixolydian \\flat 13th )" );
+            c.writeScore(  "melodic-05",                  "do(sol,la,ti,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
+            c.writeHeader3( "Locrian \\natural 9th Scale ( Super Locrian Scale )" );
+            c.writeScore(  "melodic-06",                  "do(la,ti,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
+            c.writeHeader3( "Ionian \\flat All Scale ( Altered Scale )" );
+            c.writeScore(  "melodic-07",                  "do(ti,do,re,me,fa,sol,la)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
+
+
+            // HARMONIC
+            c.writeHeader2( "Harmonic Minor Mode Derived Scales" );
+
+            c.writeHeader3( "Harmonic Minor Scale" );
+            c.writeScore(  "harmonic-01",                  "do(do,re,me,fa,sol,le,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
+            c.writeHeader3( "Locrian \\natural 13th Scale" );
+            c.writeScore(  "harmonic-02",                  "do(re,me,fa,sol,le,ti,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
+            c.writeHeader3( "Ionian \\sharp 5th Scale" );
+            c.writeScore(  "harmonic-03",                  "do(me,fa,sol,le,ti,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
+            c.writeHeader3( "Dorian \\sharp 11th Scale" );
+            c.writeScore(  "harmonic-04",                  "do(fa,sol,le,ti,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
+            c.writeHeader3( "Phrygian Major Scale ( Harmonic Minor Perfect 5th Below )" );
+            c.writeTextBody( "(Mixolydian \\cflat 9th \\cflat 13th)" );
+            c.writeScore(  "harmonic-05",                  "do(sol,le,ti,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
+            c.writeHeader3( "Lydian \\sharp 9th Scale ( Super Locrian Scale )" );
+            c.writeScore(  "harmonic-06",                  "do(le,ti,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
+            c.writeHeader3( "Ionian Diminished 7th Scale ( Altered Scale )" );
+            c.writeScore(  "harmonic-07",                  "do(ti,do,re,me,fa,sol,le)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
+        }
+
+
+    }
+
+    c.writeHeader0( "Transposing to Every Keys" );
+    c.writeTextBody( "Freeing you from the single key." );
+    {
+        c.writeHeader1( "Exercise to Acquire the Senses of Tonality" );
+
+        function exec( id, keys, scale, pattern , title, comment ) {
+            if ( title ) {
+                c.writeHeader2( title );
+            }
+            if ( comment ) {
+                c.writeTextBody( title );
+            }
+            for ( var i of keys ) {
+                c.writeHeader3( 'Key ' + ita2ger[ i ] );
+                c.writeScore( id + '_' + i, `@${i}(${scale}) ${ pattern }` );
+            }
+        }
+
+        var keys = "do,fa,te,me,le,ra,se,sol,re,la,mi,ti,fi".split( ',' );
+        var ita2ger = {
+            'do' : 'C',
+            'fa' : 'F',
+            'te' : 'B\\flat',
+            'me' : 'E\\flat',
+            'le' : 'A\\flat',
+            'ra' : 'D\\flat',
+            'se' : 'G\\flat',
+            'sol': 'G',
+            're' : 'D',
+            'la' : 'A',
+            'mi' : 'E',
+            'ti' : 'B',
+            'fi' : 'F\\sharp',
+        };
+
+        var scale_dorian      = "do,re,me,fa,sol,la,te";
+        var scale_diminished  = "do,re,me,fa,se,le,la,ti";
+        var scale_melodic     = "do,re,me,fa,sol,la,ti";
+        var scale_harmonic    = "do,re,me,fa,sol,le,ti";
+        var scale_melodic_s11 = "do,re,me,fi,sol,la,ti";
+
+        var scale_wholetone = "do,re,mi,fi,si,li";
+        var scale_augment = "do,me,mi,sol,le,ti";
+        var scale_augment_ma7 = "do,re,me,mi,se,sol,le,te,ti";
+        var scale_augment_n13 = "do,re,me,mi,se,le,la,te";
+
+        var pattern6_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] "
+        var pattern7_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ]"
+        var pattern8_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ] s 9, [ 11 13 15 ]"
+        var pattern9_01 = "1&8 [ 3 5 7 ] s  2, [ 4 6 8 ] s 3, [ 5 7 9 ] s 4, [ 6 8 10 ] s  5, [ 7 9 11 ] s 6, [ 8 10 12 ] s 7, [ 9 11 13 ] s 8, [ 10 12 14 ] s 9, [ 11 13 15 ] s 10, [ 12 14 16 ]"
+
+        pattern6_01 = pattern6_01.replace( /s/g , "" );
+        pattern7_01 = pattern7_01.replace( /s/g , "" );
+        pattern8_01 = pattern8_01.replace( /s/g , "" );
+        pattern9_01 = pattern9_01.replace( /s/g , "" );
+
+        // 1
+        // exec( "dor_br1", keys, scale_dorian,  pattern7_01, "Dorian - Broken Chord Movement 1", "" );
+
+
+        // var pattern7_02 = "1 7   2 1   3 2   4 3   5 4   6 5   7 6   8 7    9 8  10 9 \n 8 9 7 8 6 7 5 6 4 5 3 4 2 3 1 2 7 1";
+        // exec( keys, scale_dorian,       pattern7_02, "dor_2nd",     "Dorian - Interval 2nd ", "" );
+
+        exec( "dor_3rd_lh",  keys, scale_dorian, "1 3   2 4   3 5   4 6   5 7   6 8   7 9   8 10  \n 8 10 7 9 6 8 5 7 4 6 3 5 2 4 1 3",
+                 "Dorian - Interval 3rd - Low High", "" );
+
+        exec( "dor_3rd_hl", keys, scale_dorian, "3 1    4 2    5 3    6 4    7 5    8 6    9 7  10 8 \n 10 8 9 7 8 6  7 5  6 4  5 3  4 2  3 1", 
+                "Dorian - Interval 3rd - High Low", "" );
+
+        // exec( "dor_4th", keys, scale_dorian,  "1 4   2 5   3 6   4 7   5 8   6 9   7 10   8 11  9 12 \n 11 8 10 7 9 6 8 5 7 4 6 3 5 2 4 1",
+        // 		"Dorian - Interval 4th ", "" );
+        // 
+        // exec( "dor_5th", keys, scale_dorian,  "1 5' 2 6' 3 7' 4 8' 5 9' 6 10' 7 11' 8 12' 9 13' \n 12 8, 11 7, 10 6, 9 5, 8 4, 7 3, 6 2, 5 1,",
+        // 		"Dorian - Interval 5th ", "" );
+        // 
+        // exec( "dor_6th", keys, scale_dorian,  "3 1' 4, 2' 5, 3' 6, 4' 7, 5' 1, 6' 2, 7' 3, 1'",
+        // 		"Dorian - Interval 6th ", "" );
 
 
 
@@ -1074,7 +1182,75 @@ function batch() {
 
 
 
+        // 
+        // exec( keys, scale_melodic ,     pattern7_01, "mel",     "Melodic Minor - Broken Chord Movement 1", "" );
+        // exec( keys, scale_harmonic,     pattern7_01, "har",     "Harmonic Minor - Broken Chord Movement 1", "" );
+        // exec( keys, scale_melodic_s11 , pattern7_01, "mel_s11", "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
+        // 
+        // 
+        // 
+        // 
+        // 
+        // exec( keys, scale_diminished,   pattern8_01, "dim",     "Diminished - Broken Chord Movement 1", "" );
+        // exec( keys, scale_wholetone ,   pattern6_01, "who",     "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
+        // exec( keys, scale_augment ,    pattern6_01, "aug",     "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
+        // exec( keys, scale_augment_ma7, pattern9_01, "aug_ma7", "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
+        // exec( keys, scale_augment_n13, pattern8_01, "aug_n13", "Melodic Minor \\sharp 11 - Broken Chord Movement 1", "" );
+        // 
+    }
 
+    c.writeHeader0( "Advanced Exercises" );
+    // TODO
+    c.writeTextBody( 
+            "This section introduces some exercises to build fluency. " +
+            "Read them aloud repeatedly until you can recite without seeing the actual spells."
+        );
+    {
+
+
+        c.writeHeader1( "Applied Motions of Fourth/Fifth" );
+        {
+            c.writeHeader3( "Minor 3rd Motion 1" );
+            c.writeScore( 
+                    `\
+                    @do \
+                    do  me se taw s  te sol mi ra  s  re fa le de s 
+                    do  la fi ri  s  mi sol te ra  s  re ti si ma s 
+                    fi  li di mi  s  fa re  ti si  s  la do me se s
+                    sol mi di li  s  ti re  fa le  s  la fi ri ta 
+                    `.replace( /\t\t/g, '' ).replace( /\n/g, ' ' )
+                    );
+
+            c.writeHeader3( "Minor 3rd Motion 2" );
+            c.writeScore( 
+                    `\
+                    @do  do  me se taw s
+                    @di  do, me se taw s
+                    @re  do, me se taw s | \\break
+                    @ri  do, me se taw s 
+                    @mi  do, me se taw s 
+                    @fa  do, me se taw s | \\break
+                    @fi  do, me se taw s 
+                    @sol do, me se taw s 
+                    @si  do, me se taw s | \\break
+                    @la  do, me se taw s 
+                    @li  do, me se taw s 
+                    @ti  do, me se taw s | \\break
+                    @do  do, me se taw s s
+
+                    `.replace( /\n|\t\t/g, ' ' )
+                    );
+        }
+    }
+
+
+    c.writeHeader0( `Conclusion` );
+    c.t_textBody`
+        Conclusion.
+        `;
+    {
+
+    }
 
     c.close();
 }
@@ -1084,5 +1260,5 @@ batch();
 
 
 
-// vim: expandtab filetype=javascript foldmethod=manual:
+// vim: spell expandtab filetype=javascript foldmethod=manual:
 
