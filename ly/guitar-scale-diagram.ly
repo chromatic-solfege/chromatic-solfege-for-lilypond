@@ -418,7 +418,7 @@
            )
 
        (let loop-1 ((pitches pitches)
-                    (counter (- -1 skip-count))
+                    (counter (- 0 skip-count))
                     (pitch-shift pitch-shift))
          (if (null? pitches)
            #f
@@ -569,6 +569,7 @@
 
 
 #(define fret-diagram-details-default (list 'fret-diagram-details
+                                            ; (cons (quote always-show-zero-fret) #t)
                                             (cons (quote dot-color) 'white)
                                             (cons (quote number-type) 'arabic)
                                             (cons (quote orientation) (quote landscape))
@@ -589,7 +590,7 @@
                                             (cons (quote xo-padding) 0.3)))
 
 
-#(define-markup-command (scale-diagram layout props cmusic fret-positions skip-count root-offset) (ly:music? list? integer? integer? )
+#(define-markup-command (scale-diagram layout props cmusic fret-positions skip-count root-offset override-default) (ly:music? list? integer? integer? list? )
    (interpret-markup layout props
        (markup #:override '(font-family . serif )
            (markup #:translate '(4 . 0)
@@ -598,7 +599,7 @@
                 (#:override
                  (cons (quote size) 2.0)
                  (#:override
-                  fret-diagram-details-default
+                  (append fret-diagram-details-default override-default) 
                   (#:fret-diagram-verbose
 
                    (create-simple-fretdiagram-definition
@@ -608,7 +609,7 @@
                     root-offset)))))))))
 
 
-#(define-markup-command (entire-scale-diagram layout props cmusic root-offset ) (ly:music? integer?)
+#(define-markup-command (entire-scale-diagram layout props cmusic root-offset override-default ) (ly:music? integer? list?)
    (interpret-markup layout props
        (markup #:override '(font-family . serif )
            (markup #:translate '(4 . 0)
@@ -617,7 +618,7 @@
                 (#:override
                  (cons (quote size) 2.0)
                  (#:override
-                  fret-diagram-details-default
+                  (append fret-diagram-details-default override-default) 
 
                   (#:fret-diagram-verbose
 
