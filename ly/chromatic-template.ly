@@ -214,6 +214,17 @@ makescore = #(define-scheme-function (parser location notes settings ) ( ly:musi
     (if (and v (cdr v))
      (set! notes (process-mark-irregular-accidentals notes))))
 
+   (let ((v (assq 'show-entire-scale-diagram settings )))
+     (if v
+       (put-entire-scale-diagram! notes settings )))
+
+   (let ((v (assq 'show-scale-diagram settings )))
+     (if v
+       (put-scale-diagram! notes settings )))
+
+
+   ; (display-scheme-music notes)
+
      #{
     \score {
       <<
