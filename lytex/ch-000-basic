@@ -15,7 +15,7 @@ function batch() {
     // c.t_abstract`Hey foo bar`;
     // c.writeNewPage();
 
-    c.setDevelopmentMode( true );
+    // c.setDevelopmentMode( true );
     // c.disable();
     // c.setAlwaysOutputHeader( true );
     
@@ -25,7 +25,7 @@ function batch() {
     c.enable();
 
     c.t_abstract`
-            \textbf{\textit{ UNFINISHED 1 Apr 2018 }} \\
+            \textbf{\textit{ UNFINISHED 2 Jun 2018 }} \\
 
             In modern music, many compositions are polymodal. In order to obtain better
             understanding for polymodality, let’s extend traditional diatonic solfège to
@@ -160,35 +160,115 @@ function batch() {
     `;
     c.writeScore( 'example01', `@do fa4 sol la ti do re mi fa || fa,4 ti fa ti`, { texGraphicWidth : 0.6 , lyTextAfter : [5,3], scmFestivalTempo:150 } );
 
+
+    // c.t_textBody`
+    //         \csharp 9th is another example.
+    //         Intervals ri fa are not major 2nd but diminished 3rd. In order to
+    //         keep consistency of intervals, it is considered more consistent to
+    //         write ri fa as ri ma or me fa. In the same manner, li do may be
+    //         written as li ta or te do.
+    //     `;
+
+   
     c.t_textBody`
         \\~
         \\~
 
-        Therefore, any notation system should be able to distinctly show this
-        functional difference. But often many musical instrumental players
-        do not prefer to follow the interval correctness.
+        Therefore, any notation system should be able to distinctly show these
+        functional difference. 
+        
+        But many musical instrumental players often do not prefer to follow the
+        interval correctness.  Because most instruments are not based on
+        intervals but absolute note name. For example, a piano has keys which
+        are corresponding to musical notes and those are supposed to be pushed
+        in order to obtain the actual notes.  In such instruments, interval
+        correctness does not employ how to play it.
 
-        Because most instruments are not based on intervals but absolute note
-        name. In such instruments, interval correctness does not employ how to
-        play it.
-
-        The exception is guitars.  Rarely are guitarists aware what note they
+        Guitars are exception.  Rarely are guitarists aware what note they
         are playing. In most of time, the only thing what guitarists care is
         what "intervals" they are playing. 
+
+        On guitars, musical intervals are always appearing as the same
+        configuration no matter what key the notes are belong to.  The
+        configuration of musical notes in a fretboard of a guitar is
+        enharmonically normalized and consistently aligned. Unlike piano, there
+        are no duplicated notes which comes from note alternation.  
+        
+        The following pictures depict Cmaj7, D\cflat maj7 Dmaj7 E\cflat maj7 on
+        a fretboard of a guitar. One can see in the pictures that how the
+        tetrad consistently moves to right as they are transposed to higher
+        keys.
+
+        \\~
         `;
-    c.t_header1`Theoretical Intervals`;
+
+    var settings_SmallScaleChart ={ 
+        texGraphicWidth : 0.4 , lyTextAfter : [3,3], scmFestivalTempo:150, 
+        scmShowScaleDiagram:true, scmAlwaysShowZeroFret:true, scmFretRange : "(1 . 12)", scmFretPositions : "( 5 4 4 3 )" 
+    };
+
+    c.t_commands`\begin{figure}[h]`;
+    c.t_commands`\centering`;
+    c.writeScore( 'example01', `@do do4 mi sol ti`, settings_SmallScaleChart );
+    c.writeScore( 'example01', `@ra do4 mi sol ti`, settings_SmallScaleChart );
+    c.t_textBody`\\~`;
+    c.t_textBody`\\~`;
+    c.writeScore( 'example01', `@re do4 mi sol ti`, settings_SmallScaleChart );
+    c.writeScore( 'example01', `@me do4 mi sol ti`, settings_SmallScaleChart );
+    c.t_commands`\caption{Note Spelling with Enharmonic Consistency}`;
+    c.t_commands`\end{figure}`;
+
     c.t_textBody`
-            ( Under Construction )
-            Intervals ri fa are not major 2nd but diminished 3rd. In order to
-            keep consistency of intervals, it is considered more consistent to
-            write ri fa as ri ma or me fa. In the same manner, li do may be
-            written as li ta or te do.
+        Therefore, intervals are the first thing to come into their minds for
+        guitarists and rarely do guitarists aware what notes they are playing.
+        Pianists tent to respell notes with irregular accidentals into
+        enharmonic equivalent notes. But Enharmonically respelled musical notes
+        are meaningless for guitarists because they do not employ how to play
+        on guitars. Rather, guitarists prefer harmonically consistent note
+        spelling as following :
+
+        \\~
+    `;
+
+    c.t_commands`\begin{figure}[h]`;
+    c.t_commands`\centering`;
+    c.writeScore( 'example01', `@do do4 mi sol ti`, settings_SmallScaleChart );
+    c.writeScore( 'example01', `@do di4 ma si ta`,  settings_SmallScaleChart );
+    c.t_textBody`\\~`;
+    c.t_textBody`\\~`;
+    c.writeScore( 'example01', `@do dai4 mai sai tai`, settings_SmallScaleChart );
+    c.writeScore( 'example01', `@do dao4 mao sao tao`, settings_SmallScaleChart );
+    c.t_textBody`\\~`;
+    c.t_textBody`\\~`;
+    c.t_commands`\caption{Note Spelling with Harmonic Correctness}`;
+    c.t_commands`\end{figure}`;
+
+    c.t_textBody`
+        In this way of spelling notes, one can easily see that the tetrad is
+        consistently transposed with a half step each with the drawback that
+        one cannot easily tell what notes they actually belong to. This way of
+        spelling notes eases guitarists to read musical notes; in the mean
+        time, this might be harsh to other majority of musicians.
+        
+        Unfortunately for the guitarists, the majority of musicians prefers
+        enharmonic spelling. This is also a major reason why many guitarists
+        are not able to read musical notes.
+
+        Comparing harmonic spelling and enharmonic spelling, both have their
+        advantages and disadvantages.  Enharmonic spelling denotes how to play
+        instruments but one cannot tell how it sounds because of harmonic
+        incorrectness. Harmonic spelling, though, denotes how it sounds;
+        therefore it helps one to understand the patterns laying underneath the
+        music. But it often confuses instrumental players.
+
+        They oppose to each other and it seems that there is no way to satisfy
+        the both requirement.
         `;
+
 
     c.disable();
 
     c.writeNewPage();
-
 
     c.writeHeader0( "Accidentals" );
     {
