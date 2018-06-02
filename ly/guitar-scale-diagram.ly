@@ -590,45 +590,82 @@
                                             (cons (quote xo-padding) 0.3)))
 
 
+#(define proc-scale-diagram 
+   (lambda ( cmusic fret-positions skip-count root-offset override-default ) 
+     (markup #:override '(font-family . serif )
+             (markup #:translate '(4 . 0)
+                     (markup
+                       #:line
+                       (#:override
+                        (cons (quote size) 2.0)
+                        (#:override
+                         (append fret-diagram-details-default override-default) 
+                         (#:fret-diagram-verbose
+
+                          (create-simple-fretdiagram-definition
+                            cmusic
+                            fret-positions
+                            skip-count
+                            root-offset)))))))))
+
 #(define-markup-command (scale-diagram layout props cmusic fret-positions skip-count root-offset override-default) (ly:music? list? integer? integer? list? )
-   (interpret-markup layout props
-       (markup #:override '(font-family . serif )
-           (markup #:translate '(4 . 0)
-               (markup
-                #:line
-                (#:override
-                 (cons (quote size) 2.0)
-                 (#:override
-                  (append fret-diagram-details-default override-default) 
-                  (#:fret-diagram-verbose
+  (interpret-markup layout props
+    (proc-scale-diagram cmusic fret-positions skip-count root-offset override-default )))
 
-                   (create-simple-fretdiagram-definition
-                    cmusic
-                    fret-positions
-                    skip-count
-                    root-offset)))))))))
+% ; parameters are supposed to be passed on override-default
+#(define put-scale-diagram!
+   (lambda ( music override-default )
+     (define note (last (lookup-music-by-name (music-to-elements music) 'NoteEvent)))
+     (define new-markup (proc-scale-diagram music 
+                                            (ly:assoc-get 'fret-positions override-default '(6 6 6 5 5 5 4 4 4 3 3 3 2 2 2 1 1 1) ) 
+                                            (ly:assoc-get 'skip-count     override-default 0 ) 
+                                            (ly:assoc-get 'root-offset    override-default 0 ) 
+                                            override-default ))
+     (ly:music-set-property! note 'articulations
+                             (append
+                               (ly:music-property note 'articulations)
+                               (list
+                                 (make-music 'TextScriptEvent
+                                             'direction 1
+                                             'text
+                                             new-markup))))))
 
+#(define proc-entire-scale-diagram 
+   (lambda ( cmusic root-offset override-default ) 
+     (markup #:override '(font-family . serif )
+             (markup #:translate '(4 . 0)
+                     (markup
+                       #:line
+                       (#:override
+                        (cons (quote size) 2.0)
+                        (#:override
+                         (append fret-diagram-details-default override-default) 
+
+                         (#:fret-diagram-verbose
+
+                          (create-entire-fretdiagram-definition
+                            cmusic
+                            root-offset)))))))))
 
 #(define-markup-command (entire-scale-diagram layout props cmusic root-offset override-default ) (ly:music? integer? list?)
    (interpret-markup layout props
-       (markup #:override '(font-family . serif )
-           (markup #:translate '(4 . 0)
-               (markup
-                #:line
-                (#:override
-                 (cons (quote size) 2.0)
-                 (#:override
-                  (append fret-diagram-details-default override-default) 
-
-                  (#:fret-diagram-verbose
-
-                   (create-entire-fretdiagram-definition
-                    cmusic
-                    root-offset)))))))))
+       (proc-entire-scale-diagram cmusic root-offset override-default )))
 
 
 
-
+% ; parameters are supposed to be passed on override-default
+#(define put-entire-scale-diagram!
+   (lambda ( music override-default )
+     (define note (last (lookup-music-by-name (music-to-elements music) 'NoteEvent)))
+     (define new-markup (proc-entire-scale-diagram music (ly:assoc-get 'root-offset override-default 0 ) override-default ))
+     (ly:music-set-property! note 'articulations
+                             (append
+                               (ly:music-property note 'articulations)
+                               (list
+                                 (make-music 'TextScriptEvent
+                                             'direction 1
+                                             'text
+                                             new-markup))))))
 
 
 
