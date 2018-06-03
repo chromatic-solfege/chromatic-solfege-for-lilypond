@@ -265,6 +265,26 @@ function batch() {
         the both requirement.
         `;
 
+    c.t_header1`A Probable Solution to Satisfy Both Harmonic Correctness and Enharmonic Correctness`;
+    c.t_textBody`
+        This thesis is introducing a method to satisfy both harmonic
+        correctness and enharmonic correctness without modifying the rule of
+        the traditional musical notation system; the method is invented by
+        Atsushi Oka.
+
+        The idea is, extending traditional solfege ( [do re mi] ) into
+        chromatic to name all of semitones in the diatonic scale, and
+        memorizing the every association between harmonically spelled intervals
+        enharmonically spelled intervals, and enumerating every corner cases
+        which can occur in the traditional musical notation system, and
+        memorizing all of them to understand the reason of the complication.
+
+        This paper includes comprehensively studied list of every intervals.
+        Every examples slightly differ with each other. The one watching it
+        will see the reason why it need to be written with irregular
+        accidentals as if it is in a flipbook.
+
+        `;
 
     c.disable();
 
