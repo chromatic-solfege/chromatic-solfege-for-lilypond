@@ -292,7 +292,18 @@ function batch() {
 
     c.writeHeader0( "Accidentals" );
     {
-        c.writeTextBody( 'Welcome to the world of chromatic solfège.' );
+        c.t_textBody`
+            Welcome to the world of the chromatic solfège. The chromatic
+            solfege system helps to acquire better understanding of the
+            principles of beauties which is hidden behind the harmony.  This
+            section introduces note names which are used in this chromatic
+            solfege system.
+
+            In this section, all of note names which are used in the chromatic
+            solfege are shown.
+        `;
+        // This section introduces some exercises to build fluency for the note names with accidentals.
+        // Read them aloud repeatedly until you can recite without seeing the actual spells.
 
         c.writeHeader1( "Natural" );
         c.writeTextBody( 'The diatonic notes are named as the traditional solfège.' );
@@ -323,216 +334,83 @@ function batch() {
         c.writeScore(  "example", "@do  dao  rao mao fao sao lao tao dao" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
     }
 
-    c.writeHeader0( "Exercises for Accidentals" );
+    var COMMON_WORD_01 = "Read them aloud repeatedly until you can recite without seeing the actual notes. ";
+
+    // Chromatic Tool Kit (CHTK)
+    var chtk = {
+        build_octaves( arr ) {
+            return [].concat( 
+                arr.map( (s)=> s + ""      ),
+                arr.map( (s)=> s + "'"     ),
+                arr.map( (s)=> s + "''"    ),
+                arr.map( (s)=> s + "'''"   ),
+                arr.map( (s)=> s + "''''"  ),
+                arr.map( (s)=> s + "'''''" )
+            )
+        },
+        exec( id, scale, pattern, breakAt ) {
+            if ( typeof scale === 'string' )
+                scale = scale.split( /\s+/ );
+            if ( typeof pattern === 'string' )
+                pattern = pattern.split( /\s+/);
+
+            var octaved_scale = chtk.build_octaves( scale );
+            var result = '';
+
+            function getNote( idx ) {
+                return octaved_scale[ idx % octaved_scale.length ];
+            }
+            function addResult( ss ) {
+                result+= ss;
+            }
+            function outputResult() {
+                result = "\\absolute { " + result + " } ";
+                c.writeScore( id, result, {scmFestivalTempo:170}  );
+            }
+            function resetResult() {
+                result = '\\abs @do\' ';
+            }
+
+            resetResult();
+            for ( var i=0; i<scale.length; i++ ) {
+                if ( i!=0 )
+                    addResult( ' ' );
+                if ( i % breakAt == 0 && i!=0 )
+                    addResult( ' \n ' );
+                for ( var px=0; px<pattern.length; px++ )
+                    addResult( getNote( i + pattern[px] ) + '4 ' );
+
+                addResult( ' s ' );
+            }
+
+            addResult( "do'2 r2 " );
+            outputResult();
+            resetResult();
+
+            invertedLength = ( scale.length  );
+            for ( var i=0; i<scale.length; i++ ) {
+                if ( i!=0 )
+                    addResult( ' ' );
+                if ( i % breakAt == 0 && i!=0)
+                    addResult( ' \n ' );
+                for ( var px=0; px<pattern.length; px++ )
+                    addResult( getNote( invertedLength - i + pattern[px] ) + '4 ' );
+                addResult( ' s ' );
+            }
+            addResult( " do2 r2" );
+            outputResult();
+            resetResult();
+        },
+    };
+
+    c.writeHeader0( "Understanding Alterations" );
     c.writeTextBody( 
-            "This section introduces some exercises to build fluency for the note names with accidentals. " +
-            "Read them aloud repeatedly until you can recite without seeing the actual spells. "
+            `In this section, two exercises to build fluency with the relation between note names are shown.`
+                + COMMON_WORD_01 
         );
     {
-        // Chromatic Scale 2
-        c.writeHeader1( "Understanding Alterations" );
-        {
-            c.writeHeader2( "Accidentals in Vertical Order" );
-            c.writeScore( "notename-accidentals", 
-                    "@do  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@re  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@mi  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@fa  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@sol do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@la  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@ti  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@do  do  di dai dao dai di do s do de daw dae daw de do \n " 
-                );
-
-            c.writeHeader2( "Accidentals in Horisontal Order" );
-            c.writeScore( "notename-accidentals", 
-                    "@do  do  re mi fa sol la ti do       | do ti la sol fa mi re do \n " + 
-
-                    "@do  di ri ma fi si li ta di         | di ta li si fi ma ri di   \n " +
-                    "@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai \n " +
-                    "@do  dao rao mao fao sao lao tao dao | dao tao lao sao fao mao rao dao \n "  +
-                    "@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai \n " +
-                    "@do  di ri ma fi si li ta di         | di ta li si fi ma ri di  \n " +
-
-                    "@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n " + 
-
-                    "@do  de  ra me fe se le te de         | de te le se  fe me ra de \n " + 
-                    "@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n " + 
-                    "@do  dae rae mae fae sae lae tae dae | dae tae lae sae fae mae rae dae \n "  +
-                    "@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n " + 
-                    "@do  de ra me fe se le te de         | de te le se  fe me ra de \n " + 
-
-                    "@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n " + 
-                    ""
-                    );
-        }
-
-        // Note Name Tool Kit (NNTK)
-        var nntk = {
-            left_rotate(arr,offset) {
-                arr = arr.concat();
-                return arr.concat( arr.splice( 0, offset ) );
-            },
-            build_octaves( arr ) {
-                return [].concat( 
-                    // arr.map( (s)=> s + ","     ),
-                    arr.map( (s)=> s + ""      ),
-                    arr.map( (s)=> s + "'"     ),
-                    arr.map( (s)=> s + "''"    ),
-                    arr.map( (s)=> s + "'''"   ),
-                    arr.map( (s)=> s + "''''"  ),
-                    arr.map( (s)=> s + "'''''" )
-                )
-            },
-            merge_with_offset( notes , offset, from, to  ) {
-                var result = [];
-                for ( var i=from; i!=to; from < to ? i++ : i-- ) {
-                    result.push( notes[ ( i          ) ] + '8 [ ' );
-                    result.push( notes[ ( i + offset ) ] + '8 ] ' );
-                }
-                result.push( notes[ ( to          ) ] + '8 ] ' );
-
-                return result.join( ' ' ) ;
-            },
-
-            merge_with_offset2( notes , offset, from, to  ) {
-                var result = [];
-                for ( var i=from; i!=to; from < to ? i++ : i-- ) {
-                    result.push( notes[ ( i          ) ] + '4 ' );
-                    result.push( notes[ ( i + offset ) ] + '4 s ' );
-                }
-                result.push( notes[ ( to          ) ] + '2' );
-
-                return result.join( ' ' ) ;
-            },
-            num2interval( n ) {
-                switch ( n )  {
-                    case  0 : return "Unison";
-                    case  1 : return "Second";
-                    case  2 : return "Third";
-                    case  3 : return "Fourth";
-                    case  4 : return "Fifth";
-                    case  5 : return "Sixth";
-                    case  6 : return "Seventh";
-                    case  7 : return "Octave";
-                    case  8 : return "Ninth";
-                    case  9 : return "Tenth";
-                    case 10 : return "Eleventh";
-                    case 11 : return "Twelfth";
-                    case 12 : return "Thirteenth";
-                    case 13 : return "Fourteenth";
-                    case 14 : return "Fifteenth";
-                    default :
-                        throw new Error('');
-                }
-            },
-            key2caption( key ) {
-                return "key in " + key;
-            },
-            exec( scale, caption ) {
-                for ( var ridx=0; ridx<1; ridx++ ) {
-                    var scale  = scale.split(' ') ;
-                    var key    = nntk.left_rotate( scale, ridx ).shift();
-                    var notes  = nntk.left_rotate( nntk.build_octaves( scale ), ridx );
-                    var ottava = 4 <= ridx ? '\\ottava #1' : '';
-
-                    c.writeHeader2( 'All Notes with ' + caption ) ;
-                    c.writeScore( 'scale', '@do ' + ottava + ' \\absolute { ' + notes.slice( 7, 15  ).join( ' ' ) + ' | ' + notes.slice( 7, 15 ).reverse().join( ' ' )  + ' } ' );
-
-                    c.writeHeader2( 'All Intervals within ' + caption ) ;
-                    for ( var nidx=0; nidx<8; nidx++ ) {
-                        c.writeHeader3( "All " + nntk.num2interval( nidx ) + " within " + caption );
-                        c.writeScore( nidx + '-01-u', `@do ${ottava} \\absolute \{ ${ nntk.merge_with_offset2( notes,  nidx, 7  ,14 ) } \}`, {scmFestivalTempo:170} );
-                        c.writeScore( nidx + '-02-d', `@do ${ottava} \\absolute \{ ${ nntk.merge_with_offset2( notes,  nidx, 14 ,7  ) } \}`, {scmFestivalTempo:170} );
-                    }
-                }
-            },
-        };
-
-        // Note Names 1
-        c.writeHeader1( "Natural" );
-        {
-            nntk.exec( "do re mi fa sol la ti", "Natural" );
-        }
-
-        c.writeHeader1( "Flat" );
-        {
-            nntk.exec( "de ra me fe se le te", "Flat" );
-        } 
-
-        c.writeHeader1( "Sharp" );
-        {
-            nntk.exec( "di ri ma fi si li ta", "Sharp" );
-        }
-        
-        // Chromatic Tool Kit (CHTK)
-        var chtk = {
-            build_octaves( arr ) {
-                return [].concat( 
-                    arr.map( (s)=> s + ""      ),
-                    arr.map( (s)=> s + "'"     ),
-                    arr.map( (s)=> s + "''"    ),
-                    arr.map( (s)=> s + "'''"   ),
-                    arr.map( (s)=> s + "''''"  ),
-                    arr.map( (s)=> s + "'''''" )
-                )
-            },
-            exec( id, scale, pattern, breakAt ) {
-                if ( typeof scale === 'string' )
-                    scale = scale.split( /\s+/ );
-                if ( typeof pattern === 'string' )
-                    pattern = pattern.split( /\s+/);
-
-                var octaved_scale = chtk.build_octaves( scale );
-                var result = '';
-
-                function getNote( idx ) {
-                    return octaved_scale[ idx % octaved_scale.length ];
-                }
-                function addResult( ss ) {
-                    result+= ss;
-                }
-                function outputResult() {
-                    result = "\\absolute { " + result + " } ";
-                    c.writeScore( id, result, {scmFestivalTempo:170}  );
-                }
-                function resetResult() {
-                    result = '\\abs @do\' ';
-                }
-
-                resetResult();
-                for ( var i=0; i<scale.length; i++ ) {
-                    if ( i!=0 )
-                        addResult( ' ' );
-                    if ( i % breakAt == 0 && i!=0 )
-                        addResult( ' \n ' );
-                    for ( var px=0; px<pattern.length; px++ )
-                        addResult( getNote( i + pattern[px] ) + '4 ' );
-
-                    addResult( ' s ' );
-                }
-
-                addResult( "do'2 r2 " );
-                outputResult();
-                resetResult();
-
-                invertedLength = ( scale.length  );
-                for ( var i=0; i<scale.length; i++ ) {
-                    if ( i!=0 )
-                        addResult( ' ' );
-                    if ( i % breakAt == 0 && i!=0)
-                        addResult( ' \n ' );
-                    for ( var px=0; px<pattern.length; px++ )
-                        addResult( getNote( invertedLength - i + pattern[px] ) + '4 ' );
-                    addResult( ' s ' );
-                }
-                addResult( " do2 r2" );
-                outputResult();
-                resetResult();
-            },
-        };
-
-        c.writeHeader1( "Flat, Sharp and Natural" );
+        // Chromatic Scale 1
+        c.writeHeader1( "Horizontal Movement" );
         {
             // Chromatic Scale 1
             c.writeHeader2( "All Notes with Flat, Sharp and Natural" );
@@ -560,273 +438,527 @@ function batch() {
                 chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 0, 1, 2, 3, 4 ],  6 );
                 chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 4, 3, 2, 1, 0 ],  6 );
             }
+        }
 
-            // Enharmonicity 1
-            c.writeHeader2( "Enharmonically Equivalent Notes Occured by Flat, Sharp and Natural" );
-            {
-                c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
-                c.writeScore( "enharmonic-single-accidentals-sf", "do " +
-                      "di ra  s  ri me  s  mi fe  s  ma fa  s  fi se  s  si le  s  li te  s  ti de  s  ta do  s  di ra \n" +
-                      "di ra  s  ta do  s  ti de  s  li te  s  si le  s  fi se  s  ma fa  s  mi fe  s  ri me  s  di ra"
+        // Chromatic Scale 2
+        c.writeHeader1( "Vertical Movement" );
+        {
+            c.writeHeader2( "Note Alteration" );
+            c.writeScore( "notename-accidentals", 
+                    "@do  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+                    "@re  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+                    "@mi  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+                    "@fa  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+                    "@sol do  di dai dao dai di do s do de daw dae daw de do \n " + 
+                    "@la  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+                    "@ti  do  di dai dao dai di do s do de daw dae daw de do \n " + 
+                    "@do  do  di dai dao dai di do s do de daw dae daw de do \n " 
                 );
-                c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
-                c.writeScore( "enharmonic-single-accidentals-fs", "do " +
-                      "ra di  s  me ri  s  fe mi  s  fa ma  s  se fi  s  le si  s  te li  s  de ti  s  do ta  s  ra di \n" +
-                      "ra di  s  do ta  s  de ti  s  te li  s  le si  s  se fi  s  fa ma  s  fe mi  s  me ri  s  ra di"
-                );
-            }
+
+            c.writeHeader2( "Scale Alteration" );
+            c.writeScore( "notename-accidentals", 
+                    "@do  do  re mi fa sol la ti do       | do ti la sol fa mi re do \n " + 
+
+                    "@do  di ri ma fi si li ta di         | di ta li si fi ma ri di   \n " +
+                    "@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai \n " +
+                    "@do  dao rao mao fao sao lao tao dao | dao tao lao sao fao mao rao dao \n "  +
+                    "@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai \n " +
+                    "@do  di ri ma fi si li ta di         | di ta li si fi ma ri di  \n " +
+
+                    "@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n " + 
+
+                    "@do  de  ra me fe se le te de         | de te le se  fe me ra de \n " + 
+                    "@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n " + 
+                    "@do  dae rae mae fae sae lae tae dae | dae tae lae sae fae mae rae dae \n "  +
+                    "@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n " + 
+                    "@do  de ra me fe se le te de         | de te le se  fe me ra de \n " + 
+
+                    "@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n " + 
+                    ""
+                    );
+        }
+    }
+
+    c.writeHeader0( `Enharmonically Equivalent Notes` );
+    c.writeTextBody( `
+            In this section, some of exercises to build fluency with
+            harmonically equivalent notes are presented. In order to understand
+            the complexity of the traditional musical notation system, the
+            exercises help to acquire some view points to see the reason why
+            the complexity occurs.
+            `);
+    {
+        // Enharmonicity 1
+        c.writeHeader1( "Flat, Sharp and Natural" );
+        {
+            c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
+            c.writeScore( "enharmonic-single-accidentals-sf", "do " +
+                  "di ra  s  ri me  s  mi fe  s  ma fa  s  fi se  s  si le  s  li te  s  ti de  s  ta do  s  di ra \n" +
+                  "di ra  s  ta do  s  ti de  s  li te  s  si le  s  fi se  s  ma fa  s  mi fe  s  ri me  s  di ra"
+            );
+            c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
+            c.writeScore( "enharmonic-single-accidentals-fs", "do " +
+                  "ra di  s  me ri  s  fe mi  s  fa ma  s  se fi  s  le si  s  te li  s  de ti  s  do ta  s  ra di \n" +
+                  "ra di  s  do ta  s  de ti  s  te li  s  le si  s  se fi  s  fa ma  s  fe mi  s  me ri  s  ra di"
+            );
         }
 
 
-        // Note Names 2
         c.writeHeader1( "Double Flat" );
         {
-            nntk.exec( "daw raw maw faw saw law taw", "Double Flat" );
-
-            c.writeHeader2( "Enharmonically Equivalent Notes Occured by Double Flat" );
-            {
-                c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
-                c.writeScore( "enharmonic-double-flat-fn", "do " +
-                      "daw te s raw do  s  maw re  s  faw me  s  saw fa  s  law sol  s  taw la  s  daw te   \n" +
-                      "daw te s taw la  s  law sol s  saw fa  s  faw me  s  maw re   s  raw do  s  daw te " 
-                );
-                c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
-                c.writeScore( "enharmonic-double-flat-nf", "do " +
-                      "te daw  s do raw   s  re maw   s  me faw   s  fa saw   s  sol law   s  la taw   s  te daw    \n" +
-                      "te daw  s la taw   s  sol law  s  fa saw   s  me faw   s  re maw    s  do raw   s  te daw  " 
-                );
-            }
+            c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
+            c.writeScore( "enharmonic-double-flat-fn", "do " +
+                  "daw te s raw do  s  maw re  s  faw me  s  saw fa  s  law sol  s  taw la  s  daw te   \n" +
+                  "daw te s taw la  s  law sol s  saw fa  s  faw me  s  maw re   s  raw do  s  daw te " 
+            );
+            c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
+            c.writeScore( "enharmonic-double-flat-nf", "do " +
+                  "te daw  s do raw   s  re maw   s  me faw   s  fa saw   s  sol law   s  la taw   s  te daw    \n" +
+                  "te daw  s la taw   s  sol law  s  fa saw   s  me faw   s  re maw    s  do raw   s  te daw  " 
+            );
         }
-
 
         c.writeHeader1( "Double Sharp" );
         {
-            nntk.exec( "dai rai mai fai sai lai tai", "Double Sharp" );
-            c.writeHeader2( "Enharmonically Equivalent Notes Occured by Double Sharp" );
-            {
 
-                c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
-                c.writeScore( "enharmonic-double-sharp-sn", "do " +
-                      "dai re  s  rai mi  s  mai fi  s  fai sol  s  sai la   s  lai ti  s  tai di  s  dai re \n" +
-                      "dai re  s  tai di  s  lai ti  s  sai la   s  fai sol  s  mai fi  s  rai mi  s  dai re " 
-                );
+            c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
+            c.writeScore( "enharmonic-double-sharp-sn", "do " +
+                  "dai re  s  rai mi  s  mai fi  s  fai sol  s  sai la   s  lai ti  s  tai di  s  dai re \n" +
+                  "dai re  s  tai di  s  lai ti  s  sai la   s  fai sol  s  mai fi  s  rai mi  s  dai re " 
+            );
 
-                c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
-                c.writeScore( "enharmonic-double-sharp-ns", "do " +
-                      "re dai  s  mi rai  s  fi mai  s  sol fai  s  la sai  s  ti lai  s  di tai  s  re dai \n" +
-                      "re dai  s  di tai  s  ti lai  s  la sai  s  sol fai  s  fi mai  s  mi rai  s  re dai" 
-                );
-            }
+            c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
+            c.writeScore( "enharmonic-double-sharp-ns", "do " +
+                  "re dai  s  mi rai  s  fi mai  s  sol fai  s  la sai  s  ti lai  s  di tai  s  re dai \n" +
+                  "re dai  s  di tai  s  ti lai  s  la sai  s  sol fai  s  fi mai  s  mi rai  s  re dai" 
+            );
         }
-
-
-        // Note Names 3
 
         c.writeHeader1( "Triple Flat" );
         {
-            nntk.exec( "dae rae mae fae sae lae tae", "Triple Flat" );
-            c.writeHeader2( "Enharmonically Equivalent Notes Occured by Triple Flat" );
-            {
-                c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
-                c.writeScore( "enharmonic-triple-flat-fn", "do " +
-                      "dae la  s  rae ti  s mae di  s  fae re   s  sae mi  s  lae fi  s  tae si  s  dae la \n" +
-                      "dae la  s  tae si  s lae fi  s  sae mi   s  fae re  s  mae di  s  rae ti  s  dae la" 
-                );
-                c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
-                c.writeScore( "enharmonic-triple-flat-nf", "do " +
-                      "la  dae  s  ti  rae  s di  mae  s  re  fae   s  mi  sae  s  fi  lae  s  si  tae  s  la  dae \n" +
-                      "la  dae  s  si  tae  s fi  lae  s  mi  sae   s  re  fae  s  di  mae  s  ti  rae  s  la  dae" 
-                );
-            }
+            c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
+            c.writeScore( "enharmonic-triple-flat-fn", "do " +
+                  "dae la  s  rae ti  s mae di  s  fae re   s  sae mi  s  lae fi  s  tae si  s  dae la \n" +
+                  "dae la  s  tae si  s lae fi  s  sae mi   s  fae re  s  mae di  s  rae ti  s  dae la" 
+            );
+            c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
+            c.writeScore( "enharmonic-triple-flat-nf", "do " +
+                  "la  dae  s  ti  rae  s di  mae  s  re  fae   s  mi  sae  s  fi  lae  s  si  tae  s  la  dae \n" +
+                  "la  dae  s  si  tae  s fi  lae  s  mi  sae   s  re  fae  s  di  mae  s  ti  rae  s  la  dae" 
+            );
         }
-
 
         c.writeHeader1( "Triple Sharp" );
         {
-            nntk.exec( "dao rao mao fao sao lao tao", "Triple Sharp" );
-            c.writeHeader2( "Enharmonically Equivalent Notes Occured by Triple Sharp" );
-            {
-                c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
-                c.writeScore( "enharmonic-triple-sharp-sn", "do " +
-                      "dao  me  s  rao  fa  s  mao  sol  s  fao  le  s  sao  te   s  lao  do  s  tao  re  s  dao  me \n" +
-                      "dao  me  s  tao  re  s  lao  do   s  sao  te  s  fao  le   s  mao  sol s  rao  fa  s  dao  me" 
-                );
-                c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
-                c.writeScore( "enharmonic-triple-sharp-ns", "do " +
-                      "me   dao s  fa   rao   s  sol mao   s  le fao   s  te sao    s  do lao    s  re tao   s  me dao   \n" +
-                      "me   dao s  re   tao   s  do lao    s  te sao   s  le fao    s  sol mao   s  fa rao   s  me dao  " 
-                );
-            }
+            c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
+            c.writeScore( "enharmonic-triple-sharp-sn", "do " +
+                  "dao  me  s  rao  fa  s  mao  sol  s  fao  le  s  sao  te   s  lao  do  s  tao  re  s  dao  me \n" +
+                  "dao  me  s  tao  re  s  lao  do   s  sao  te  s  fao  le   s  mao  sol s  rao  fa  s  dao  me" 
+            );
+            c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
+            c.writeScore( "enharmonic-triple-sharp-ns", "do " +
+                  "me   dao s  fa   rao   s  sol mao   s  le fao   s  te sao    s  do lao    s  re tao   s  me dao   \n" +
+                  "me   dao s  re   tao   s  do lao    s  te sao   s  le fao    s  sol mao   s  fa rao   s  me dao  " 
+            );
         }
     }
 
 
-    c.writeHeader0( "Intervals" );
+    // Note Name Tool Kit (NNTK)
+    var nntk = {
+        left_rotate(arr,offset) {
+            arr = arr.concat();
+            return arr.concat( arr.splice( 0, offset ) );
+        },
+        build_octaves( arr ) {
+            return [].concat( 
+                // arr.map( (s)=> s + ","     ),
+                arr.map( (s)=> s + ""      ),
+                arr.map( (s)=> s + "'"     ),
+                arr.map( (s)=> s + "''"    ),
+                arr.map( (s)=> s + "'''"   ),
+                arr.map( (s)=> s + "''''"  ),
+                arr.map( (s)=> s + "'''''" )
+            )
+        },
+        merge_with_offset( notes , offset, from, to  ) {
+            var result = [];
+            for ( var i=from; i!=to; from < to ? i++ : i-- ) {
+                result.push( notes[ ( i          ) ] + '8 [ ' );
+                result.push( notes[ ( i + offset ) ] + '8 ] ' );
+            }
+            result.push( notes[ ( to          ) ] + '8 ] ' );
+
+            return result.join( ' ' ) ;
+        },
+
+        merge_with_offset2( notes , offset, from, to  ) {
+            var result = [];
+            for ( var i=from; i!=to; from < to ? i++ : i-- ) {
+                result.push( notes[ ( i          ) ] + '4 ' );
+                result.push( notes[ ( i + offset ) ] + '4 s ' );
+            }
+            result.push( notes[ ( to          ) ] + '2' );
+
+            return result.join( ' ' ) ;
+        },
+        num2interval( n ) {
+            switch ( n )  {
+                case  0 : return "Unison";
+                case  1 : return "Second";
+                case  2 : return "Third";
+                case  3 : return "Fourth";
+                case  4 : return "Fifth";
+                case  5 : return "Sixth";
+                case  6 : return "Seventh";
+                case  7 : return "Octave";
+                case  8 : return "Ninth";
+                case  9 : return "Tenth";
+                case 10 : return "Eleventh";
+                case 11 : return "Twelfth";
+                case 12 : return "Thirteenth";
+                case 13 : return "Fourteenth";
+                case 14 : return "Fifteenth";
+                default :
+                    throw new Error('');
+            }
+        },
+        key2caption( key ) {
+            return "key in " + key;
+        },
+        exec( scale, caption ) {
+            c.writeHeader1( caption ) ;
+            for ( var ridx=0; ridx<1; ridx++ ) {
+                var scale  = scale.split(' ') ;
+                var key    = nntk.left_rotate( scale, ridx ).shift();
+                var notes  = nntk.left_rotate( nntk.build_octaves( scale ), ridx );
+                var ottava = 4 <= ridx ? '\\ottava #1' : '';
+
+                c.writeHeader2( 'All Intervals within ' + caption ) ;
+                c.writeScore( 'scale', '@do ' + ottava + ' \\absolute { ' + notes.slice( 7, 15  ).join( ' ' ) + ' | ' + notes.slice( 7, 15 ).reverse().join( ' ' )  + ' } ' );
+
+                for ( var nidx=0; nidx<8; nidx++ ) {
+                    c.writeHeader2( "All " + nntk.num2interval( nidx ) + " within " + caption );
+                    c.writeScore( nidx + '-01-u', `@do ${ottava} \\absolute \{ ${ nntk.merge_with_offset2( notes,  nidx, 7  ,14 ) } \}`, {scmFestivalTempo:170} );
+                    c.writeScore( nidx + '-02-d', `@do ${ottava} \\absolute \{ ${ nntk.merge_with_offset2( notes,  nidx, 14 ,7  ) } \}`, {scmFestivalTempo:170} );
+                }
+            }
+        },
+    };
+
+    c.writeHeader0( "Intervals in Alterations" );
     c.writeTextBody( 
-            "This section introduces some exercises to build fluency. " +
-            "Read them aloud repeatedly until you can recite without seeing the actual spells."
+            `
+            In this section, all intervals in a diatonic scale and the diatonic
+            scale with every possible alterations are comprehensively
+            enumerated. These  lists can also be used as exercises which help
+            to build fluency for the note names with every possible alterations.
+            ` + COMMON_WORD_01 
         );
     {
-        // Enharmonic Chromatic Scale Tool kit
-        var ehtk = {
-            exec ( l_scale, r_scale, rotation, from, to ) {
-                if ( typeof l_scale === 'undefined' ) {
-                    throw new Error( "No scale was specified." );
-                }
-                if ( typeof r_scale === 'undefined' ) {
-                    r_scale = l_scale;
-                }
-                if ( typeof rotation === 'undefined' ) {
-                    rotation = 0;
-                }
-                if ( typeof from  === 'undefined' ) {
-                    from = 0;
-                }
-                if ( typeof to  === 'undefined' ) {
-                    to = 13;
-                }
-                // Enharmonic Chromatic Scale Tool Kit
-                var note2name = {
-                    'do' : 'C',
-                    'fa' : 'F',
-                    'te' : 'B\\flat',
-                    'me' : 'E\\flat',
-                    'le' : 'A\\flat',
-                    'ra' : 'D\\flat',
-                    'se' : 'G\\flat',
-                    'sol': 'G',
-                    're' : 'D',
-                    'la' : 'A',
-                    'mi' : 'E',
-                    'ti' : 'B',
-                    'fi' : 'F\\sharp',
-                };
-                var intervalNames = [
-                    'Perfect Unison',
-                    'Minor Second',
-                    'Major Second',
-                    'Minor Third',
-                    'Major Third',
-                    'Perfect Fourth',
-                    'Diminished Fifth',
-                    'Perfect Fifth',
-                    'Minor Sixth',
-                    'Major Sixth',
-                    'Minor Seventh',
-                    'Major Seventh',
-                    'Perfect Octave',
-                    'Minor Nineth',
-                    'Major Nineth',
-                    'Minor Tenth',
-                    'Major Tenth',
-                    'Perfect Eleventh',
-                    'Diminished Twelveth',
-                    'Perfect Twelveth',
-                    'Minor Thirteenth',
-                    'Major Thirteenth',
-                    'Minor Fourteenth',
-                    'Major Fourteenth',
-                ];
-                var numberWords = [
-                    'zero',
-                    'one',
-                    'two',
-                    'three',
-                    'four',
-                    'five',
-                    'six',
-                    'seven',
-                    'eight',
-                    'nine',
-                    'ten',
-                    'eleven',
-                    'twelve',
-                    'thirteen',
-                    'fourteen',
-                    'fifteen',
-                    'sixteen',
-                    'seventeen',
-                    'eighteen',
-                    'nineteen',
-                    'twenty',
-                ];
-                function number2interval( i ) {
-                    return intervalNames[ i % intervalNames.length ];
-                }
-                function number2word( i ) {
-                    return numberWords[ i ];
-                }
+        nntk.exec( "do re mi fa sol la ti", "Natural" );
+        nntk.exec( "de ra me fe se le te", "Flat" );
+        nntk.exec( "di ri ma fi si li ta", "Sharp" );
+        nntk.exec( "daw raw maw faw saw law taw", "Double Flat" );
+        nntk.exec( "dai rai mai fai sai lai tai", "Double Sharp" );
+        nntk.exec( "dae rae mae fae sae lae tae", "Triple Flat" );
+        nntk.exec( "dao rao mao fao sao lao tao", "Triple Sharp" );
+    }
 
-                function merge_with_offset( l_notes, r_notes, offset, from, to, size  ) {
-                    var result = [];
-                    for ( var i=from; i!=to; from < to ? i++ : i-- ) {
-                        result.push( l_notes[ ( i          ) ] + '4 ' );
-                        result.push( r_notes[ ( i + offset ) ] + '4 s ' );
-                    }
-                    result.push( l_notes[ ( to          ) ] + '2 ' );
+    // Enharmonic Chromatic Scale Tool kit
+    var ehtk = {
+        exec ( l_scale, r_scale, rotation, from, to ) {
+            if ( typeof l_scale === 'undefined' ) {
+                throw new Error( "No scale was specified." );
+            }
+            if ( typeof r_scale === 'undefined' ) {
+                r_scale = l_scale;
+            }
+            if ( typeof rotation === 'undefined' ) {
+                rotation = 0;
+            }
+            if ( typeof from  === 'undefined' ) {
+                from = 0;
+            }
+            if ( typeof to  === 'undefined' ) {
+                to = 13;
+            }
+            // Enharmonic Chromatic Scale Tool Kit
+            var note2name = {
+                'do' : 'C',
+                'fa' : 'F',
+                'te' : 'B\\flat',
+                'me' : 'E\\flat',
+                'le' : 'A\\flat',
+                'ra' : 'D\\flat',
+                'se' : 'G\\flat',
+                'sol': 'G',
+                're' : 'D',
+                'la' : 'A',
+                'mi' : 'E',
+                'ti' : 'B',
+                'fi' : 'F\\sharp',
+            };
+            var intervalNames = [
+                'Perfect Unison',
+                'Minor Second',
+                'Major Second',
+                'Minor Third',
+                'Major Third',
+                'Perfect Fourth',
+                'Diminished Fifth',
+                'Perfect Fifth',
+                'Minor Sixth',
+                'Major Sixth',
+                'Minor Seventh',
+                'Major Seventh',
+                'Perfect Octave',
+                'Minor Nineth',
+                'Major Nineth',
+                'Minor Tenth',
+                'Major Tenth',
+                'Perfect Eleventh',
+                'Diminished Twelveth',
+                'Perfect Twelveth',
+                'Minor Thirteenth',
+                'Major Thirteenth',
+                'Minor Fourteenth',
+                'Major Fourteenth',
+            ];
+            var numberWords = [
+                'zero',
+                'one',
+                'two',
+                'three',
+                'four',
+                'five',
+                'six',
+                'seven',
+                'eight',
+                'nine',
+                'ten',
+                'eleven',
+                'twelve',
+                'thirteen',
+                'fourteen',
+                'fifteen',
+                'sixteen',
+                'seventeen',
+                'eighteen',
+                'nineteen',
+                'twenty',
+            ];
+            function number2interval( i ) {
+                return intervalNames[ i % intervalNames.length ];
+            }
+            function number2word( i ) {
+                return numberWords[ i ];
+            }
 
-                    return result.join( ' ') ;
+            function merge_with_offset( l_notes, r_notes, offset, from, to, size  ) {
+                var result = [];
+                for ( var i=from; i!=to; from < to ? i++ : i-- ) {
+                    result.push( l_notes[ ( i          ) ] + '4 ' );
+                    result.push( r_notes[ ( i + offset ) ] + '4 s ' );
                 }
-                function blowup(arr) {
-                    return [].concat( 
-                        // arr.map( (s)=> s + ","     ),
-                        arr.map( (s)=> s + ""      ),
-                        arr.map( (s)=> s + "'"     ),
-                        arr.map( (s)=> s + "''"    ),
-                        arr.map( (s)=> s + "'''"   ),
-                        arr.map( (s)=> s + "''''"  ),
-                        arr.map( (s)=> s + "'''''" )
-                    )
+                result.push( l_notes[ ( to          ) ] + '2 ' );
+
+                return result.join( ' ') ;
+            }
+            function blowup(arr) {
+                return [].concat( 
+                    // arr.map( (s)=> s + ","     ),
+                    arr.map( (s)=> s + ""      ),
+                    arr.map( (s)=> s + "'"     ),
+                    arr.map( (s)=> s + "''"    ),
+                    arr.map( (s)=> s + "'''"   ),
+                    arr.map( (s)=> s + "''''"  ),
+                    arr.map( (s)=> s + "'''''" )
+                )
+            }
+
+            function rotate(arr,offset) {
+                // console.error( 'rotate', offset );
+                return arr.concat( arr.splice( 0, offset ) );
+            }
+
+            function checkKey( key ) {
+                if ( key == 'do' ) {
+                    return 'natural';
+                } else if ( 0<= ( "ti mi la re sol".split( ' ' ).indexOf( key )  ) ) {
+                    return 'sharp';
+                } else if ( 0<= ( "fa te me le ra se".split( ' ' ).indexOf( key )  ) ) {
+                    return 'flat';
+                } else {
+                    throw new Error( `unknown key ${key}` );
                 }
+            }
 
-                function rotate(arr,offset) {
-                    // console.error( 'rotate', offset );
-                    return arr.concat( arr.splice( 0, offset ) );
-                }
+            var l_notes = rotate( blowup( l_scale.split( /\s+/ ) ), rotation ) ;
+            var r_notes = rotate( blowup( r_scale.split( /\s+/ ) ), rotation ) ;
 
-                function checkKey( key ) {
-                    if ( key == 'do' ) {
-                        return 'natural';
-                    } else if ( 0<= ( "ti mi la re sol".split( ' ' ).indexOf( key )  ) ) {
-                        return 'sharp';
-                    } else if ( 0<= ( "fa te me le ra se".split( ' ' ).indexOf( key )  ) ) {
-                        return 'flat';
-                    } else {
-                        throw new Error( `unknown key ${key}` );
-                    }
-                }
+            for ( var i=from; i<to; i++ ) {
+                c.writeHeader2( number2interval( i ) + " which consists " + number2word( i ) + " half step"  + ( 1<i ? 's' : '' ) );
+                c.writeScore( i + '-01-u', "@do' \\absolute \{ " + merge_with_offset( l_notes, r_notes,  i, 12 ,24 , 12 ) + " \}", {scmFestivalTempo:200} );
+                c.writeScore( i + '-02-d', "@do' \\absolute \{ " + merge_with_offset( l_notes, r_notes,  i, 24 ,12 , 12 ) + " \}", {scmFestivalTempo:200} );
+            }
+        },
+    };
 
-                var l_notes = rotate( blowup( l_scale.split( /\s+/ ) ), rotation ) ;
-                var r_notes = rotate( blowup( r_scale.split( /\s+/ ) ), rotation ) ;
+    c.writeHeader0( "Enharmonic Intervals" );
+    c.writeTextBody( 
+           `In this section, all enharmonic intervals which intentionally disregard harmonic correctness are shown.`
+            + COMMON_WORD_01
+        );
+    {
 
-                for ( var i=from; i<to; i++ ) {
-                    c.writeHeader3( number2interval( i ) + " which consists " + number2word( i ) + " half step"  + ( 1<i ? 's' : '' ) );
-                    c.writeScore( i + '-01-u', "@do' \\absolute \{ " + merge_with_offset( l_notes, r_notes,  i, 12 ,24 , 12 ) + " \}", {scmFestivalTempo:200} );
-                    c.writeScore( i + '-02-d', "@do' \\absolute \{ " + merge_with_offset( l_notes, r_notes,  i, 24 ,12 , 12 ) + " \}", {scmFestivalTempo:200} );
-                }
-            },
-        };
-
-        c.writeHeader1( "Enharmonic Intervals on the Chromatic Scale" );
+        // c.writeHeader1( "Enharmonic Intervals on the Chromatic Scale" );
         {
-            c.writeHeader2( 'Intervals in Flat Chromatic Scale' );
+            c.writeHeader1( 'Intervals in Flat Chromatic Scale' );
             ehtk.exec( 'do ra re me mi fa se sol le la te ti' );
-            c.writeHeader2( 'Intervals in Sharp Chromatic Scales' );
+            c.writeHeader1( 'Intervals in Sharp Chromatic Scales' );
             ehtk.exec( 'do di re ri mi fa fi sol si la li ti' );
 
-            c.writeHeader2( 'Intervals from Flat to Sharp' );
+            c.writeHeader1( 'Intervals from Flat to Sharp' );
             ehtk.exec( 'do ra re me mi fa se sol le la te ti', 'do di re ri mi fa fi sol si la li ti' );
-            c.writeHeader2( 'Intervals from Sharp to Flat' );
+            c.writeHeader1( 'Intervals from Sharp to Flat' );
             ehtk.exec( 'do di re ri mi fa fi sol si la li ti', 'do ra re me mi fa se sol le la te ti' );
         }
 
+    }
 
+    c.writeHeader0( "Harmonic Intervals" );
+    c.writeTextBody(
+            "In this section, we will mathmatically permutate every possible combinations of any two notes to reveal every possible absolute intervals. " +
+            "In order to acquire the absolute intervals, we transpose every possible relative intervals to every possible keys. " +
+            "\n\n" +
+            "In modern music, most instruments are equally tempered and thus there are only twelve notes in an octave. " +
+            "In musical notation, however, it presumes that there could be instruments which are not based on equal temparaments; " +
+            "in such case, semitones vary in size. Therefore it is not possible to assume that flat and sharp are always same size. " +
+            "Thus there are two instances of the chromatic scale in the world of musical notation " + 
+            "even though the existence of the chromatic scale is always one and only. "+ 
+            "\n\n" +
+            ""
+        );
+    {
+        var scale_s = "do di re ri mi fa fi sol si la li ti".split( ' ' ).map( (s)=> s+"'" ) ;
+        var scale_f = "do ra re me mi fa se sol le la te ti".split( ' ' ).map( (s)=> s+"'" ) ;
+
+        function advancedIntervals( interval, caption ) {
+            caption = caption.trim().replace( / +/, " " );
+
+            var notes_f = "";
+            var notes_s = "";
+            var options  = { scmFestivalTempo:170, scmMarkIrregularAccidentals:true };
+            for ( var i=0; i<12; i++ ) {
+                if ( 0 < i ) {
+                    notes_f += ' s ';
+                    notes_s += ' s ';
+                }
+                notes_f += "@" + scale_f[i] + ' ' + interval;
+                notes_s += "@" + scale_s[i] + ' ' + interval;
+            }
+
+            // Added the last note to both flat-series and sharp-series.
+            notes_f += "@do' s do'";
+            notes_s += "@do' s do'";
+
+            c.writeHeader2( caption + ` ([${interval}])`);
+            c.writeHeader3( caption + " in the Flat Chromatic Scale" );
+            c.writeScore( "advanced-intervals", "\\absolute { \\abs " + notes_f + " } ", options );
+            c.writeHeader3( caption + " in the Sharp Chromatic Scale" );
+            c.writeScore( "advanced-intervals", "\\absolute { \\abs " + notes_s + " } ", options );
+        }
+
+        c.writeHeader1( "Practical Intervals" );
+
+        advancedIntervals( "do de"   , "Diminished Unison"        );
+        advancedIntervals( "do do"   , "Perfect    Unison"        );
+        advancedIntervals( "do di"   , "Augumented Unison"        );
+        advancedIntervals( "do ra"   , "Minor      Second"        );
+        advancedIntervals( "do re"   , "Major      Second"        );
+        advancedIntervals( "do ri"   , "Augumented Second"        );
+        advancedIntervals( "do me"   , "Minor      Third"         );
+        advancedIntervals( "do mi"   , "Major      Third"         );
+        advancedIntervals( "do ma"   , "Augumented Third"         );
+        advancedIntervals( "do fa"   , "Perfect    Fourth"        );
+        advancedIntervals( "do fi"   , "Augumented Fourth"        );
+        advancedIntervals( "do se"   , "Diminished Fifth"         );
+        advancedIntervals( "do sol"  , "Perfect    Fifth"         );
+        advancedIntervals( "do si"   , "Augumented Fifth"         );
+        advancedIntervals( "do le"   , "Minor      Sixth"         );
+        advancedIntervals( "do la"   , "Major      Sixth"         );
+        advancedIntervals( "do li"   , "Augumented Sixth"         );
+        advancedIntervals( "do te"   , "Minor      Seventh"       );
+        advancedIntervals( "do ti"   , "Major      Seventh"       );
+        advancedIntervals( "do ta"   , "Augumented Seventh"       );
+        advancedIntervals( "do de'"  , "Diminished Octave"        );
+        advancedIntervals( "do do'"  , "Perfect    Octave"        );
+        advancedIntervals( "do di'"  , "Augumented Octave"        );
+        advancedIntervals( "do ra'"  , "Minor      Ninth"         );
+        advancedIntervals( "do re'"  , "Major      Ninth"         );
+        advancedIntervals( "do ri'"  , "Augumented Ninth"         );
+        advancedIntervals( "do me'"  , "Minor      Tenth"         );
+        advancedIntervals( "do mi'"  , "Major      Tenth"         );
+        advancedIntervals( "do ma'"  , "Augumented Tenth"         );
+        advancedIntervals( "do fa'"  , "Perfect    Eleventh"      );
+        advancedIntervals( "do fi'"  , "Augumented Eleventh"      );
+        advancedIntervals( "do se'"  , "Diminished Twelveth"      );
+        advancedIntervals( "do sol'" , "Perfect    Twelveth"      );
+        advancedIntervals( "do si'"  , "Augumented Twelveth"      );
+        advancedIntervals( "do le'"  , "Minor      Thirteenth"    );
+        advancedIntervals( "do la'"  , "Major      Thirteenth"    );
+        advancedIntervals( "do li'"  , "Augumented Thirteenth"    );
+        advancedIntervals( "do te'"  , "Minor      Fourteenth"    );
+        advancedIntervals( "do ti'"  , "Major      Fourteenth"    );
+        advancedIntervals( "do ta'"  , "Augumented Fourteenth"    );
+        advancedIntervals( "do de'"  , "Diminished Double Octave" );
+        advancedIntervals( "do do''" , "Double     Octave"        );
+
+        c.writeHeader1( "Theoretecal Intervals - Double Diminished" );
+        advancedIntervals( "do daw"   , "Double Diminished Unison"        );
+        advancedIntervals( "do raw"   , "Double Diminished Second"        );
+        advancedIntervals( "do maw"   , "Double Diminished Third"         );
+        advancedIntervals( "do faw"   , "Double Diminished Fourth"        );
+        advancedIntervals( "do saw"   , "Double Diminished Fifth"         );
+        advancedIntervals( "do law"   , "Double Diminished Sixth"         );
+        advancedIntervals( "do taw"   , "Double Diminished Seventh"       );
+        advancedIntervals( "do daw'"  , "Double Diminished Octave"        );
+        advancedIntervals( "do raw'"  , "Double Diminished Ninth"         );
+        advancedIntervals( "do maw'"  , "Double Diminished Tenth"         );
+        advancedIntervals( "do faw'"  , "Double Diminished Eleventh"      );
+        advancedIntervals( "do saw'"  , "Double Diminished Twelveth"      );
+        advancedIntervals( "do law'"  , "Double Diminished Thirteenth"    );
+        advancedIntervals( "do taw'"  , "Double Diminished Fourteenth"    );
+
+        c.writeHeader1( "Theoretecal Intervals - Double Augumented" );
+        advancedIntervals( "do dai"   , "Double Augumented Unison"        );
+        advancedIntervals( "do rai"   , "Double Augumented Second"        );
+        advancedIntervals( "do mai"   , "Double Augumented Third"         );
+        advancedIntervals( "do fai"   , "Double Augumented Fourth"        );
+        advancedIntervals( "do sai"   , "Double Augumented Fifth"         );
+        advancedIntervals( "do lai"   , "Double Augumented Sixth"         );
+        advancedIntervals( "do tai"   , "Double Augumented Seventh"       );
+        advancedIntervals( "do dai'"  , "Double Augumented Octave"        );
+        advancedIntervals( "do rai'"  , "Double Augumented Ninth"         );
+        advancedIntervals( "do mai'"  , "Double Augumented Tenth"         );
+        advancedIntervals( "do fai'"  , "Double Augumented Eleventh"      );
+        advancedIntervals( "do sai'"  , "Double Augumented Twelveth"      );
+        advancedIntervals( "do lai'"  , "Double Augumented Thirteenth"    );
+        advancedIntervals( "do tai'"  , "Double Augumented Fourteenth"    );
+    }
+
+    c.writeHeader0( "Harmonically Strict Motions" );
+    c.writeTextBody(
+            `TODO`
+    );
+    {
         c.writeHeader1( "Strict Fourth/Fifth Motions" );
         {
             c.writeHeader3( "Strict Fourth Motion" );
             c.writeScore( "strict-fourth" , "\\abs @do' \\absolute { do fa te me' le ra' se' de fe taw maw' law raw' saw'  daw faw tae mae' lae rae' sae' dae fae }" , {scmFestivalTempo:100} );
             c.writeHeader3( "Strict Fifth Motion" );
-            c.writeScore( "strict-fifth" , "\\abs @do' \\absolute { do sol re' la' mi' ti' fi''  di si ri' li' ma' ta' fai''  dai sai rai' lai' mai' tai' fao''  dao sao rao' lao' mao' tao' la'' }", {scmFestivalTempo:100} );
+            c.writeScore( "strict-fifth" ,  "\\abs @do' \\absolute { do sol re' la' mi' ti' fi''  di si ri' li' ma' ta' fai''  dai sai rai' lai' mai' tai' fao''  dao sao rao' lao' mao' tao' la'' }", {scmFestivalTempo:100} );
         }
     }
 
@@ -971,7 +1103,6 @@ function batch() {
     }
 
 
-
     // c.writeCommands(
     //         `
     //         \\begin\{tabular\}\{ l | c | r \}
@@ -982,127 +1113,6 @@ function batch() {
     //         `.replace( /^\s*/, "" )
     //         );
 
-    c.writeHeader0( "Advanced Intervals" );
-    c.writeTextBody(
-            "In this section, we will mathmatically permutate every possible combinations of any two notes to reveal every possible absolute intervals. " +
-            "In order to acquire the absolute intervals, we transpose every possible relative intervals to every possible keys. " +
-            "\n\n" +
-            "In modern music, most instruments are equally tempered and thus there are only twelve notes in an octave. " +
-            "In musical notation, however, it presumes that there could be instruments which are not based on equal temparaments; " +
-            "in such case, semitones vary in size. Therefore it is not possible to assume that flat and sharp are always same size. " +
-            "Thus there are two instances of the chromatic scale in the world of musical notation " + 
-            "even though the existence of the chromatic scale is always one and only. "+ 
-            "\n\n" +
-            ""
-        );
-    {
-        var scale_s = "do di re ri mi fa fi sol si la li ti".split( ' ' ).map( (s)=> s+"'" ) ;
-        var scale_f = "do ra re me mi fa se sol le la te ti".split( ' ' ).map( (s)=> s+"'" ) ;
-
-        function advancedIntervals( interval, caption ) {
-            caption = caption.trim().replace( / +/, " " );
-
-            var notes_f = "";
-            var notes_s = "";
-            var options  = { scmFestivalTempo:170, scmMarkIrregularAccidentals:true };
-            for ( var i=0; i<12; i++ ) {
-                if ( 0 < i ) {
-                    notes_f += ' s ';
-                    notes_s += ' s ';
-                }
-                notes_f += "@" + scale_f[i] + ' ' + interval;
-                notes_s += "@" + scale_s[i] + ' ' + interval;
-            }
-
-            // Added the last note to both flat-series and sharp-series.
-            notes_f += "@do' s do'";
-            notes_s += "@do' s do'";
-
-            c.writeHeader2( caption + ` ([${interval}])`);
-            c.writeHeader3( caption + " in the Flat Chromatic Scale" );
-            c.writeScore( "advanced-intervals", "\\absolute { \\abs " + notes_f + " } ", options );
-            c.writeHeader3( caption + " in the Sharp Chromatic Scale" );
-            c.writeScore( "advanced-intervals", "\\absolute { \\abs " + notes_s + " } ", options );
-        }
-
-        c.writeHeader1( "Practical Intervals" );
-
-        advancedIntervals( "do de"   , "Diminished Unison"        );
-        advancedIntervals( "do do"   , "Perfect    Unison"        );
-        advancedIntervals( "do di"   , "Augumented Unison"        );
-        advancedIntervals( "do ra"   , "Minor      Second"        );
-        advancedIntervals( "do re"   , "Major      Second"        );
-        advancedIntervals( "do ri"   , "Augumented Second"        );
-        advancedIntervals( "do me"   , "Minor      Third"         );
-        advancedIntervals( "do mi"   , "Major      Third"         );
-        advancedIntervals( "do ma"   , "Augumented Third"         );
-        advancedIntervals( "do fa"   , "Perfect    Fourth"        );
-        advancedIntervals( "do fi"   , "Augumented Fourth"        );
-        advancedIntervals( "do se"   , "Diminished Fifth"         );
-        advancedIntervals( "do sol"  , "Perfect    Fifth"         );
-        advancedIntervals( "do si"   , "Augumented Fifth"         );
-        advancedIntervals( "do le"   , "Minor      Sixth"         );
-        advancedIntervals( "do la"   , "Major      Sixth"         );
-        advancedIntervals( "do li"   , "Augumented Sixth"         );
-        advancedIntervals( "do te"   , "Minor      Seventh"       );
-        advancedIntervals( "do ti"   , "Major      Seventh"       );
-        advancedIntervals( "do ta"   , "Augumented Seventh"       );
-        advancedIntervals( "do de'"  , "Diminished Octave"        );
-        advancedIntervals( "do do'"  , "Perfect    Octave"        );
-        advancedIntervals( "do di'"  , "Augumented Octave"        );
-        advancedIntervals( "do ra'"  , "Minor      Ninth"         );
-        advancedIntervals( "do re'"  , "Major      Ninth"         );
-        advancedIntervals( "do ri'"  , "Augumented Ninth"         );
-        advancedIntervals( "do me'"  , "Minor      Tenth"         );
-        advancedIntervals( "do mi'"  , "Major      Tenth"         );
-        advancedIntervals( "do ma'"  , "Augumented Tenth"         );
-        advancedIntervals( "do fa'"  , "Perfect    Eleventh"      );
-        advancedIntervals( "do fi'"  , "Augumented Eleventh"      );
-        advancedIntervals( "do se'"  , "Diminished Twelveth"      );
-        advancedIntervals( "do sol'" , "Perfect    Twelveth"      );
-        advancedIntervals( "do si'"  , "Augumented Twelveth"      );
-        advancedIntervals( "do le'"  , "Minor      Thirteenth"    );
-        advancedIntervals( "do la'"  , "Major      Thirteenth"    );
-        advancedIntervals( "do li'"  , "Augumented Thirteenth"    );
-        advancedIntervals( "do te'"  , "Minor      Fourteenth"    );
-        advancedIntervals( "do ti'"  , "Major      Fourteenth"    );
-        advancedIntervals( "do ta'"  , "Augumented Fourteenth"    );
-        advancedIntervals( "do de'"  , "Diminished Double Octave" );
-        advancedIntervals( "do do''" , "Double     Octave"        );
-
-        c.writeHeader1( "Theoretecal Intervals - Double Diminished" );
-        advancedIntervals( "do daw"   , "Double Diminished Unison"        );
-        advancedIntervals( "do raw"   , "Double Diminished Second"        );
-        advancedIntervals( "do maw"   , "Double Diminished Third"         );
-        advancedIntervals( "do faw"   , "Double Diminished Fourth"        );
-        advancedIntervals( "do saw"   , "Double Diminished Fifth"         );
-        advancedIntervals( "do law"   , "Double Diminished Sixth"         );
-        advancedIntervals( "do taw"   , "Double Diminished Seventh"       );
-        advancedIntervals( "do daw'"  , "Double Diminished Octave"        );
-        advancedIntervals( "do raw'"  , "Double Diminished Ninth"         );
-        advancedIntervals( "do maw'"  , "Double Diminished Tenth"         );
-        advancedIntervals( "do faw'"  , "Double Diminished Eleventh"      );
-        advancedIntervals( "do saw'"  , "Double Diminished Twelveth"      );
-        advancedIntervals( "do law'"  , "Double Diminished Thirteenth"    );
-        advancedIntervals( "do taw'"  , "Double Diminished Fourteenth"    );
-
-        c.writeHeader1( "Theoretecal Intervals - Double Augumented" );
-        advancedIntervals( "do dai"   , "Double Augumented Unison"        );
-        advancedIntervals( "do rai"   , "Double Augumented Second"        );
-        advancedIntervals( "do mai"   , "Double Augumented Third"         );
-        advancedIntervals( "do fai"   , "Double Augumented Fourth"        );
-        advancedIntervals( "do sai"   , "Double Augumented Fifth"         );
-        advancedIntervals( "do lai"   , "Double Augumented Sixth"         );
-        advancedIntervals( "do tai"   , "Double Augumented Seventh"       );
-        advancedIntervals( "do dai'"  , "Double Augumented Octave"        );
-        advancedIntervals( "do rai'"  , "Double Augumented Ninth"         );
-        advancedIntervals( "do mai'"  , "Double Augumented Tenth"         );
-        advancedIntervals( "do fai'"  , "Double Augumented Eleventh"      );
-        advancedIntervals( "do sai'"  , "Double Augumented Twelveth"      );
-        advancedIntervals( "do lai'"  , "Double Augumented Thirteenth"    );
-        advancedIntervals( "do tai'"  , "Double Augumented Fourteenth"    );
-    }
-
     c.writeHeader0( "Scales" );
     // TODO
     c.writeTextBody( 
@@ -1111,91 +1121,87 @@ function batch() {
         );
     {
         // ch-070 =============================================
-        c.writeHeader1( "Modal Scales" );
         c.writeTextBody( "In this theory, all scales are related to closest minor scale. Rotation is a method to derive all related scales on a scale. (under construction)\\" );
         {
             // BASIC
-            c.writeHeader2( "Basic Modes" );
+            c.writeHeader1( "Basic Scales" );
 
-            c.writeHeader3( "Dorian Scale" );
+            c.writeHeader2( "Dorian Scale" );
             c.writeScore(  "dorian-basic",                           "do(do,re,me,fa,sol,la,te)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Diminished Scale" );
+            c.writeHeader2( "Diminished Scale" );
             c.writeScore(  'diminished-basic',                       "do(do,re,me,fa,se,le,la,ti)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Melodic Minor Scale" );
+            c.writeHeader2( "Melodic Minor Scale" );
             c.writeScore(  'melodic-basic',                          "do(do,re,me,fa,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Harmonic Minor Scale" );
+            c.writeHeader2( "Harmonic Minor Scale" );
             c.writeScore(  'harmonic-basic',                         "do(do,re,me,fa,sol,le,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Melodic Minor \\sharp 11 Scale" );
+            c.writeHeader2( "Melodic Minor \\sharp 11 Scale" );
             c.writeScore(  'melodic-s11-basic',                      "do(do,re,me,fi,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Wholetone Scale" );
+            c.writeHeader2( "Wholetone Scale" );
             c.writeScore(  'wholetone-basic',                        "do(do,re,mi,fi,si,li)            1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
-            c.writeHeader3( "Augumented Scale" );
+            c.writeHeader2( "Augumented Scale" );
             c.writeScore(  'augmented-basic',                       "do(do,me,mi,sol,le,ti)           1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
-            c.writeHeader3( "Augumented Minor Major 7th Scale" );
+            c.writeHeader2( "Augumented Minor Major 7th Scale" );
             c.writeScore(  'augmented-ma7-basic',                   "do(do,re,me,mi,se,sol,le,te,ti)  1 2 3 4 5 6 7 8 9 1 s 1 9 8 7 6 5 4 3 2 1 "  );
-            c.writeHeader3( "Augumented Natural 13th Scale" );
+            c.writeHeader2( "Augumented Natural 13th Scale" );
             c.writeScore(  'augmented-n13-basic',                   "do(do,re,me,mi,se,le,la,te)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 "  );
 
 
-
             // DORIAN
-            c.writeHeader2( "Dorian Mode Derived Scales" );
-            c.writeHeader3( "Dorian Scale" );
+            c.writeHeader1( "Dorian Derived Scales" );
+            c.writeHeader2( "Dorian Scale" );
             c.writeScore(  "dorian-01",                  "do(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Phrygian Scale" );
+            c.writeHeader2( "Phrygian Scale" );
             c.writeScore(  "dorian-02",                  "do(re,me,fa,sol,la,te,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Lydian Scale" );
+            c.writeHeader2( "Lydian Scale" );
             c.writeScore(  "dorian-03",                  "do(me,fa,sol,la,te,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Mixolydian Scale" );
+            c.writeHeader2( "Mixolydian Scale" );
             c.writeScore(  "dorian-04",                  "do(fa,sol,la,te,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Aeolian Scale" );
+            c.writeHeader2( "Aeolian Scale" );
             c.writeScore(  "dorian-05",                  "do(sol,la,te,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Locrian Scale" );
+            c.writeHeader2( "Locrian Scale" );
             c.writeScore(  "dorian-06",                  "do(la,te,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
-            c.writeHeader3( "Ionian Scale" );
+            c.writeHeader2( "Ionian Scale" );
             c.writeScore(  "dorian-07",                  "do(te,do,re,me,fa,sol,la)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
 
 
             // MELODIC
-            c.writeHeader2( "Melodic Minor Mode Derived Scales" );
+            c.writeHeader1( "Melodic Minor Derived Scales" );
 
-            c.writeHeader3( "Melodic Minor Scale" );
+            c.writeHeader2( "Melodic Minor Scale" );
             c.writeScore(  "melodic-01",                  "do(do,re,me,fa,sol,la,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Phrygian \\natural 13th Scale" );
+            c.writeHeader2( "Phrygian \\natural 13th Scale" );
             c.writeScore(  "melodic-02",                  "do(re,me,fa,sol,la,ti,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Lydian \\sharp 5th Scale" );
+            c.writeHeader2( "Lydian \\sharp 5th Scale" );
             c.writeScore(  "melodic-03",                  "do(me,fa,sol,la,ti,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Mixolydian \\sharp 11th Scale" );
+            c.writeHeader2( "Mixolydian \\sharp 11th Scale" );
             c.writeScore(  "melodic-04",                  "do(fa,sol,la,ti,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Aeolian Majour Scale ( Mixolydian \\flat 13th )" );
+            c.writeHeader2( "Aeolian Majour Scale ( Mixolydian \\flat 13th )" );
             c.writeScore(  "melodic-05",                  "do(sol,la,ti,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Locrian \\natural 9th Scale ( Super Locrian Scale )" );
+            c.writeHeader2( "Locrian \\natural 9th Scale ( Super Locrian Scale )" );
             c.writeScore(  "melodic-06",                  "do(la,ti,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
-            c.writeHeader3( "Ionian \\flat All Scale ( Altered Scale )" );
+            c.writeHeader2( "Ionian \\flat All Scale ( Altered Scale )" );
             c.writeScore(  "melodic-07",                  "do(ti,do,re,me,fa,sol,la)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
 
 
             // HARMONIC
-            c.writeHeader2( "Harmonic Minor Mode Derived Scales" );
+            c.writeHeader1( "Harmonic Minor Derived Scales" );
 
-            c.writeHeader3( "Harmonic Minor Scale" );
+            c.writeHeader2( "Harmonic Minor Scale" );
             c.writeScore(  "harmonic-01",                  "do(do,re,me,fa,sol,le,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Locrian \\natural 13th Scale" );
+            c.writeHeader2( "Locrian \\natural 13th Scale" );
             c.writeScore(  "harmonic-02",                  "do(re,me,fa,sol,le,ti,do)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Ionian \\sharp 5th Scale" );
+            c.writeHeader2( "Ionian \\sharp 5th Scale" );
             c.writeScore(  "harmonic-03",                  "do(me,fa,sol,le,ti,do,re)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Dorian \\sharp 11th Scale" );
+            c.writeHeader2( "Dorian \\sharp 11th Scale" );
             c.writeScore(  "harmonic-04",                  "do(fa,sol,le,ti,do,re,me)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Phrygian Major Scale ( Harmonic Minor Perfect 5th Below )" );
+            c.writeHeader2( "Phrygian Major Scale ( Harmonic Minor Perfect 5th Below )" );
             c.writeTextBody( "(Mixolydian \\cflat 9th \\cflat 13th)" );
             c.writeScore(  "harmonic-05",                  "do(sol,le,ti,do,re,me,fa)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Lydian \\sharp 9th Scale ( Super Locrian Scale )" );
+            c.writeHeader2( "Lydian \\sharp 9th Scale ( Super Locrian Scale )" );
             c.writeScore(  "harmonic-06",                  "do(le,ti,do,re,me,fa,sol)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
-            c.writeHeader3( "Ionian Diminished 7th Scale ( Altered Scale )" );
+            c.writeHeader2( "Ionian Diminished 7th Scale ( Altered Scale )" );
             c.writeScore(  "harmonic-07",                  "do(ti,do,re,me,fa,sol,le)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
         }
-
-
     }
 
     c.writeHeader0( "Transposing to Every Keys" );
