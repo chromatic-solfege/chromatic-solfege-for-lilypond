@@ -1,5 +1,11 @@
 #!/usr/bin/nodejs
 
+// Names of Toolkits
+// chtk ... Chromatic Tool Kit (CHTK)
+// ditk ... Diatonic Interval Tool Kit (DITK)
+// eitk ... Enharmonic Interval Tool kit(EITK)
+// fctk ... Fret-diagram Chromatic Tool kit(FCTK)
+
 require( 'local/settings' );
 var ScaleGenerator = require( 'local/chromatic/formatter' );
 
@@ -22,7 +28,6 @@ function batch() {
     // TODO Write descriptions to every harmonic intervals.
     // TODO Scales with Guitar Diagram
 
-    c.enable();
 
     c.t_abstract`
             \textbf{\textit{ UNFINISHED 2 Jun 2018 }} \\
@@ -286,11 +291,10 @@ function batch() {
 
         `;
 
-    c.disable();
 
     c.writeNewPage();
 
-    c.writeHeader0( "Accidentals" );
+    c.writeHeader0( "Notes" );
     {
         c.t_textBody`
             Welcome to the world of the chromatic solfège. The chromatic
@@ -334,6 +338,18 @@ function batch() {
         c.writeScore(  "example", "@do  dao  rao mao fao sao lao tao dao" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
     }
 
+    c.writeHeader0( "Chromatic Scales" );
+    {
+        // TODO
+        c.t_textBody`
+            TODO The notes are able to There are two type of 
+        `;
+        c.writeHeader1( "Diminished Chromatic Scale" );
+        c.writeTextBody( '.' );
+        c.writeScore(  "example", "@do  do ra re me mi fa se sol le la te ti do" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
+    }
+
+
     var COMMON_WORD_01 = "Read them aloud repeatedly until you can recite without seeing the actual notes. ";
 
     // Chromatic Tool Kit (CHTK)
@@ -376,7 +392,7 @@ function batch() {
                 if ( i!=0 )
                     addResult( ' ' );
                 if ( i % breakAt == 0 && i!=0 )
-                    addResult( ' \n ' );
+                    addResult( ' |! ' );
                 for ( var px=0; px<pattern.length; px++ )
                     addResult( getNote( i + pattern[px] ) + '4 ' );
 
@@ -392,7 +408,7 @@ function batch() {
                 if ( i!=0 )
                     addResult( ' ' );
                 if ( i % breakAt == 0 && i!=0)
-                    addResult( ' \n ' );
+                    addResult( ' |! ' );
                 for ( var px=0; px<pattern.length; px++ )
                     addResult( getNote( invertedLength - i + pattern[px] ) + '4 ' );
                 addResult( ' s ' );
@@ -412,32 +428,29 @@ function batch() {
         // Chromatic Scale 1
         c.writeHeader1( "Horizontal Movement" );
         {
-            // Chromatic Scale 1
-            c.writeHeader2( "All Notes with Flat, Sharp and Natural" );
-            c.writeTextBody( "This is usually called as Chromatic Scale." );
-            {
-                c.writeHeader3( "Chromatic Scale with Flat" );
-                c.writeScore( "chromatic-02-flat",     "do  do ra re me mi fa se sol le la te ti do | do ti te la le sol se fa mi me re ra do" );
+            c.writeHeader2( "Flat Chromatic Scale" );
+            c.writeScore( "chromatic-02-flat",     "do  do ra re me mi fa se sol le la te ti do | do ti te la le sol se fa mi me re ra do" );
 
-                chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 0, 1, 0 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 0, 1, 2 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 2, 1, 0 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 0, 1, 2, 3 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 3, 2, 1, 0 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 0, 1, 2, 3, 4 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 4, 3, 2, 1, 0 ],  6 );
+            c.writeHeader3( "Exercises for Flat Chromatic Scale" );
+            chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 0, 1, 0 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 0, 1, 2 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 2, 1, 0 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 0, 1, 2, 3 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 3, 2, 1, 0 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 0, 1, 2, 3, 4 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do ra re me mi fa se sol le la te ti', [ 4, 3, 2, 1, 0 ],  6 );
 
-                c.writeHeader3( "Chromatic Scale with Sharp" );
-                c.writeScore( "chromatic-01-sharp",    "do  do di re ri mi fa fi sol si la li ti do | do ti li la si sol fi fa mi ri re di do" );
+            c.writeHeader2( "Sharp Chromatic Scale" );
+            c.writeScore( "chromatic-01-sharp",    "do  do di re ri mi fa fi sol si la li ti do | do ti li la si sol fi fa mi ri re di do" );
 
-                chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 0, 1, 0 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 0, 1, 2 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 2, 1, 0 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 0, 1, 2, 3 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 3, 2, 1, 0 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 0, 1, 2, 3, 4 ],  6 );
-                chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 4, 3, 2, 1, 0 ],  6 );
-            }
+            c.writeHeader3( "Exercises for Sharp Chromatic Scale" );
+            chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 0, 1, 0 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 0, 1, 2 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 2, 1, 0 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 0, 1, 2, 3 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 3, 2, 1, 0 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 0, 1, 2, 3, 4 ],  6 );
+            chtk.exec( 'chromatic-03-01', 'do di re ri mi fa fi sol si la li ti', [ 4, 3, 2, 1, 0 ],  6 );
         }
 
         // Chromatic Scale 2
@@ -445,37 +458,37 @@ function batch() {
         {
             c.writeHeader2( "Note Alteration" );
             c.writeScore( "notename-accidentals", 
-                    "@do  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@re  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@mi  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@fa  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@sol do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@la  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@ti  do  di dai dao dai di do s do de daw dae daw de do \n " + 
-                    "@do  do  di dai dao dai di do s do de daw dae daw de do \n " 
+                    "@do  do  di dai dao dai di do s do de daw dae daw de do |! " + 
+                    "@re  do  di dai dao dai di do s do de daw dae daw de do |! " + 
+                    "@mi  do  di dai dao dai di do s do de daw dae daw de do |! " + 
+                    "@fa  do  di dai dao dai di do s do de daw dae daw de do |! " + 
+                    "@sol do  di dai dao dai di do s do de daw dae daw de do |! " + 
+                    "@la  do  di dai dao dai di do s do de daw dae daw de do |! " + 
+                    "@ti  do  di dai dao dai di do s do de daw dae daw de do |! " + 
+                    "@do  do  di dai dao dai di do s do de daw dae daw de do |! " 
                 );
 
             c.writeHeader2( "Scale Alteration" );
             c.writeScore( "notename-accidentals", 
-                    "@do  do  re mi fa sol la ti do       | do ti la sol fa mi re do \n " + 
+                    "@do  do  re mi fa sol la ti do       | do ti la sol fa mi re do |! " + 
 
-                    "@do  di ri ma fi si li ta di         | di ta li si fi ma ri di   \n " +
-                    "@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai \n " +
-                    "@do  dao rao mao fao sao lao tao dao | dao tao lao sao fao mao rao dao \n "  +
-                    "@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai \n " +
-                    "@do  di ri ma fi si li ta di         | di ta li si fi ma ri di  \n " +
+                    "@do  di ri ma fi si li ta di         | di ta li si fi ma ri di   |! " +
+                    "@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai |! " +
+                    "@do  dao rao mao fao sao lao tao dao | dao tao lao sao fao mao rao dao |! "  +
+                    "@do  dai rai mai fai sai lai tai dai | dai tai lai sai fai mai rai dai |! " +
+                    "@do  di ri ma fi si li ta di         | di ta li si fi ma ri di  |! " +
 
-                    "@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n " + 
+                    "@do  do re mi fa sol la ti do        | do ti la sol fa mi re do |! " + 
 
-                    "@do  de  ra me fe se le te de         | de te le se  fe me ra de \n " + 
-                    "@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n " + 
-                    "@do  dae rae mae fae sae lae tae dae | dae tae lae sae fae mae rae dae \n "  +
-                    "@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw \n " + 
-                    "@do  de ra me fe se le te de         | de te le se  fe me ra de \n " + 
+                    "@do  de  ra me fe se le te de         | de te le se  fe me ra de |! " + 
+                    "@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw |! " + 
+                    "@do  dae rae mae fae sae lae tae dae | dae tae lae sae fae mae rae dae |! "  +
+                    "@do  daw raw maw faw saw law taw daw | daw taw law saw faw maw raw daw |! " + 
+                    "@do  de ra me fe se le te de         | de te le se  fe me ra de |! " + 
 
-                    "@do  do re mi fa sol la ti do        | do ti la sol fa mi re do \n " + 
+                    "@do  do re mi fa sol la ti do        | do ti la sol fa mi re do |! " + 
                     ""
-                    );
+                );
         }
     }
 
@@ -493,12 +506,12 @@ function batch() {
         {
             c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
             c.writeScore( "enharmonic-single-accidentals-sf", "do " +
-                  "di ra  s  ri me  s  mi fe  s  ma fa  s  fi se  s  si le  s  li te  s  ti de  s  ta do  s  di ra \n" +
+                  "di ra  s  ri me  s  mi fe  s  ma fa  s  fi se  s  si le  s  li te  s  ti de  s  ta do  s  di ra |! " +
                   "di ra  s  ta do  s  ti de  s  li te  s  si le  s  fi se  s  ma fa  s  mi fe  s  ri me  s  di ra"
             );
             c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
             c.writeScore( "enharmonic-single-accidentals-fs", "do " +
-                  "ra di  s  me ri  s  fe mi  s  fa ma  s  se fi  s  le si  s  te li  s  de ti  s  do ta  s  ra di \n" +
+                  "ra di  s  me ri  s  fe mi  s  fa ma  s  se fi  s  le si  s  te li  s  de ti  s  do ta  s  ra di |! " +
                   "ra di  s  do ta  s  de ti  s  te li  s  le si  s  se fi  s  fa ma  s  fe mi  s  me ri  s  ra di"
             );
         }
@@ -508,12 +521,12 @@ function batch() {
         {
             c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
             c.writeScore( "enharmonic-double-flat-fn", "do " +
-                  "daw te s raw do  s  maw re  s  faw me  s  saw fa  s  law sol  s  taw la  s  daw te   \n" +
+                  "daw te s raw do  s  maw re  s  faw me  s  saw fa  s  law sol  s  taw la  s  daw te   |! " +
                   "daw te s taw la  s  law sol s  saw fa  s  faw me  s  maw re   s  raw do  s  daw te " 
             );
             c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
             c.writeScore( "enharmonic-double-flat-nf", "do " +
-                  "te daw  s do raw   s  re maw   s  me faw   s  fa saw   s  sol law   s  la taw   s  te daw    \n" +
+                  "te daw  s do raw   s  re maw   s  me faw   s  fa saw   s  sol law   s  la taw   s  te daw    |! " +
                   "te daw  s la taw   s  sol law  s  fa saw   s  me faw   s  re maw    s  do raw   s  te daw  " 
             );
         }
@@ -523,13 +536,13 @@ function batch() {
 
             c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
             c.writeScore( "enharmonic-double-sharp-sn", "do " +
-                  "dai re  s  rai mi  s  mai fi  s  fai sol  s  sai la   s  lai ti  s  tai di  s  dai re \n" +
+                  "dai re  s  rai mi  s  mai fi  s  fai sol  s  sai la   s  lai ti  s  tai di  s  dai re |! " +
                   "dai re  s  tai di  s  lai ti  s  sai la   s  fai sol  s  mai fi  s  rai mi  s  dai re " 
             );
 
             c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
             c.writeScore( "enharmonic-double-sharp-ns", "do " +
-                  "re dai  s  mi rai  s  fi mai  s  sol fai  s  la sai  s  ti lai  s  di tai  s  re dai \n" +
+                  "re dai  s  mi rai  s  fi mai  s  sol fai  s  la sai  s  ti lai  s  di tai  s  re dai |! " +
                   "re dai  s  di tai  s  ti lai  s  la sai  s  sol fai  s  fi mai  s  mi rai  s  re dai" 
             );
         }
@@ -538,12 +551,12 @@ function batch() {
         {
             c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
             c.writeScore( "enharmonic-triple-flat-fn", "do " +
-                  "dae la  s  rae ti  s mae di  s  fae re   s  sae mi  s  lae fi  s  tae si  s  dae la \n" +
+                  "dae la  s  rae ti  s mae di  s  fae re   s  sae mi  s  lae fi  s  tae si  s  dae la |! " +
                   "dae la  s  tae si  s lae fi  s  sae mi   s  fae re  s  mae di  s  rae ti  s  dae la" 
             );
             c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
             c.writeScore( "enharmonic-triple-flat-nf", "do " +
-                  "la  dae  s  ti  rae  s di  mae  s  re  fae   s  mi  sae  s  fi  lae  s  si  tae  s  la  dae \n" +
+                  "la  dae  s  ti  rae  s di  mae  s  re  fae   s  mi  sae  s  fi  lae  s  si  tae  s  la  dae |! " +
                   "la  dae  s  si  tae  s fi  lae  s  mi  sae   s  re  fae  s  di  mae  s  ti  rae  s  la  dae" 
             );
         }
@@ -552,20 +565,260 @@ function batch() {
         {
             c.writeHeader3( MSG_HARMONIC_TO_ENHARMONIC );
             c.writeScore( "enharmonic-triple-sharp-sn", "do " +
-                  "dao  me  s  rao  fa  s  mao  sol  s  fao  le  s  sao  te   s  lao  do  s  tao  re  s  dao  me \n" +
+                  "dao  me  s  rao  fa  s  mao  sol  s  fao  le  s  sao  te   s  lao  do  s  tao  re  s  dao  me |! " +
                   "dao  me  s  tao  re  s  lao  do   s  sao  te  s  fao  le   s  mao  sol s  rao  fa  s  dao  me" 
             );
             c.writeHeader3( MSG_ENHARMONIC_TO_HARMONIC );
             c.writeScore( "enharmonic-triple-sharp-ns", "do " +
-                  "me   dao s  fa   rao   s  sol mao   s  le fao   s  te sao    s  do lao    s  re tao   s  me dao   \n" +
+                  "me   dao s  fa   rao   s  sol mao   s  le fao   s  te sao    s  do lao    s  re tao   s  me dao   |! " +
                   "me   dao s  re   tao   s  do lao    s  te sao   s  le fao    s  sol mao   s  fa rao   s  me dao  " 
             );
         }
     }
 
 
-    // Note Name Tool Kit (NNTK)
-    var nntk = {
+
+    c.writeHeader0( "Harmonically Strict Motions" );
+    c.writeTextBody(
+            `TODO`
+    );
+    {
+        c.writeHeader1( "Strict Fourth Motion" );
+        c.writeScore( "strict-fourth" , "\\abs @do' \\absolute { do fa te me' le ra' se' de fe taw maw' law raw' saw'  daw faw tae mae' lae rae' sae' dae fae }" , {scmFestivalTempo:100} );
+
+        c.writeHeader1( "Strict Fifth Motion" );
+        c.writeScore( "strict-fifth" ,  "\\abs @do' \\absolute { do sol re' la' mi' ti' fi''  di si ri' li' ma' ta' fai''  dai sai rai' lai' mai' tai' fao''  dao sao rao' lao' mao' tao' la'' }", {scmFestivalTempo:100} );
+
+        c.writeHeader1( "Strict Minor Third Motion" );
+        c.writeScore( 
+                `\
+                @do  do  me se taw s
+                @di  do, me se taw s
+                @re  do, me se taw s |!
+                @ri  do, me se taw s 
+                @mi  do, me se taw s 
+                @fa  do, me se taw s |!
+                @fi  do, me se taw s 
+                @sol do, me se taw s 
+                @si  do, me se taw s |!
+                @la  do, me se taw s 
+                @li  do, me se taw s 
+                @ti  do, me se taw s |!
+                @do  do, me se taw s s
+
+                `.replace( /\n|\t\t/g, ' ' )
+                );
+
+        c.writeHeader1( "Strict Minor Third Motion 2" );
+        c.writeScore( 
+                `\
+                @do \
+                do  me se taw s  te sol mi ra  s  re fa le de s |! 
+                do  la fi ri  s  mi sol te ra  s  re ti si ma s |! 
+                fi  li di mi  s  fa re  ti si  s  la do me se s |! 
+                sol mi di li  s  ti re  fa le  s  la fi ri ta  
+                `.replace( /\t\t/g, '' ).replace( /\n/g, ' ' )
+                );
+
+
+        c.writeHeader1( "Fourth Motion" );
+        c.writeScore( 
+                "@do  do  fa te, me le  |  " +
+                "@ra  do, fa te, me le  |  " +
+                "@re  do, fa te, me le  |  " +
+                "@me  do, fa te, me le  |! " +
+
+                "@mi  do, fa te, me le  |  " +
+                "@fa  do, fa te, me le  |  " +
+                "@se  do, fa te, me le  |  " +
+                "@sol do, fa te, me le  |! " +
+
+                "@le  do, fa te, me le  |  " +
+                "@la  do, fa te, me le  |  " +
+                "@te  do, fa te, me le  |  " +
+                "@ti  do, fa te, me le  |! " +
+                "@do  do1" 
+                );
+
+        c.writeHeader1( "Fifth Motion" );
+        c.writeScore( 
+                "@do   do' sol' re' la mi' |  " +
+                "@ti   do, sol' re' la mi' |  " +
+                "@li   do, sol' re' la mi' |  " +
+                "@la   do, sol' re' la mi' |! " +
+
+                "@si   do, sol' re' la mi' |  " +
+                "@sol  do, sol' re' la mi' |  " +
+                "@fi   do, sol' re' la mi' |  " +
+                "@fa   do, sol' re' la mi' |! " +
+
+                "@mi   do, sol' re' la mi' |  " +
+                "@ri   do, sol' re' la mi' |  " +
+                "@re   do, sol' re' la mi' |  " +
+                "@di   do, sol' re' la mi' |! " +
+                "@do  do1" 
+                );
+    }
+
+
+
+    c.writeHeader0( "Transposing" );
+    // TODO
+    c.writeTextBody( "TODO.");
+    {
+        c.writeHeader1( "Diatonic Scales" );
+        {
+            var ch = require( 'chromatic' );
+            function eventhandler( eventtype, id, notes, text ) {
+                if ( eventtype == 'tex' ) {
+                    return (
+                        '\\noindent ' + 
+                        ch.note2alphabet_tex( id )
+                            .replace( /\bflat\b/, "cflat" )
+                            .replace( /\bsharp\b/, "csharp" )
+                            .replace( /\bnatural\b/, "cnatural" ) +
+                        '$\\vcenter{ \\hbox{ \\includegraphics[width=1.0 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n'
+                   );
+                } else {
+                    return text;
+                }
+            }
+
+            c.writeHeader2( "Natural" );
+            c.writeScore( null, "do  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
+            c.writeHeader2( "Sharp" );
+            c.writeScore( null, "sol do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "re  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "la  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "mi  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "ti  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "fi  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
+            c.writeHeader2( "Flat" );
+            c.writeScore( null, "fa  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "te  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "me  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "le  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "ra  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "se  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
+            c.writeHeader2( "Special ( Flat )" );
+            c.writeScore( null, "de  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "fe  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
+            c.writeHeader2( "Special ( Sharp )" );
+            c.writeScore( null, "di  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "si  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "ri  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "li  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "ma  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+            c.writeScore( null, "ta  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
+
+
+            c.writeHeader2( "Fourth Motion" );
+
+            c.writeScore( null, "@do'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@fa'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@te'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@me'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@le'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@ra'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@se'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@de'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@fe'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@taw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@maw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@law' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@raw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@saw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@daw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@faw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@tae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@mae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@lae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@rae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@sae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@dae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@fae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+            c.writeScore( null, "@sol' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
+
+            c.writeHeader2( "Fifth Motion" );
+
+            c.writeScore( null, "@do'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@sol' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@re'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@la'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@mi'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@ti'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@fi'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@di'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@si'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@ri'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@li'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@ma'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@ta'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@fai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@dai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@sai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@rai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@lai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@mai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@tai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@fao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@dao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@sao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@rao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@lao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@mao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@tao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+            c.writeScore( null, "@si'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
+        }
+
+        c.writeHeader1( "Harmonically Strict Chromatic Scales" );
+        c.writeTextBody( `\
+            Generally chromatic scales are considered that they do not belong
+            to any specific key.  Harmonically speaking, the chromatic scales
+            also have keys when they come with harmonically correct intervals.
+            Chromatic scale 
+        ` );
+        {
+            var note2name = {
+                'do' : 'C',
+                'fa' : 'F',
+                'te' : 'B\\flat',
+                'me' : 'E\\flat',
+                'le' : 'A\\flat',
+                'ra' : 'D\\flat',
+                'se' : 'G\\flat',
+                'sol': 'G',
+                're' : 'D',
+                'la' : 'A',
+                'mi' : 'E',
+                'ti' : 'B',
+                'fi' : 'F\\sharp',
+            };
+            var keys = "do fa te me le ra se ti mi la re sol".split( ' ' );
+            for ( var i of keys ) {
+                c.writeHeader2( 'Key ' + note2name[ i ] );
+                // TODO
+                c.writeScore( i + '-01', `@${i} do re mi fa sol la ti do do ti la sol fa mi re do` );
+                c.writeScore( i + '-02', `@${i} do di re ri mi fa fi sol si la li ti do s do ti te la le sol se fa mi me re ra do` );
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    // Diatonic Interval Tool Kit (DITK)
+    var ditk = {
         left_rotate(arr,offset) {
             arr = arr.concat();
             return arr.concat( arr.splice( 0, offset ) );
@@ -630,21 +883,31 @@ function batch() {
             c.writeHeader1( caption ) ;
             for ( var ridx=0; ridx<1; ridx++ ) {
                 var scale  = scale.split(' ') ;
-                var key    = nntk.left_rotate( scale, ridx ).shift();
-                var notes  = nntk.left_rotate( nntk.build_octaves( scale ), ridx );
+                var key    = ditk.left_rotate( scale, ridx ).shift();
+                var notes  = ditk.left_rotate( ditk.build_octaves( scale ), ridx );
                 var ottava = 4 <= ridx ? '\\ottava #1' : '';
 
-                c.writeHeader2( 'All Intervals within ' + caption ) ;
-                c.writeScore( 'scale', '@do ' + ottava + ' \\absolute { ' + notes.slice( 7, 15  ).join( ' ' ) + ' | ' + notes.slice( 7, 15 ).reverse().join( ' ' )  + ' } ' );
+                var pos_s = scale.length;
+                var pos_e = scale.length * 2;
+
+                // c.writeHeader2( 'All Intervals within ' + caption ) ;
+
+                /*
+                 * NOTE : pos_e must be added one because the root note on the next octave must be shown there.
+                 * (Thu, 07 Jun 2018 12:44:30 +0900)
+                 */
+                c.writeScore( 'scale', '@do ' + ottava + ' \\absolute { ' + notes.slice( pos_s, pos_e + 1  ).join( ' ' ) + ' | ' + notes.slice( pos_s, pos_e + 1 ).reverse().join( ' ' )  + ' } ' );
 
                 for ( var nidx=0; nidx<8; nidx++ ) {
-                    c.writeHeader2( "All " + nntk.num2interval( nidx ) + " within " + caption );
-                    c.writeScore( nidx + '-01-u', `@do ${ottava} \\absolute \{ ${ nntk.merge_with_offset2( notes,  nidx, 7  ,14 ) } \}`, {scmFestivalTempo:170} );
-                    c.writeScore( nidx + '-02-d', `@do ${ottava} \\absolute \{ ${ nntk.merge_with_offset2( notes,  nidx, 14 ,7  ) } \}`, {scmFestivalTempo:170} );
+                    c.writeHeader2( "" + ditk.num2interval( nidx ) + " within " + caption );
+                    c.writeScore( nidx + '-01-u', "@do " + ottava + " \\absolute { " +  ditk.merge_with_offset2( notes,  nidx, pos_s ,pos_e ) + " }", {scmFestivalTempo:170} );
+                    c.writeScore( nidx + '-02-d', "@do " + ottava + " \\absolute { " +  ditk.merge_with_offset2( notes,  nidx, pos_e ,pos_s ) + " }", {scmFestivalTempo:170} );
                 }
             }
         },
     };
+
+
 
     c.writeHeader0( "Intervals in Alterations" );
     c.writeTextBody( 
@@ -656,17 +919,17 @@ function batch() {
             ` + COMMON_WORD_01 
         );
     {
-        nntk.exec( "do re mi fa sol la ti", "Natural" );
-        nntk.exec( "de ra me fe se le te", "Flat" );
-        nntk.exec( "di ri ma fi si li ta", "Sharp" );
-        nntk.exec( "daw raw maw faw saw law taw", "Double Flat" );
-        nntk.exec( "dai rai mai fai sai lai tai", "Double Sharp" );
-        nntk.exec( "dae rae mae fae sae lae tae", "Triple Flat" );
-        nntk.exec( "dao rao mao fao sao lao tao", "Triple Sharp" );
+        ditk.exec( "do re mi fa sol la ti", "Natural" );
+        ditk.exec( "de ra me fe se le te", "Flat" );
+        ditk.exec( "di ri ma fi si li ta", "Sharp" );
+        ditk.exec( "daw raw maw faw saw law taw", "Double Flat" );
+        ditk.exec( "dai rai mai fai sai lai tai", "Double Sharp" );
+        ditk.exec( "dae rae mae fae sae lae tae", "Triple Flat" );
+        ditk.exec( "dao rao mao fao sao lao tao", "Triple Sharp" );
     }
 
-    // Enharmonic Chromatic Scale Tool kit
-    var ehtk = {
+    // Enharmonic Interval Tool kit(EITK)
+    var eitk = {
         exec ( l_scale, r_scale, rotation, from, to ) {
             if ( typeof l_scale === 'undefined' ) {
                 throw new Error( "No scale was specified." );
@@ -798,7 +1061,7 @@ function batch() {
             var r_notes = rotate( blowup( r_scale.split( /\s+/ ) ), rotation ) ;
 
             for ( var i=from; i<to; i++ ) {
-                c.writeHeader2( number2interval( i ) + " which consists " + number2word( i ) + " half step"  + ( 1<i ? 's' : '' ) );
+                c.writeHeader2( number2interval( i ) + " Which Consists " + number2word( i ) + " Half Step"  + ( 1<i ? 's' : '' ) );
                 c.writeScore( i + '-01-u', "@do' \\absolute \{ " + merge_with_offset( l_notes, r_notes,  i, 12 ,24 , 12 ) + " \}", {scmFestivalTempo:200} );
                 c.writeScore( i + '-02-d', "@do' \\absolute \{ " + merge_with_offset( l_notes, r_notes,  i, 24 ,12 , 12 ) + " \}", {scmFestivalTempo:200} );
             }
@@ -815,14 +1078,14 @@ function batch() {
         // c.writeHeader1( "Enharmonic Intervals on the Chromatic Scale" );
         {
             c.writeHeader1( 'Intervals in Flat Chromatic Scale' );
-            ehtk.exec( 'do ra re me mi fa se sol le la te ti' );
+            eitk.exec( 'do ra re me mi fa se sol le la te ti' );
             c.writeHeader1( 'Intervals in Sharp Chromatic Scales' );
-            ehtk.exec( 'do di re ri mi fa fi sol si la li ti' );
+            eitk.exec( 'do di re ri mi fa fi sol si la li ti' );
 
             c.writeHeader1( 'Intervals from Flat to Sharp' );
-            ehtk.exec( 'do ra re me mi fa se sol le la te ti', 'do di re ri mi fa fi sol si la li ti' );
+            eitk.exec( 'do ra re me mi fa se sol le la te ti', 'do di re ri mi fa fi sol si la li ti' );
             c.writeHeader1( 'Intervals from Sharp to Flat' );
-            ehtk.exec( 'do di re ri mi fa fi sol si la li ti', 'do ra re me mi fa se sol le la te ti' );
+            eitk.exec( 'do di re ri mi fa fi sol si la li ti', 'do ra re me mi fa se sol le la te ti' );
         }
 
     }
@@ -948,160 +1211,6 @@ function batch() {
         advancedIntervals( "do tai'"  , "Double Augumented Fourteenth"    );
     }
 
-    c.writeHeader0( "Harmonically Strict Motions" );
-    c.writeTextBody(
-            `TODO`
-    );
-    {
-        c.writeHeader1( "Strict Fourth/Fifth Motions" );
-        {
-            c.writeHeader3( "Strict Fourth Motion" );
-            c.writeScore( "strict-fourth" , "\\abs @do' \\absolute { do fa te me' le ra' se' de fe taw maw' law raw' saw'  daw faw tae mae' lae rae' sae' dae fae }" , {scmFestivalTempo:100} );
-            c.writeHeader3( "Strict Fifth Motion" );
-            c.writeScore( "strict-fifth" ,  "\\abs @do' \\absolute { do sol re' la' mi' ti' fi''  di si ri' li' ma' ta' fai''  dai sai rai' lai' mai' tai' fao''  dao sao rao' lao' mao' tao' la'' }", {scmFestivalTempo:100} );
-        }
-    }
-
-    c.writeHeader0( "Transposing" );
-    // TODO
-    c.writeTextBody( "TODO.");
-    {
-        c.writeHeader1( "Diatonic Scales" );
-        {
-            var ch = require( 'chromatic' );
-            function eventhandler( eventtype, id, notes, text ) {
-                if ( eventtype == 'tex' ) {
-                    return (
-                        '\\noindent ' + 
-                        ch.note2alphabet_tex( id )
-                            .replace( /\bflat\b/, "cflat" )
-                            .replace( /\bsharp\b/, "csharp" )
-                            .replace( /\bnatural\b/, "cnatural" ) +
-                        '$\\vcenter{ \\hbox{ \\includegraphics[width=1.0 \\textwidth]{' + this.currentOutputFilenameAsPDF() + '}}}$\n'
-                   );
-                } else {
-                    return text;
-                }
-            }
-
-            c.writeHeader2( "Natural" );
-            c.writeScore( null, "do  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-
-            c.writeHeader2( "Sharp" );
-            c.writeScore( null, "sol do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "re  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "la  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "mi  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "ti  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "fi  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-
-            c.writeHeader2( "Flat" );
-            c.writeScore( null, "fa  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "te  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "me  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "le  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "ra  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "se  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-
-            c.writeHeader2( "Special ( Flat )" );
-            c.writeScore( null, "de  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "fe  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-
-            c.writeHeader2( "Special ( Sharp )" );
-            c.writeScore( null, "di  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "si  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "ri  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "li  do' re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "ma  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-            c.writeScore( null, "ta  do  re mi fa sol la ti do | do ti la sol fa mi re do", { eventhandler : eventhandler } );
-
-
-            c.writeHeader2( "Fourth Motion" );
-
-            c.writeScore( null, "@do'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@fa'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@te'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@me'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@le'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@ra'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@se'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@de'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@fe'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@taw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@maw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@law' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@raw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@saw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@daw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@faw' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@tae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@mae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@lae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@rae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@sae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@dae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@fae' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-            c.writeScore( null, "@sol' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do }", { eventhandler : eventhandler } );
-
-            c.writeHeader2( "Fifth Motion" );
-
-            c.writeScore( null, "@do'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@sol' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@re'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@la'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@mi'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@ti'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@fi'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@di'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@si'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@ri'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@li'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@ma'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@ta'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@fai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@dai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@sai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@rai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@lai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@mai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@tai' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@fao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@dao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@sao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@rao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@lao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@mao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@tao' \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-            c.writeScore( null, "@si'  \\abs \\absolute { do re mi fa sol la ti do' | do' ti la sol fa mi re do } ", { eventhandler : eventhandler } );
-        }
-
-        c.writeHeader1( "Transposed Chromatic Scales" );
-        {
-            var note2name = {
-                'do' : 'C',
-                'fa' : 'F',
-                'te' : 'B\\flat',
-                'me' : 'E\\flat',
-                'le' : 'A\\flat',
-                'ra' : 'D\\flat',
-                'se' : 'G\\flat',
-                'sol': 'G',
-                're' : 'D',
-                'la' : 'A',
-                'mi' : 'E',
-                'ti' : 'B',
-                'fi' : 'F\\sharp',
-            };
-            var keys = "do fa te me le ra se ti mi la re sol".split( ' ' );
-            for ( var i of keys ) {
-                c.writeHeader3( 'Key ' + note2name[ i ] );
-                // TODO
-                c.writeScore( i + '-01', `@${i} do re mi fa sol la ti do do ti la sol fa mi re do` );
-                c.writeScore( i + '-02', `@${i} do di re ri mi fa fi sol si la li ti do s do ti te la le sol se fa mi me re ra do` );
-            }
-        }
-    }
-
 
     // c.writeCommands(
     //         `
@@ -1117,14 +1226,20 @@ function batch() {
     // TODO
     c.writeTextBody( 
             "This section introduces some exercises to build fluency. " +
-            "Read them aloud repeatedly until you can recite without seeing the actual spells."
+            COMMON_WORD_01
         );
     {
         // ch-070 =============================================
+        // TODO
         c.writeTextBody( "In this theory, all scales are related to closest minor scale. Rotation is a method to derive all related scales on a scale. (under construction)\\" );
         {
             // BASIC
             c.writeHeader1( "Basic Scales" );
+            c.writeTextBody( 
+                    // TODO
+                    "This section introduces some exercises to build fluency. " +
+                    COMMON_WORD_01
+                );
 
             c.writeHeader2( "Dorian Scale" );
             c.writeScore(  "dorian-basic",                           "do(do,re,me,fa,sol,la,te)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
@@ -1139,15 +1254,14 @@ function batch() {
             c.writeHeader2( "Wholetone Scale" );
             c.writeScore(  'wholetone-basic',                        "do(do,re,mi,fi,si,li)            1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
             c.writeHeader2( "Augumented Scale" );
-            c.writeScore(  'augmented-basic',                       "do(do,me,mi,sol,le,ti)           1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
+            c.writeScore(  'augmented-basic',                        "do(do,me,mi,sol,le,ti)           1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
             c.writeHeader2( "Augumented Minor Major 7th Scale" );
-            c.writeScore(  'augmented-ma7-basic',                   "do(do,re,me,mi,se,sol,le,te,ti)  1 2 3 4 5 6 7 8 9 1 s 1 9 8 7 6 5 4 3 2 1 "  );
+            c.writeScore(  'augmented-ma7-basic',                    "do(do,re,me,mi,se,sol,le,te,ti)  1 2 3 4 5 6 7 8 9 1 s 1 9 8 7 6 5 4 3 2 1 "  );
             c.writeHeader2( "Augumented Natural 13th Scale" );
-            c.writeScore(  'augmented-n13-basic',                   "do(do,re,me,mi,se,le,la,te)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 "  );
-
+            c.writeScore(  'augmented-n13-basic',                    "do(do,re,me,mi,se,le,la,te)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 "  );
 
             // DORIAN
-            c.writeHeader1( "Dorian Derived Scales" );
+            c.writeHeader1( "Dorian Related Scales" );
             c.writeHeader2( "Dorian Scale" );
             c.writeScore(  "dorian-01",                  "do(do,re,me,fa,sol,la,te)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                             );
             c.writeHeader2( "Phrygian Scale" );
@@ -1165,7 +1279,7 @@ function batch() {
 
 
             // MELODIC
-            c.writeHeader1( "Melodic Minor Derived Scales" );
+            c.writeHeader1( "Melodic Minor Related Scales" );
 
             c.writeHeader2( "Melodic Minor Scale" );
             c.writeScore(  "melodic-01",                  "do(do,re,me,fa,sol,la,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                            );
@@ -1184,7 +1298,7 @@ function batch() {
 
 
             // HARMONIC
-            c.writeHeader1( "Harmonic Minor Derived Scales" );
+            c.writeHeader1( "Harmonic Minor Related Scales" );
 
             c.writeHeader2( "Harmonic Minor Scale" );
             c.writeScore(  "harmonic-01",                  "do(do,re,me,fa,sol,le,ti)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
@@ -1203,6 +1317,120 @@ function batch() {
             c.writeScore(  "harmonic-07",                  "do(ti,do,re,me,fa,sol,le)  1 2 3 4 5 6 7 1 s 1 7 6 5 4 3 2 1"                           );
         }
     }
+
+
+    c.writeHeader0( "Intervals on Scales" );
+    // TODO
+    c.writeTextBody( 
+            "This section introduces some exercises to build fluency. " +
+            COMMON_WORD_01
+        );
+    {
+        ditk.exec( "do re me fa sol la te"        , "Dorian Scale"                      );
+        ditk.exec( "do re me fa se le la ti"      , "Diminished Scale"                  );
+        ditk.exec( "do re me fa sol la ti"        , "Melodic Minor Scale"               );
+        ditk.exec( "do re me fa sol le ti"        , "Harmonic Minor Scale"              );
+        ditk.exec( "do re me fi sol la ti"        , "Melodic Minor \\sharp 11 Scale"    );
+        ditk.exec( "do re mi fi si li"            , "Wholetone Scale"                   );
+        ditk.exec( "do me mi sol le ti"           , "Augumented Scale"                  );
+        ditk.exec( "do re me mi se sol le te ti"  , "Augumented Minor Major 7th Scale"  );
+        ditk.exec( "do re me mi se le la te"      , "Augumented Natural 13th Scale"     );
+    }
+
+    // fctk ... Fret-diagram Chromatic Tool kit(FCTK)
+    var fctk = {
+        left_rotate(arr,offset) {
+            arr = arr.concat();
+            return arr.concat( arr.splice( 0, offset ) );
+        },
+        build_octaves( arr ) {
+            return [].concat( 
+                // arr.map( (s)=> s + ","     ),
+                arr.map( (s)=> s + ""      ),
+                arr.map( (s)=> s + "'"     ),
+                arr.map( (s)=> s + "''"    ),
+                arr.map( (s)=> s + "'''"   ),
+                arr.map( (s)=> s + "''''"  ),
+                arr.map( (s)=> s + "'''''" )
+            )
+        },
+        merge_with_offset( notes , offset, from, to  ) {
+            var result = [];
+            for ( var i=from; i!=to; from < to ? i++ : i-- ) {
+                result.push( notes[ ( i          ) ] + '8 [ ' );
+                result.push( notes[ ( i + offset ) ] + '8 ] ' );
+            }
+            result.push( notes[ ( to          ) ] + '8 ] ' );
+
+            return result.join( ' ' ) ;
+        },
+
+        merge_with_offset2( notes , offset, from, to  ) {
+            var result = [];
+            for ( var i=from; i!=to; from < to ? i++ : i-- ) {
+                result.push( notes[ ( i          ) ] + '4 ' );
+                result.push( notes[ ( i + offset ) ] + '4 s ' );
+            }
+            result.push( notes[ ( to          ) ] + '2' );
+
+            return result.join( ' ' ) ;
+        },
+        num2interval( n ) {
+            switch ( n )  {
+                case  0 : return "Unison";
+                case  1 : return "Second";
+                case  2 : return "Third";
+                case  3 : return "Fourth";
+                case  4 : return "Fifth";
+                case  5 : return "Sixth";
+                case  6 : return "Seventh";
+                case  7 : return "Octave";
+                case  8 : return "Ninth";
+                case  9 : return "Tenth";
+                case 10 : return "Eleventh";
+                case 11 : return "Twelfth";
+                case 12 : return "Thirteenth";
+                case 13 : return "Fourteenth";
+                case 14 : return "Fifteenth";
+                default :
+                    throw new Error('');
+            }
+        },
+        key2caption( key ) {
+            return "key in " + key;
+        },
+        exec( scale, caption ) {
+            c.writeHeader1( caption ) ;
+
+            for ( var ridx=0; ridx<1; ridx++ ) {
+                var scale  = scale.split(' ') ;
+                var key    = ditk.left_rotate( scale, ridx ).shift();
+                var notes  = ditk.left_rotate( ditk.build_octaves( scale ), ridx );
+                var ottava = 4 <= ridx ? '\\ottava #1' : '';
+
+                var pos_s = scale.length;
+                var pos_e = scale.length * 2;
+
+                // c.writeHeader2( 'All Intervals within ' + caption ) ;
+
+                /*
+                 * NOTE : pos_e must be added one because the root note on the next octave must be shown there.
+                 * (Thu, 07 Jun 2018 12:44:30 +0900)
+                 */
+                c.writeScore( 'scale', '@do ' + ottava + ' \\absolute { ' + notes.slice( pos_s, pos_e + 1  ).join( ' ' ) + ' | ' + notes.slice( pos_s, pos_e + 1 ).reverse().join( ' ' )  + ' } ' );
+
+                for ( var nidx=0; nidx<8; nidx++ ) {
+                    c.writeHeader2( "" + ditk.num2interval( nidx ) + " within " + caption );
+                    c.writeScore( nidx + '-01-u', "@do " + ottava + " \\absolute { " +  ditk.merge_with_offset2( notes,  nidx, pos_s ,pos_e ) + " }", {scmFestivalTempo:170} );
+                    c.writeScore( nidx + '-02-d', "@do " + ottava + " \\absolute { " +  ditk.merge_with_offset2( notes,  nidx, pos_e ,pos_s ) + " }", {scmFestivalTempo:170} );
+                }
+            }
+        },
+    };
+    c.enable();
+    c.disable();
+
+
 
     c.writeHeader0( "Transposing to Every Keys" );
     c.writeTextBody( "Freeing you from the single key." );
@@ -1264,19 +1492,19 @@ function batch() {
         // exec( "dor_br1", keys, scale_dorian,  pattern7_01, "Dorian - Broken Chord Movement 1", "" );
 
 
-        // var pattern7_02 = "1 7   2 1   3 2   4 3   5 4   6 5   7 6   8 7    9 8  10 9 \n 8 9 7 8 6 7 5 6 4 5 3 4 2 3 1 2 7 1";
+        // var pattern7_02 = "1 7   2 1   3 2   4 3   5 4   6 5   7 6   8 7    9 8  10 9 |! 8 9 7 8 6 7 5 6 4 5 3 4 2 3 1 2 7 1";
         // exec( keys, scale_dorian,       pattern7_02, "dor_2nd",     "Dorian - Interval 2nd ", "" );
 
-        exec( "dor_3rd_lh",  keys, scale_dorian, "1 3   2 4   3 5   4 6   5 7   6 8   7 9   8 10  \n 8 10 7 9 6 8 5 7 4 6 3 5 2 4 1 3",
+        exec( "dor_3rd_lh",  keys, scale_dorian, "1 3   2 4   3 5   4 6   5 7   6 8   7 9   8 10  |! 8 10 7 9 6 8 5 7 4 6 3 5 2 4 1 3",
                  "Dorian - Interval 3rd - Low High", "" );
 
-        exec( "dor_3rd_hl", keys, scale_dorian, "3 1    4 2    5 3    6 4    7 5    8 6    9 7  10 8 \n 10 8 9 7 8 6  7 5  6 4  5 3  4 2  3 1", 
+        exec( "dor_3rd_hl", keys, scale_dorian, "3 1    4 2    5 3    6 4    7 5    8 6    9 7  10 8 |! 10 8 9 7 8 6  7 5  6 4  5 3  4 2  3 1", 
                 "Dorian - Interval 3rd - High Low", "" );
 
-        // exec( "dor_4th", keys, scale_dorian,  "1 4   2 5   3 6   4 7   5 8   6 9   7 10   8 11  9 12 \n 11 8 10 7 9 6 8 5 7 4 6 3 5 2 4 1",
+        // exec( "dor_4th", keys, scale_dorian,  "1 4   2 5   3 6   4 7   5 8   6 9   7 10   8 11  9 12 |! 11 8 10 7 9 6 8 5 7 4 6 3 5 2 4 1",
         // 		"Dorian - Interval 4th ", "" );
         // 
-        // exec( "dor_5th", keys, scale_dorian,  "1 5' 2 6' 3 7' 4 8' 5 9' 6 10' 7 11' 8 12' 9 13' \n 12 8, 11 7, 10 6, 9 5, 8 4, 7 3, 6 2, 5 1,",
+        // exec( "dor_5th", keys, scale_dorian,  "1 5' 2 6' 3 7' 4 8' 5 9' 6 10' 7 11' 8 12' 9 13' |! 12 8, 11 7, 10 6, 9 5, 8 4, 7 3, 6 2, 5 1,",
         // 		"Dorian - Interval 5th ", "" );
         // 
         // exec( "dor_6th", keys, scale_dorian,  "3 1' 4, 2' 5, 3' 6, 4' 7, 5' 1, 6' 2, 7' 3, 1'",
@@ -1314,39 +1542,6 @@ function batch() {
     {
 
 
-        c.writeHeader1( "Applied Motions of Fourth/Fifth" );
-        {
-            c.writeHeader3( "Minor 3rd Motion 1" );
-            c.writeScore( 
-                    `\
-                    @do \
-                    do  me se taw s  te sol mi ra  s  re fa le de s 
-                    do  la fi ri  s  mi sol te ra  s  re ti si ma s 
-                    fi  li di mi  s  fa re  ti si  s  la do me se s
-                    sol mi di li  s  ti re  fa le  s  la fi ri ta 
-                    `.replace( /\t\t/g, '' ).replace( /\n/g, ' ' )
-                    );
-
-            c.writeHeader3( "Minor 3rd Motion 2" );
-            c.writeScore( 
-                    `\
-                    @do  do  me se taw s
-                    @di  do, me se taw s
-                    @re  do, me se taw s | \\break
-                    @ri  do, me se taw s 
-                    @mi  do, me se taw s 
-                    @fa  do, me se taw s | \\break
-                    @fi  do, me se taw s 
-                    @sol do, me se taw s 
-                    @si  do, me se taw s | \\break
-                    @la  do, me se taw s 
-                    @li  do, me se taw s 
-                    @ti  do, me se taw s | \\break
-                    @do  do, me se taw s s
-
-                    `.replace( /\n|\t\t/g, ' ' )
-                    );
-        }
     }
 
 
