@@ -403,14 +403,33 @@
                    (fretdiagram:add-note-event e)))))
          (fretdiagram:get)))
 
+#(define multiplex-pitches 
+   (lambda ( pitches pitch-octave-shift-list )
+     (apply append (let loop-1 ((pitch-octave-shift-list pitch-octave-shift-list ))
+                     (if (not (null? pitch-octave-shift-list) )
+                       (let ((pitch-octave-shift (car pitch-octave-shift-list)))
+                         (cons 
+                           (let loop-2( (pitches pitches))
+                             (if (not (null? pitches ))
+                               (cons 
+                                 (let ((pitch (car pitches))) 
+                                   (ly:make-pitch 
+                                     (+ (ly:pitch-octave pitch) pitch-octave-shift )
+                                     (+ (ly:pitch-notename pitch) 0 )
+                                     (+ (ly:pitch-alteration pitch) 0 )))
+                                 (loop-2 (cdr pitches )))
+                               '())) ;else
+
+                           (loop-1 (cdr pitch-octave-shift-list ))))
+                       '())))))
 
 #(define create-simple-fretdiagram-definition
    ;lowest-note highest-note skip-note-count string-number-list
-   (lambda (music string-number-list skip-count root-offset )
+   (lambda (music string-number-list skip-count root-offset pitch-octave-shift-list )
      (set! music (music-to-elements music))
      (fretdiagram:init)
 
-     (let* ((pitches (lookup-pitches music ))
+     (let* ((pitches (multiplex-pitches (lookup-pitches music ) pitch-octave-shift-list))
            (pitch-shift 0 )
            (root-pitch (if (<= 0 root-offset )
                          (list-ref pitches root-offset )
@@ -466,45 +485,50 @@
 #(define create-entire-fretdiagram-definition
    ;lowest-note highest-note skip-note-count string-number-list
    (lambda (music root-offset )
-     (define string-number-list (list 6 6 6 5 5 5 4 4 4 3 3 3 2 2 2 1 1 1 ) )
+     ;(define string-number-list (list 6 6 6 5 5 5 4 4 4 3 3 3 2 2 2 1 1 1 ) )
      (define skip-count 2 )
      (set! music (music-to-elements music))
 
      (fretdiagram:init)
-     (let* ((pitches
-             (lookup-pitches music ))
-           (root-pitch (if (<= 0 root-offset )
-                         (list-ref pitches root-offset )
-                         (root-offset #f))))
 
-       (let loop-1 ((pitches pitches)
-                    (pitch-shift 0))
-         (if (null? pitches)
-           #f
-           (let ((pitch (car pitches)))
-             (let loop-2 ((string-number 6 ))
-               (if (< 0 string-number )
-                 (begin
-                   ; (write string-number)(newline)
-                   (fretdiagram:add-by-pitch
-                     string-number
-                     pitch
-                     pitch-shift
-                     (and root-pitch (pitch-equals root-pitch pitch)))
-                   (loop-2 (- string-number 1)))
-                 #f))
-             (loop-1 (cdr pitches) pitch-shift ))))
+     (let outer-loop ((outer-counter 5 ))
+       (let* ((pitches
+                (lookup-pitches music ))
+              (root-pitch (if (<= 0 root-offset )
+                            (list-ref pitches root-offset )
+                            (root-offset #f))))
 
-;       (letrec (
-;                (loop-1 ))
-;         (loop-1 pitches 0)
-;         ; (loop-1 pitches 12)
-;         ; (loop-1 pitches 24)
-;         ; (loop-1 pitches 36)
-;         ; (loop-1 pitches 48)
-;         )
+         (let loop-1 ((pitches pitches)
+                      (pitch-shift (* (- outer-counter 2) 12 )))
+           (if (null? pitches)
+             #f
+             (let ((pitch (car pitches)))
+               (let loop-2 ((string-number 6 ))
+                 (if (< 0 string-number )
+                   (begin
+                     ; (write string-number)(newline)
+                     (fretdiagram:add-by-pitch
+                       string-number
+                       pitch
+                       pitch-shift
+                       (and root-pitch (pitch-equals root-pitch pitch)))
+                     (loop-2 (- string-number 1)))
+                   #f))
+               (loop-1 (cdr pitches) pitch-shift ))))
 
-       )
+         ;       (letrec (
+         ;                (loop-1 ))
+         ;         (loop-1 pitches 0)
+         ;         ; (loop-1 pitches 12)
+         ;         ; (loop-1 pitches 24)
+         ;         ; (loop-1 pitches 36)
+         ;         ; (loop-1 pitches 48)
+         ;         )
+
+         )  
+       (if (< 0 outer-counter ) 
+         (outer-loop (- outer-counter 1 ))))
+     
      (fretdiagram:get))
    )
 
@@ -590,14 +614,14 @@
                                             (cons (quote xo-padding) 0.3)))
 
 
-#(define proc-scale-diagram 
+#(define create-markup-of-scale-diagram 
    (lambda ( cmusic fret-positions skip-count root-offset override-default ) 
      (markup #:override '(font-family . serif )
-             (markup #:translate '(4 . 0)
+             (markup #:translate '(15 . 0)
                      (markup
                        #:line
                        (#:override
-                        (cons (quote size) 2.0)
+                        (cons (quote size) 3.0)
                         (#:override
                          (append fret-diagram-details-default override-default) 
                          (#:fret-diagram-verbose
@@ -605,18 +629,19 @@
                           (create-simple-fretdiagram-definition
                             cmusic
                             fret-positions
-                            skip-count
-                            root-offset)))))))))
+                            (assq-get 'skip-count 0 override-default )
+                            root-offset
+                            (assq-get 'pitch-shift-list '( 0 1 2 3 4 5 ) override-default ))))))))))
 
 #(define-markup-command (scale-diagram layout props cmusic fret-positions skip-count root-offset override-default) (ly:music? list? integer? integer? list? )
   (interpret-markup layout props
-    (proc-scale-diagram cmusic fret-positions skip-count root-offset override-default )))
+    (create-markup-of-scale-diagram cmusic fret-positions skip-count root-offset override-default )))
 
 % ; parameters are supposed to be passed on override-default
 #(define put-scale-diagram!
    (lambda ( music override-default )
      (define note (last (lookup-music-by-name (music-to-elements music) 'NoteEvent)))
-     (define new-markup (proc-scale-diagram music 
+     (define new-markup (create-markup-of-scale-diagram music 
                                             (ly:assoc-get 'fret-positions override-default '(6 6 6 5 5 5 4 4 4 3 3 3 2 2 2 1 1 1) ) 
                                             (ly:assoc-get 'skip-count     override-default 0 ) 
                                             (ly:assoc-get 'root-offset    override-default 0 ) 
@@ -630,14 +655,14 @@
                                              'text
                                              new-markup))))))
 
-#(define proc-entire-scale-diagram 
+#(define create-markup-of-entire-scale-diagram 
    (lambda ( cmusic root-offset override-default ) 
      (markup #:override '(font-family . serif )
-             (markup #:translate '(4 . 0)
+             (markup #:translate '(15 . 0)
                      (markup
                        #:line
                        (#:override
-                        (cons (quote size) 2.0)
+                        (cons (quote size) 3.0)
                         (#:override
                          (append fret-diagram-details-default override-default) 
 
@@ -649,7 +674,7 @@
 
 #(define-markup-command (entire-scale-diagram layout props cmusic root-offset override-default ) (ly:music? integer? list?)
    (interpret-markup layout props
-       (proc-entire-scale-diagram cmusic root-offset override-default )))
+       (create-markup-of-entire-scale-diagram cmusic root-offset override-default )))
 
 
 
@@ -657,7 +682,7 @@
 #(define put-entire-scale-diagram!
    (lambda ( music override-default )
      (define note (last (lookup-music-by-name (music-to-elements music) 'NoteEvent)))
-     (define new-markup (proc-entire-scale-diagram music (ly:assoc-get 'root-offset override-default 0 ) override-default ))
+     (define new-markup (create-markup-of-entire-scale-diagram music (ly:assoc-get 'root-offset override-default 0 ) override-default ))
      (ly:music-set-property! note 'articulations
                              (append
                                (ly:music-property note 'articulations)
