@@ -21,7 +21,7 @@ function batch() {
     // c.t_abstract`Hey foo bar`;
     // c.writeNewPage();
 
-    // c.setDevelopmentMode( true );
+    c.setDevelopmentMode( true );
     // c.disable();
     // c.setAlwaysOutputHeader( true );
     
@@ -1427,9 +1427,91 @@ function batch() {
             }
         },
     };
-    c.enable();
-    c.disable();
 
+
+    c.enable();
+
+
+    c.writeHeader0( "Appendix for Guitarists" );
+    // TODO
+    c.writeTextBody( 
+            "This section introduces some exercises to build fluency. " +
+            COMMON_WORD_01
+        );
+    {
+
+        function getEntireFretDiagramDef() {
+            return {
+                formatType : 'entire-diagram',
+                // scmShowEntireScaleDiagram : true,
+                scmAlwaysShowZeroFret : true ,
+                scmFretRange : '(1 . 24 )',
+                texGraphicWidth : 0.8 , 
+                lyTextAfter : [6, 3]
+            };
+        }
+
+        var FINGERING_3 = '( 6 6 6 5 5 5 4 4 4 3 3 3 2 2 2 1 1 1 )';
+        var FINGERING_3_1 = '( 6 6 6 5 4 4 4 3 2 2 2 1 )';
+        var FINGERING_1_3 = '( 6 5 5 5 4 3 3 3 2 1 1 1 )';
+
+        function getFretDiagramDef( skipCount, fingering ) {
+            return {
+                formatType : 'diagram',
+                // scmShowScaleDiagram : true,
+                scmAlwaysShowZeroFret : true,
+                scmFretPositions : fingering,
+                scmSkipCount : skipCount,
+                scmFretRange : '(1 . 24)',
+                texGraphicWidth : 0.8 , 
+                lyTextAfter : [6,3]
+            };
+        }
+
+        var note2name = {
+            'do' : 'C',
+            'fa' : 'F',
+            'te' : 'B\\flat',
+            'me' : 'E\\flat',
+            'le' : 'A\\flat',
+            'ra' : 'D\\flat',
+            'se' : 'G\\flat',
+            'sol': 'G',
+            're' : 'D',
+            'la' : 'A',
+            'mi' : 'E',
+            'ti' : 'B',
+            'fi' : 'F\\sharp',
+        };
+        var keys = "do fa te me le ra se ti mi la re sol".split( ' ' );
+        for ( var k of keys ) {
+
+            c.writeHeader1( 'Dorian Key ' + note2name[ k ] );
+            c.writeScore( k + '-entire', `@${k} \\relative { do re me fa sol la te }`, getEntireFretDiagramDef() );
+            c.writeNewLine();
+
+            for ( var i=0; i<14; i++ ) {
+                c.writeHeader2( 'Position x'  );
+                c.writeScore( k + '-' + i, `@${k} \\relative { do re me fa sol la te } `, getFretDiagramDef( i + 2, FINGERING_3 ) );
+                c.writeNewLine();
+            }
+        }
+
+
+        c.writeScore( 'test', '@do do me fa sol te', getEntireFretDiagramDef() );
+        c.writeNewLine();
+        for ( var i=0; i<10; i++ ) {
+            c.writeScore( 'test', '@do do me fa sol te', getFretDiagramDef( i + 2, FINGERING_3_1 ) );
+            c.writeNewLine();
+        }
+
+        for ( var i=0; i<10; i++ ) {
+            c.writeScore( 'test', '@do do me fa sol te', getFretDiagramDef( i + 2, FINGERING_1_3 ) );
+            c.writeNewLine();
+        }
+    }
+
+    c.disable();
 
 
     c.writeHeader0( "Transposing to Every Keys" );
