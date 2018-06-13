@@ -759,6 +759,36 @@
                                              'text
                                              new-markup))))))
 
+#(define position-selector (lambda (pos) 
+                             (cond 
+                               ((number? pos) 
+                                (lambda (lst) 
+                                  (list-ref lst pos)))
+                               ((eq? 'last pos )
+                                (lambda (lst) 
+                                  (last lst )))
+                               ((eq? 'first pos )
+                                (lambda (lst) 
+                                  (first lst)))
+                               (else error "unknown-keyword" ))))
+
+% ; parameters are supposed to be passed on override-default
+#(define put-markup-on-a-note!
+   (lambda (music note-pos new-markup )
+     (define note ((position-selector note-pos) ; this returns a lambda object then this will be executed immediately.
+                   (reverse
+                   (lookup-music-by-name 
+                     (music-to-elements music) 
+                     'NoteEvent))))
+
+     (ly:music-set-property! note 'articulations
+                             (append
+                               (ly:music-property note 'articulations)
+                               (list
+                                 (make-music 'TextScriptEvent
+                                             'direction 1
+                                             'text
+                                             new-markup))))))
 
 
 %#(write put-scale-chart!)
