@@ -259,6 +259,8 @@ makescore = #(define-scheme-function (parser location notes settings ) ( ly:musi
       >>
       \midi { \tempo 4 = 180 }
 	  \layout {
+		indent = #0
+		ragged-right = ##f
 		\context {
 		  \Score
 		  \override NonMusicalPaperColumn.line-break-permission = ##f
@@ -277,7 +279,7 @@ makescore = #(define-scheme-function (parser location notes settings ) ( ly:musi
 makescore-for-guitar =
 #(define-scheme-function (parser location noteValues noteNames fingeringPattern ) (ly:music? ly:music? list?)
      (put-fretdiagram-on-music! noteValues
-         (create-fretdiagram-definition
+         (create-scale-diagram-definition
              (put-string-number-on-music! noteValues fingeringPattern)))
      #{ 
        
