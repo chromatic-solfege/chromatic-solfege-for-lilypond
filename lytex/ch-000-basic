@@ -1429,8 +1429,6 @@ function batch() {
     };
 
 
-    c.enable();
-
 
     c.writeHeader0( "Appendix for Guitarists" );
     // TODO
@@ -1469,6 +1467,13 @@ function batch() {
                 lyTextAfter : [6,3]
             };
         }
+        // Parallelogram
+        function getParaFretDiagramDef(skipCount, fingering ) {
+            var o = getFretDiagramDef( skipCount, fingering );
+            o.scmDisplayType ="at-least-one";
+            console.error( o ) ;
+            return o;
+        }
 
         var note2name = {
             'do' : 'C',
@@ -1491,8 +1496,18 @@ function batch() {
 
         for ( var k of keys ) {
             var keyName = note2name[ k ] + '-Dorian'
-            c.writeHeader1( keyName );
 
+            // guitarScaleList.push({
+            //     __level : 0,
+            //     __note  : k,
+            //     key  : note2name[ k ],
+            //     scale : 'Dorian',
+            //     header : note2name[ k ] + '-Dorian',
+            //     score : `@${k} \\relative { do re me fa sol la te }`,
+            //     settings : getEntireFretDiagramDef(),
+            // });
+
+            c.writeHeader1( keyName );
             c.writeScore( k + '-entire', `@${k} \\relative { do re me fa sol la te }`, getEntireFretDiagramDef() );
             c.writeNewLine();
 
@@ -1506,6 +1521,7 @@ function batch() {
 
         for ( var k of keys ) {
             var keyName = note2name[ k ] + '-Pentatnoic'
+
             c.writeHeader1( keyName );
 
             c.writeScore( k + '-entire', `@${k} \\relative { do me fa sol te }`, getEntireFretDiagramDef() );
@@ -1518,12 +1534,7 @@ function batch() {
                 c.writeNewLine();
             }
 
-            for ( var i=0; i<9; i++ ) {
-                c.writeHeader2( 'Three-One-Note-per-String Positioning Position-' + i  + ' on ' + keyName );
 
-                c.writeScore( k + '-' + i, `@${k} \\relative { do me fa sol te } `, getFretDiagramDef( i, FINGERING_3_1 ) );
-                c.writeNewLine();
-            }
 
             for ( var i=0; i<9; i++ ) {
                 c.writeHeader2( 'One-Three-Note-per-String Positioning Position-' + i  + ' on ' + keyName );
@@ -1531,10 +1542,28 @@ function batch() {
                 c.writeScore( k + '-' + i, `@${k} \\relative { do me fa sol te } `, getFretDiagramDef( i, FINGERING_1_3 ) );
                 c.writeNewLine();
             }
-        }
-    }
 
-    c.disable();
+            for ( var i=0; i<9; i++ ) {
+                c.writeHeader2( 'Three-Note-per-String Positioning Position-' + i  + ' on ' + keyName );
+
+                c.writeScore( k + '-' + i, `@${k} \\relative { do me fa sol te } `, getFretDiagramDef( i, FINGERING_1_3 ) );
+                c.writeNewLine();
+            }
+
+            c.enable();
+            var length = c.queryFretDiagram( `@do \\relative { do me fa sol te }`, getParaFretDiagramDef( 0, FINGERING_4 ) );
+            console.error( "queryFretDiagram : length", length );
+            for ( var i=0; i<length; i++ ) {
+                c.writeHeader2( 'Four-Note-per-String Positioning Position-' + i  + ' on ' + keyName );
+
+                c.writeScore( k + '-' + i, `@${k} \\relative { do me fa sol te } `, getParaFretDiagramDef( i, FINGERING_4) );
+                c.writeNewLine();
+            }
+            c.disable();
+        }
+
+    }
+    // console.error( "HELLO", c.queryFretDiagram( `@do \\relative { do me fa sol te }`, getFretDiagramDef( 0, FINGERING_2 ) ) );
 
 
     c.writeHeader0( "Transposing to Every Keys" );
