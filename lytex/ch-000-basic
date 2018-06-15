@@ -29,6 +29,10 @@ function batch() {
     // TODO Scales with Guitar Diagram
 
 
+    c.enable();
+    c.writeHeaderPart( "Note Names" );
+    c.disable();
+
     c.t_abstract`
             \textbf{\textit{ UNFINISHED 2 Jun 2018 }} \\
 
@@ -1430,14 +1434,12 @@ function batch() {
 
 
 
-    c.writeHeader0( "Appendix for Guitarists" );
-    // TODO
-    c.writeTextBody( 
-            "This section introduces some exercises to build fluency. " +
-            COMMON_WORD_01
-        );
-    {
+    c.enable();
+    c.writeHeaderPart( "Appendix for Guitarists" );
+    c.disable();
 
+    // gftk
+    var gftk = (()=>{
         function getEntireFretDiagramDef() {
             return {
                 formatType : 'entire-diagram',
@@ -1448,12 +1450,6 @@ function batch() {
                 lyTextAfter : [6, 3]
             };
         }
-
-        var FINGERING_3 = '( 6 6 6 5 5 5 4 4 4 3 3 3 2 2 2 1 1 1 )';
-        var FINGERING_3_1 = '( 6 6 6 5 4 4 4 3 2 2 2 1 )';
-        var FINGERING_1_3 = '( 6 5 5 5 4 3 3 3 2 1 1 1 )';
-        var FINGERING_2 = '( 6 6 5 5 4 4 3 3 2 2 1 1 )';
-        var FINGERING_4 = '( 6 6 6 6 5 5 5 5 4 4 4 4 3 3 3 3 2 2 2 2 1 1 1 1 )';
 
         function getFretDiagramDef( skipCount, fingering ) {
             return {
@@ -1468,14 +1464,12 @@ function batch() {
             };
         }
         // Parallelogram
-        function getParaFretDiagramDef(skipCount, fingering ) {
+        function getParaFretDiagramDef( skipCount, fingering ) {
             var o = getFretDiagramDef( skipCount, fingering );
             o.scmDisplayType ="at-least-one";
-            console.error( o ) ;
             return o;
         }
-
-        var note2name = {
+        var __note2name = {
             'do' : 'C',
             'fa' : 'F',
             'te' : 'B\\flat',
@@ -1490,77 +1484,136 @@ function batch() {
             'ti' : 'B',
             'fi' : 'F\\sharp',
         };
+        function note2name( k ) {
+            return __note2name[k];
+        }
+
         var keys = "do fa te me le ra se ti mi la re sol".split( ' ' );
+        function allKeys( f ) {
+            for ( var key of keys ) {
+                f( key, note2name( key ) );
+            }
+        }
+
+        return {
+            note2name : note2name,
+            FINGERING_3   : '( 6 6 6 5 5 5 4 4 4 3 3 3 2 2 2 1 1 1 )',
+            FINGERING_3_1 : '( 6 6 6 5 4 4 4 3 2 2 2 1 )',
+            FINGERING_1_3 : '( 6 5 5 5 4 3 3 3 2 1 1 1 )',
+            FINGERING_2   : '( 6 6 5 5 4 4 3 3 2 2 1 1 )',
+            FINGERING_4   : '( 6 6 6 6 5 5 5 5 4 4 4 4 3 3 3 3 2 2 2 2 1 1 1 1 )',
+            getEntireFretDiagramDef  : getEntireFretDiagramDef,
+            getParaFretDiagramDef    : getParaFretDiagramDef,
+            getFretDiagramDef        : getFretDiagramDef,
+            allKeys : allKeys,
+        };
+    })();
+
+    // TODO
+    c.writeTextBody( 
+            "This section introduces some exercises to build fluency. " +
+            COMMON_WORD_01
+        );
+    {
+        // guitarScaleList.push({
+        //     __level : 0,
+        //     __note  : k,
+        //     key  : note2name( k (,
+        //     scale : 'Dorian',
+        //     header : note2name( k ) + '-Dorian',
+        //     score : `@${k} \\relative { do re me fa sol la te }`,
+        //     settings : getEntireFretDiagramDef(),
+        // });
 
         var guitarScaleList = [];
-
-        for ( var k of keys ) {
-            var keyName = note2name[ k ] + '-Dorian'
-
-            // guitarScaleList.push({
-            //     __level : 0,
-            //     __note  : k,
-            //     key  : note2name[ k ],
-            //     scale : 'Dorian',
-            //     header : note2name[ k ] + '-Dorian',
-            //     score : `@${k} \\relative { do re me fa sol la te }`,
-            //     settings : getEntireFretDiagramDef(),
-            // });
-
-            c.writeHeader1( keyName );
-            c.writeScore( k + '-entire', `@${k} \\relative { do re me fa sol la te }`, getEntireFretDiagramDef() );
+        c.enable();
+        c.writeHeader0( "Dorian Scale with Three Note Fingering" );
+        gftk.allKeys( (k,engKey )=>{
+            c.writeHeader1( '[' + k + ']' + '-Dorian' );
+            c.writeScore( k + '-entire', `@${k} \\abs do re me fa sol la te`, gftk.getEntireFretDiagramDef() );
             c.writeNewLine();
 
             for ( var i=0; i<12; i++ ) {
-                c.writeHeader2( 'Position ' + i  + ' on ' + keyName );
 
-                c.writeScore( k + '-' + i, `@${k} \\relative { do re me fa sol la te } `, getFretDiagramDef( i, FINGERING_3 ) );
+                var def = gftk.getParaFretDiagramDef( i, gftk.FINGERING_3 );
+
+                var visibleNotes = 
+                    c.queryFretDiagram( 'VisibleNotes', `@${k}  \\abs do me fa sol te`,   def ).notes;
+                var rootIndex = 
+                    visibleNotes.findIndex((e)=>k === e.replace( /[,']/gm, '' ).trim() );
+
+                var positionName = ( rootIndex, posIndex ) =>{
+                    switch ( rootIndex ) {
+                        case 0 : return "Left-Root-on-6th-String";
+                        case 1 : return "Center-Root-on-6th-String";
+                        case 2 : return "Right-Root-on-6th-String";
+                        case 3 : return "Left-Root-on-5th-String";
+                        case 4 : return "Center-Root-on-5th-String";
+                        case 5 : return "Right-Root-on-5th-String";
+                        case 6 : return "Left-Root-on-4th-String";
+                        default :
+                            return "Position-" + posIndex;
+                    }
+                };
+
+                c.writeHeader2( 'Three-Note Fingering Position ' + positionName( rootIndex, i )  + ' on [ ' + k + ' ] Dorian' );
+
+                // console.error( 'visibleNotes', visibleNotes, 'indexOf', k , ' is ', rootIndex );
+
+                c.writeScore( k + '-' + i, `@${k} \\abs do re me fa sol la te `, def );
                 c.writeNewLine();
             }
-        }
+        });
+        c.disable();
 
-        for ( var k of keys ) {
-            var keyName = note2name[ k ] + '-Pentatnoic'
-
-            c.writeHeader1( keyName );
-
-            c.writeScore( k + '-entire', `@${k} \\relative { do me fa sol te }`, getEntireFretDiagramDef() );
-            c.writeNewLine();
-
-            for ( var i=0; i<10; i++ ) {
-                c.writeHeader2( 'Two-Note-per-String Position-' + i  + ' on ' + keyName );
-
-                c.writeScore( k + '-' + i, `@${k} \\relative { do me fa sol te } `, getFretDiagramDef( i, FINGERING_2 ) );
-                c.writeNewLine();
-            }
-
-
-
-            for ( var i=0; i<9; i++ ) {
-                c.writeHeader2( 'One-Three-Note-per-String Positioning Position-' + i  + ' on ' + keyName );
-
-                c.writeScore( k + '-' + i, `@${k} \\relative { do me fa sol te } `, getFretDiagramDef( i, FINGERING_1_3 ) );
-                c.writeNewLine();
-            }
-
-            for ( var i=0; i<9; i++ ) {
-                c.writeHeader2( 'Three-Note-per-String Positioning Position-' + i  + ' on ' + keyName );
-
-                c.writeScore( k + '-' + i, `@${k} \\relative { do me fa sol te } `, getFretDiagramDef( i, FINGERING_1_3 ) );
-                c.writeNewLine();
-            }
-
-            c.enable();
-            var length = c.queryFretDiagram( `@do \\relative { do me fa sol te }`, getParaFretDiagramDef( 0, FINGERING_4 ) );
-            console.error( "queryFretDiagram : length", length );
-            for ( var i=0; i<length; i++ ) {
-                c.writeHeader2( 'Four-Note-per-String Positioning Position-' + i  + ' on ' + keyName );
-
-                c.writeScore( k + '-' + i, `@${k} \\relative { do me fa sol te } `, getParaFretDiagramDef( i, FINGERING_4) );
-                c.writeNewLine();
-            }
-            c.disable();
-        }
+//         for ( var k of keys ) {
+//             var engKey = note2name( k ) + '-Pentatonic'
+// 
+//             c.writeHeader1( engKey );
+// 
+//             c.writeScore( k + '-entire', `@${k} \\abs do me fa sol te`, getEntireFretDiagramDef() );
+//             c.writeNewLine();
+// 
+//             for ( var i=0; i<10; i++ ) {
+//                 c.writeHeader2( 'Two-Note Fingering Position-' + i  + ' on ' + engKey );
+// 
+//                 c.writeScore( k + '-' + i, `@${k} \\abs do me fa sol te `, getFretDiagramDef( i, FINGERING_2 ) );
+//                 c.writeNewLine();
+//             }
+// 
+// 
+// 
+//             for ( var i=0; i<9; i++ ) {
+//                 c.writeHeader2( 'One-Three-Note Fingering Position-' + i  + ' on ' + engKey );
+// 
+//                 c.writeScore( k + '-' + i, `@${k} \\abs do me fa sol te `, getFretDiagramDef( i, FINGERING_1_3 ) );
+//                 c.writeNewLine();
+//             }
+// 
+//             for ( var i=0; i<9; i++ ) {
+//                 c.writeHeader2( 'Three-Note Fingering Position-' + i  + ' on ' + engKey );
+// 
+//                 c.writeScore( k + '-' + i, `@${k} \\abs do me fa sol te `, getFretDiagramDef( i, FINGERING_1_3 ) );
+//                 c.writeNewLine();
+//             }
+// 
+// 
+//             var result_q1 = c.queryFretDiagram( 'Range', `@${k} \\abs do me fa sol te`,  getParaFretDiagramDef( 0, FINGERING_4 ) );
+// 
+//             for ( var i=0; i < result_q1.length; i++ ) {
+//                 {
+//                     var result = 
+//                         c.queryFretDiagram( 'VisibleNotes', `@${k}  \\abs do me fa sol te`,   getParaFretDiagramDef( i, FINGERING_4 ) );
+//                     console.error( "queryFretDiagram : result", result );
+//                 }
+// 
+//                 c.writeHeader2( 'Four-Note Fingering Position-' + i  + ' on ' + engKey );
+// 
+//                 c.writeScore( k + '-' + i, `@${k} \\abs do me fa sol te`, getParaFretDiagramDef( i, FINGERING_4) );
+//                 c.writeNewLine();
+//             }
+// 
+//         }
 
     }
     // console.error( "HELLO", c.queryFretDiagram( `@do \\relative { do me fa sol te }`, getFretDiagramDef( 0, FINGERING_2 ) ) );

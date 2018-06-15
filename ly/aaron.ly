@@ -452,6 +452,50 @@ process-marking-irregular-accidentals-bak =
               (ly:pitch-notename note )
               (ly:pitch-alteration note )))))
 
+#(define /times 
+   (lambda (times proc)
+     (if (not (procedure? proc))
+       (set! proc 
+         ((lambda (value) 
+            (lambda() value ))
+          proc)))
+     (let loop-of-/times ((times times))
+       (if (< 0 times )
+         (cons 
+           (proc)
+           (loop-of-/times (- times 1)))
+         '()))))
+
+#(define name->pitch
+   (lambda (note-name octave-offset)
+     ; pitchnames = global variable from scm/define-note-names.scm
+     (if (string? note-name)(set! note-name (string->symbol note-name )))
+     (let* ((note (cdr (or (assoc note-name pitchnames )(error "Invalid Note Name" note-name )))))
+       (ly:make-pitch
+         (+ (ly:pitch-octave note) octave-offset )
+         (ly:pitch-notename note )
+         (ly:pitch-alteration note )))))
+
+#(define add-octave-specifier-to-pitchname
+   (lambda( pitchname octave ) 
+     (cond 
+       ((< 0 octave) (string-append pitchname (string-concatenate (/times      octave  "'" ))))
+       ((> 0 octave) (string-append pitchname (string-concatenate (/times (abs octave) "," ))))
+       (else pitchname ))))
+
+#(define pitch->name
+    (lambda (pitch)
+      (let lookup ((es pitchnames))
+        (if (null? es)
+          #f
+          (let ((current-pitch (cdr (car es))))
+            (if (pitch-equal? pitch current-pitch )
+              (add-octave-specifier-to-pitchname
+                (symbol->string (car (car es)))  
+                (ly:pitch-octave pitch))
+              (lookup (cdr es))))))))
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
