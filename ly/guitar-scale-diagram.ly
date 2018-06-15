@@ -424,36 +424,69 @@
                        '())))))
 
 #(define lookup-overhang-offset 
-   (lambda(music string-number-list skip-count root-offset pitch-octave-shift-list )
-     (let lookup-overhang-loop((additional-skip-count 0))
-       ; (write 'i= )
-       ; (write additional-skip-count )(newline)
-       ; (write 'string-number-list)
-       ; (write  (length string-number-list ))(newline)
-       ; (write 'accepted-pitches)
-       ; (write (length (cdr (assq 'accepted-pitches 
-       ;                      (create-simple-scale-diagram music 
-       ;                                                   string-number-list 
-       ;                                                   additional-skip-count
-       ;                                                   root-offset 
-       ;                                                   pitch-octave-shift-list)))))(newline)
-       ; (write (assq 'accepted-pitches 
-       ;                      (create-simple-scale-diagram music 
-       ;                                                   string-number-list 
-       ;                                                   additional-skip-count
-       ;                                                   root-offset 
-       ;                                                   pitch-octave-shift-list)))(newline)
-       (if (< 48 additional-skip-count ) (error "Visible Area not Found error" ) )
-       (if (= 
-             (length string-number-list )
-             (length (cdr (assq 'accepted-pitches 
-                                (create-simple-scale-diagram music 
-                                                             string-number-list 
-                                                             additional-skip-count
-                                                             root-offset 
-                                                             pitch-octave-shift-list))))) 
-         (+ additional-skip-count skip-count ); This is the result we want.
-         (lookup-overhang-loop (+ additional-skip-count 1))))))
+   (lambda(music string-number-list root-offset pitch-octave-shift-list display-type )
+     (if (null? pitch-octave-shift-list ) 
+       (set! pitch-octave-shift-list default-pitch-shift-list))
+
+     (format "DEBUG ** display-type ~a\n" display-type ) 
+
+     (let* ((maximum-pos 144)
+            (check-visibility (cond 
+                      ((eq? display-type 'full )
+                       (lambda ( scale-diagram )
+                         (= 
+                           (length string-number-list )
+                           (length (cdr (assq 'accepted-pitches scale-diagram ))))))
+                      ((eq? display-type 'at-least-one)
+                       (lambda ( scale-diagram )
+                         (< 0 (length (cdr (assq 'accepted-pitches scale-diagram ))))))
+                      (else 
+                        (error "unknown display-type" display-type ))
+                      ))
+           (start-pos 
+             (let lookup-overhang-loop ((additional-skip-count 0))
+               ; (write 'i= )
+               ; (write additional-skip-count )(newline)
+               ; (write 'string-number-list)
+               ; (write  (length string-number-list ))(newline)
+               ; (write 'accepted-pitches)
+               ; (write (length (cdr (assq 'accepted-pitches 
+               ;                      (create-simple-scale-diagram music 
+               ;                                                   string-number-list 
+               ;                                                   additional-skip-count
+               ;                                                   root-offset 
+               ;                                                   pitch-octave-shift-list)))))(newline)
+               ; (write (assq 'accepted-pitches 
+               ;                      (create-simple-scale-diagram music 
+               ;                                                   string-number-list 
+               ;                                                   additional-skip-count
+               ;                                                   root-offset 
+               ;                                                   pitch-octave-shift-list)))(newline)
+
+               (if (< maximum-pos additional-skip-count ) (error "Visible Area not Found Error" ) )
+               (if (check-visibility
+                     (create-simple-scale-diagram music 
+                                                  string-number-list 
+                                                  additional-skip-count
+                                                  root-offset 
+                                                  pitch-octave-shift-list))
+                 additional-skip-count; This is the result we want.
+                 (lookup-overhang-loop (+ additional-skip-count 1)))))
+           (end-pos 
+             (let lookup-overhang-loop ((additional-skip-count start-pos))
+               (if (< maximum-pos additional-skip-count ) (error "Visible Area not Found Error" ) )
+               (if (not (check-visibility
+                     (create-simple-scale-diagram music 
+                                                  string-number-list 
+                                                  additional-skip-count
+                                                  root-offset 
+                                                  pitch-octave-shift-list)))
+                  additional-skip-count ; This is the result we want.  ...2
+                 (lookup-overhang-loop (+ additional-skip-count 1))))))
+       (list
+         (cons 'start-pos start-pos)
+         (cons 'end-pos end-pos )
+         (cons 'length (- end-pos start-pos ))))))
 
 #(define create-simple-scale-diagram
    ;lowest-note highest-note skip-note-count string-number-list
@@ -648,23 +681,23 @@
                                             (cons (quote xo-padding) 0.3)))
 
 
+#(define default-pitch-shift-list '( -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 ))
+
 #(define create-markup-of-scale-diagram
    (lambda ( cmusic string-number-list skip-count root-offset override-default ) 
      (define pitch-shift-list 
-       (assq-get 'pitch-shift-list '( -2 -1 0 1 2 3 4 5 ) override-default ))
+       (assq-get 'pitch-shift-list default-pitch-shift-list override-default ))
 
-     (set! skip-count
-       (lookup-overhang-offset 
-         cmusic 
-         string-number-list 
-         skip-count 
-         root-offset 
-         pitch-shift-list))
-
-     (let ((scale-diagram (create-simple-scale-diagram
+     (let* ((overhang-offset (lookup-overhang-offset 
+                             cmusic 
+                             string-number-list 
+                             root-offset 
+                             pitch-shift-list
+                             (cdr (or (assq 'display-type override-default )(cons 'display-type 'full)))))
+            (scale-diagram (create-simple-scale-diagram
                             cmusic
                             string-number-list
-                            skip-count
+                            (+ skip-count (cdr (assq 'start-pos overhang-offset )))
                             root-offset
                             pitch-shift-list)))
        (list
