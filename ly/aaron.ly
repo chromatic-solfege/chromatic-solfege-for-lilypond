@@ -495,6 +495,31 @@ process-marking-irregular-accidentals-bak =
                 (ly:pitch-octave pitch))
               (lookup (cdr es))))))))
 
+#(define string-json-join 
+   ; start
+   (lambda( list-of-strings )
+     (let* ((list-of-quoted-strings 
+              ; quote all the elements
+              (map
+                (lambda (v)
+                  (string-append
+                    "\""
+                    (pitch->name v )
+                    "\"" ))
+                list-of-strings))
+            (list-of-comma-added-strings
+              ; append commans
+              (let loop ((es list-of-quoted-strings ))
+                (if (null? es )
+                  '()
+                  (cons
+                    (car es)
+                    (cons ", " (loop (cdr es)))))))
+            (chopped-list 
+              ; chop the list.
+              (string-concatenate (reverse (cdr (reverse list-of-comma-added-strings ))))))
+       chopped-list)))
+
 
 
 
