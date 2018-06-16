@@ -1433,10 +1433,18 @@ function batch() {
     };
 
 
+    // guitarScaleList.push({
+    //     __level : 0,
+    //     __note  : k,
+    //     key  : note2name( k (,
+    //     scale : 'Dorian',
+    //     header : note2name( k ) + '-Dorian',
+    //     score : `@${k} \\relative { do re me fa sol la te }`,
+    //     settings : getEntireFretDiagramDef(),
+    // });
+    // var guitarScaleList = [];
 
-    c.enable();
-    c.writeHeaderPart( "Appendix for Guitarists" );
-    c.disable();
+
 
     // gftk
     var gftk = (()=>{
@@ -1488,7 +1496,7 @@ function batch() {
             return __note2name[k];
         }
 
-        var keys = "do fa te me le ra se ti mi la re sol".split( ' ' );
+        var keys = "do fa te me le ra se ti mi la re sol".split( ' ' ).slice(2,3);
         function allKeys( f ) {
             for ( var key of keys ) {
                 f( key, note2name( key ) );
@@ -1509,62 +1517,152 @@ function batch() {
         };
     })();
 
+    c.enable();
+    c.writeHeaderPart( "Appendix for Guitarists" );
     // TODO
     c.writeTextBody( 
             "This section introduces some exercises to build fluency. " +
             COMMON_WORD_01
         );
+    c.disable();
+
     {
-        // guitarScaleList.push({
-        //     __level : 0,
-        //     __note  : k,
-        //     key  : note2name( k (,
-        //     scale : 'Dorian',
-        //     header : note2name( k ) + '-Dorian',
-        //     score : `@${k} \\relative { do re me fa sol la te }`,
-        //     settings : getEntireFretDiagramDef(),
-        // });
 
-        var guitarScaleList = [];
-        c.enable();
-        c.writeHeader0( "Dorian Scale with Three Note Fingering" );
-        gftk.allKeys( (k,engKey )=>{
-            c.writeHeader1( '[' + k + ']' + '-Dorian' );
-            c.writeScore( k + '-entire', `@${k} \\abs do re me fa sol la te`, gftk.getEntireFretDiagramDef() );
-            c.writeNewLine();
+        // DORIAN 3
+        if ( c.enabled ) {
+            c.writeHeader0( "Dorian Scale with Three Note Fingering" );
 
-            for ( var i=0; i<12; i++ ) {
+            gftk.allKeys( (k)=>{
+                var scale  = '@' + k + ' \\abs do re me fa sol la te';
+                var fingering = gftk.FINGERING_3;
 
-                var def = gftk.getParaFretDiagramDef( i, gftk.FINGERING_3 );
-
-                var visibleNotes = 
-                    c.queryFretDiagram( 'VisibleNotes', `@${k}  \\abs do me fa sol te`,   def ).notes;
-                var rootIndex = 
-                    visibleNotes.findIndex((e)=>k === e.replace( /[,']/gm, '' ).trim() );
-
-                var positionName = ( rootIndex, posIndex ) =>{
-                    switch ( rootIndex ) {
-                        case 0 : return "Left-Root-on-6th-String";
-                        case 1 : return "Center-Root-on-6th-String";
-                        case 2 : return "Right-Root-on-6th-String";
-                        case 3 : return "Left-Root-on-5th-String";
-                        case 4 : return "Center-Root-on-5th-String";
-                        case 5 : return "Right-Root-on-5th-String";
-                        case 6 : return "Left-Root-on-4th-String";
-                        default :
-                            return "Position-" + posIndex;
-                    }
-                };
-
-                c.writeHeader2( 'Three-Note Fingering Position ' + positionName( rootIndex, i )  + ' on [ ' + k + ' ] Dorian' );
-
-                // console.error( 'visibleNotes', visibleNotes, 'indexOf', k , ' is ', rootIndex );
-
-                c.writeScore( k + '-' + i, `@${k} \\abs do re me fa sol la te `, def );
+                c.writeHeader1( '[' + k + ']' + '-Dorian' );
+                c.writeScore( k + '-entire', scale, gftk.getEntireFretDiagramDef() );
                 c.writeNewLine();
-            }
-        });
+
+                var length = 12;
+
+                for ( var i=0; i<length; i++ ) {
+                    var def = gftk.getFretDiagramDef( i, fingering );
+
+                    var fingeringNotes = 
+                        c.queryFretDiagram( 'VisibleNotes', scale,   def ).fingeringNotes;
+
+                    var rootIndex = 
+                        fingeringNotes.findIndex((e)=>( k === e.replace( /[,']/gm, '' ).trim() ) );
+
+                    var positionName = ( rootIndex, posIndex ) =>{
+                        switch ( rootIndex ) {
+                            case 0 : return "Root-on-Left-6th-String";
+                            case 1 : return "Root-on-Center-6th-String";
+                            case 2 : return "Root-on-Right-6th-String";
+                            case 3 : return "Root-on-Left-5th-String";
+                            case 4 : return "Root-on-Center-5th-String";
+                            case 5 : return "Root-on-Right-5th-String";
+                            case 6 : return "Root-on-Left-4th-String";
+                            default :
+                                return "Position-" + posIndex;
+                        }
+                    };
+
+                    c.writeHeader2( 'Three-Note Fingering - ' + positionName( rootIndex, i )  + ' on [ ' + k + ' ] Dorian' );
+                    c.writeScore( k + '-' + i, scale, def );
+                    c.writeNewLine();
+                }
+            });
+        }
+
+        // DORIAN 4
+        c.enable();
+        if ( c.enabled ) {
+            c.writeHeader0( "Dorian Scale with Three Note Fingering" );
+
+            gftk.allKeys( (k)=>{
+                var scale  = '@' + k + ' \\abs do re me fa sol la te';
+                var fingering = gftk.FINGERING_4;
+
+                c.writeHeader1( '[' + k + ']' + '-Dorian' );
+                c.writeScore( k + '-entire', scale, gftk.getEntireFretDiagramDef() );
+                c.writeNewLine();
+
+                var length = 
+                    c.queryFretDiagram( 'Range', scale,  gftk.getParaFretDiagramDef( 0, fingering ) ).length;
+
+
+                for ( var i=0; i<length; i++ ) {
+                    var def = gftk.getParaFretDiagramDef( i, fingering );
+
+                    var fingeringNotes = 
+                        c.queryFretDiagram( 'VisibleNotes', scale,   def ).fingeringNotes;
+
+                    var rootIndex = 
+                        fingeringNotes.findIndex((e)=>( k === e.replace( /[,']/gm, '' ).trim() ) );
+
+                    var positionName = ( rootIndex, posIndex ) =>{
+                        switch ( rootIndex ) {
+                            case 0 : return "Root-on-1st-Fret-6th-String";
+                            case 1 : return "Root-on-2nd-Fret-6th-String";
+                            case 2 : return "Root-on-3rd-Fret-6th-String";
+                            case 3 : return "Root-on-4th-Fret-6th-String";
+                            case 4 : return "Root-on-1st-Fret-5th-String";
+                            case 5 : return "Root-on-2nd-Fret-5th-String";
+                            case 6 : return "Root-on-3rd-Fret-5th-String";
+                            case 7 : return "Root-on-4th-Fret-5th-String";
+                            default :
+                                return "Position-" + posIndex;
+                        }
+                    };
+
+                    c.writeHeader2( 'Four-Note Fingering - ' + positionName( rootIndex, i )  + ' on [ ' + k + ' ] Dorian' );
+                    c.writeScore( k + '-' + i, scale, def );
+                    c.writeNewLine();
+                }
+            });
+        }
         c.disable();
+
+
+        // PENTA 2
+        if ( c. enabled ) {
+            c.writeHeader0( "Minor Pentatonic with Two  Note Fingering" );
+            gftk.allKeys( (k)=>{
+                var scale  = '@' + k + ' \\abs do me fa sol te';
+
+                c.writeHeader1( '[' + k + ']' + '-Minor Pentatonic' );
+                c.writeScore( k + '-entire', scale, gftk.getEntireFretDiagramDef() );
+                c.writeNewLine();
+
+                // var length = 
+                //     c.queryFretDiagram( 'Range', scale,  getParaFretDiagramDef( 0, FINGERING_2 ) ).length;
+
+                for ( var i=0; i<10; i++ ) {
+                    var def = gftk.getFretDiagramDef( i, gftk.FINGERING_2 );
+
+                    var fingeringNotes = 
+                        c.queryFretDiagram( 'VisibleNotes', scale,   def ).fingeringNotes;
+
+                    var rootIndex = 
+                        fingeringNotes.findIndex((e)=>( k === e.replace( /[,']/gm, '' ).trim() ) );
+
+                    var positionName = ( rootIndex, posIndex ) =>{
+                        switch ( rootIndex ) {
+                            case 0 : return "Left-Root-on-6th-String";
+                            case 1 : return "Right-Root-on-6th-String";
+                            case 2 : return "Left-Root-on-5th-String";
+                            case 3 : return "Right-Root-on-5th-String";
+                            case 4 : return "Left-Root-on-4th-String";
+                            default :
+                                return "Position-" + posIndex;
+                        }
+                    };
+
+                    c.writeHeader2( 'Three-Note Fingering - ' + positionName( rootIndex, i )  + ' on [ ' + k + ' ] Dorian' );
+                    c.writeScore( k + '-' + i, scale, def );
+                    c.writeNewLine();
+                }
+            });
+        }
+
 
 //         for ( var k of keys ) {
 //             var engKey = note2name( k ) + '-Pentatonic'

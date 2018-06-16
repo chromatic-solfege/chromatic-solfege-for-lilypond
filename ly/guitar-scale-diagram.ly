@@ -432,57 +432,57 @@
 
      (let* ((maximum-pos 144)
             (check-visibility (cond 
-                      ((eq? display-type 'full )
-                       (lambda ( scale-diagram )
-                         (= 
-                           (length string-number-list )
-                           (length (cdr (assq 'accepted-pitches scale-diagram ))))))
-                      ((eq? display-type 'at-least-one)
-                       (lambda ( scale-diagram )
-                         (< 0 (length (cdr (assq 'accepted-pitches scale-diagram ))))))
-                      (else 
-                        (error "unknown display-type" display-type ))
-                      ))
-           (start-pos 
-             (let lookup-overhang-loop ((additional-skip-count 0))
-               ; (write 'i= )
-               ; (write additional-skip-count )(newline)
-               ; (write 'string-number-list)
-               ; (write  (length string-number-list ))(newline)
-               ; (write 'accepted-pitches)
-               ; (write (length (cdr (assq 'accepted-pitches 
-               ;                      (create-simple-scale-diagram music 
-               ;                                                   string-number-list 
-               ;                                                   additional-skip-count
-               ;                                                   root-offset 
-               ;                                                   pitch-octave-shift-list)))))(newline)
-               ; (write (assq 'accepted-pitches 
-               ;                      (create-simple-scale-diagram music 
-               ;                                                   string-number-list 
-               ;                                                   additional-skip-count
-               ;                                                   root-offset 
-               ;                                                   pitch-octave-shift-list)))(newline)
+                                ((eq? display-type 'full )
+                                 (lambda ( scale-diagram )
+                                   (= 
+                                     (length string-number-list )
+                                     (length (cdr (assq 'visible-notes scale-diagram ))))))
+                                ((eq? display-type 'at-least-one)
+                                 (lambda ( scale-diagram )
+                                   (< 0 (length (cdr (assq 'visible-notes scale-diagram ))))))
+                                (else 
+                                  (error "unknown display-type" display-type ))
+                                ))
+            (start-pos 
+              (let lookup-overhang-loop ((additional-skip-count 0))
+                ; (write 'i= )
+                ; (write additional-skip-count )(newline)
+                ; (write 'string-number-list)
+                ; (write  (length string-number-list ))(newline)
+                ; (write 'visible-notes)
+                ; (write (length (cdr (assq 'visible-notes 
+                ;                      (create-simple-scale-diagram music 
+                ;                                                   string-number-list 
+                ;                                                   additional-skip-count
+                ;                                                   root-offset 
+                ;                                                   pitch-octave-shift-list)))))(newline)
+                ; (write (assq 'visible-notes 
+                ;                      (create-simple-scale-diagram music 
+                ;                                                   string-number-list 
+                ;                                                   additional-skip-count
+                ;                                                   root-offset 
+                ;                                                   pitch-octave-shift-list)))(newline)
 
-               (if (< maximum-pos additional-skip-count ) (error "Visible Area not Found Error" ) )
-               (if (check-visibility
-                     (create-simple-scale-diagram music 
-                                                  string-number-list 
-                                                  additional-skip-count
-                                                  root-offset 
-                                                  pitch-octave-shift-list))
-                 additional-skip-count; This is the result we want.
-                 (lookup-overhang-loop (+ additional-skip-count 1)))))
-           (end-pos 
-             (let lookup-overhang-loop ((additional-skip-count start-pos))
-               (if (< maximum-pos additional-skip-count ) (error "Visible Area not Found Error" ) )
-               (if (not (check-visibility
-                     (create-simple-scale-diagram music 
-                                                  string-number-list 
-                                                  additional-skip-count
-                                                  root-offset 
-                                                  pitch-octave-shift-list)))
+                (if (< maximum-pos additional-skip-count ) (error "Visible Area not Found Error" ) )
+                (if (check-visibility
+                      (create-simple-scale-diagram music 
+                                                   string-number-list 
+                                                   additional-skip-count
+                                                   root-offset 
+                                                   pitch-octave-shift-list))
+                  additional-skip-count; This is the result we want.
+                  (lookup-overhang-loop (+ additional-skip-count 1)))))
+            (end-pos 
+              (let lookup-overhang-loop ((additional-skip-count start-pos))
+                (if (< maximum-pos additional-skip-count ) (error "Visible Area not Found Error" ) )
+                (if (not (check-visibility
+                           (create-simple-scale-diagram music 
+                                                        string-number-list 
+                                                        additional-skip-count
+                                                        root-offset 
+                                                        pitch-octave-shift-list)))
                   additional-skip-count ; This is the result we want.  ...2
-                 (lookup-overhang-loop (+ additional-skip-count 1))))))
+                  (lookup-overhang-loop (+ additional-skip-count 1))))))
        (list
          (cons 'start-pos start-pos)
          (cons 'end-pos end-pos )
@@ -495,7 +495,8 @@
      (fretdiagram:init)
 
      (let* ((pitches (multiplex-pitches (lookup-pitches music ) pitch-octave-shift-list))
-            (accepted-pitches '() )
+            (visible-notes '() )
+            (fingering-notes '() )
             (pitch-shift 0 )
             (root-pitch (if (<= 0 root-offset )
                           (list-ref pitches root-offset )
@@ -527,8 +528,11 @@
                               (cdr current-string-number)
                               #f )
                             (and root-pitch (pitch-equals root-pitch pitch))))))
+
+                 (if #t ; whenever the note is fingered, add it to fingering-pitches.
+                   (set! fingering-notes (cons pitch fingering-notes)))
                  (if visible-dot
-                   (set! accepted-pitches (cons pitch accepted-pitches))))
+                   (set! visible-notes (cons pitch visible-notes))))
                #f)
              (loop-1 (cdr pitches) (+ counter 1 ) pitch-shift ))))
 
@@ -539,7 +543,8 @@
        ; (loop-1 pitches 48)
        (list
          (cons 'definition  (fretdiagram:get) )
-         (cons 'accepted-pitches (reverse accepted-pitches)))
+         (cons 'fingering-notes (reverse fingering-notes))
+         (cons 'visible-notes   (reverse visible-notes)))
        ;(fretdiagram:get)
        )
      ))
@@ -712,13 +717,15 @@
                                    (append fret-diagram-details-default override-default) 
                                    (#:fret-diagram-verbose
                                     (cdr (assq 'definition scale-diagram )))))))))
-         (cons 'accepted-pitches 
-               (cdr (assq 'accepted-pitches scale-diagram )))
-         (cons 'accepted-notes
+         (cons 'visible-notes 
+               (cdr (assq 'visible-notes scale-diagram )))
+         (cons 'fingering-notes 
+               (cdr (assq 'fingering-notes scale-diagram )))
+         (cons 'visible-music
                (make-music
                  'SequentialMusic
                  'elements
-                 (let pitch-loop ((pitches (cdr (assq 'accepted-pitches scale-diagram))))         
+                 (let pitch-loop ((pitches (cdr (assq 'visible-notes scale-diagram))))         
                    (if (null? pitches )
                      '()
                      (cons 
