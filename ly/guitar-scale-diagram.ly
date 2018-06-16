@@ -539,7 +539,7 @@
        ; (loop-1 pitches 48)
        (list
          (cons 'definition  (fretdiagram:get) )
-         (cons 'accepted-pitches accepted-pitches ))
+         (cons 'accepted-pitches (reverse accepted-pitches)))
        ;(fretdiagram:get)
        )
      ))
@@ -718,7 +718,7 @@
                (make-music
                  'SequentialMusic
                  'elements
-                 (let pitch-loop ((pitches (reverse (cdr (assq 'accepted-pitches scale-diagram)))))         
+                 (let pitch-loop ((pitches (cdr (assq 'accepted-pitches scale-diagram))))         
                    (if (null? pitches )
                      '()
                      (cons 
