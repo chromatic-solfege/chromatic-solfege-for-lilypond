@@ -1213,6 +1213,17 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
                             ))
 
 
+%{
+   % USAGE : 
+
+   #(use-modules (ice-9 regex))
+   \include "guitar-scale-diagram.ly"
+   \music-to-festival 
+       \PartPOneVoiceOne 
+       #"./hello.xml"  
+       #'((do-compile . #t ) ( do-play . #t   )( festival-tempo . 120) )
+
+%}
 music-to-festival = #(define-void-function (parser location music output-file settings )(ly:music? string? list? )
                             ; (display 'one********************)
                             ; (newline)
@@ -1220,6 +1231,7 @@ music-to-festival = #(define-void-function (parser location music output-file se
                             ; (newline)
     (read-aloud-music music output-file settings )
 )
+
 
 music-to-aaron = #(define-music-function (parser location music)(ly:music?)
     (make-music 'SequentialMusic 'elements

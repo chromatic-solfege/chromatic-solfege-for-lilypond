@@ -15,13 +15,16 @@ var MSG_HARMONIC_TO_ENHARMONIC = 'Harmonic First, Enharmonic Last';
 var MSG_ENHARMONIC_TO_HARMONIC = 'Enharmonic First, Harmonic Last';
 
 function batch() {
+    var DEBUG = false;
     var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
 
     // c.writeNewPage();
     // c.t_abstract`Hey foo bar`;
     // c.writeNewPage();
 
-    c.setDevelopmentMode( true );
+    if ( DEBUG ) {
+        c.setDevelopmentMode( true );
+    }
     // c.disable();
     // c.setAlwaysOutputHeader( true );
     
@@ -1496,7 +1499,10 @@ function batch() {
             return __note2name[k];
         }
 
-        var keys = "do fa te me le ra se ti mi la re sol".split( ' ' ).slice(2,3);
+        var keys = "do fa te me le ra se ti mi la re sol".split( ' ' );
+        if ( DEBUG ) {
+            keys = [ 'te', 'se', 'ti' ];
+        }
         function allKeys( f ) {
             for ( var key of keys ) {
                 f( key, note2name( key ) );
@@ -1571,11 +1577,16 @@ function batch() {
 
         return {
             note2name : note2name,
+            FINGERING_2   : '( 6 6 5 5 4 4 3 3 2 2 1 1 )',
             FINGERING_3   : '( 6 6 6 5 5 5 4 4 4 3 3 3 2 2 2 1 1 1 )',
+            FINGERING_4   : '( 6 6 6 6 5 5 5 5 4 4 4 4 3 3 3 3 2 2 2 2 1 1 1 1 )',
             FINGERING_3_1 : '( 6 6 6 5 4 4 4 3 2 2 2 1 )',
             FINGERING_1_3 : '( 6 5 5 5 4 3 3 3 2 1 1 1 )',
-            FINGERING_2   : '( 6 6 5 5 4 4 3 3 2 2 1 1 )',
-            FINGERING_4   : '( 6 6 6 6 5 5 5 5 4 4 4 4 3 3 3 3 2 2 2 2 1 1 1 1 )',
+            FINGERING_2_NAME   : 'Two Note',
+            FINGERING_3_NAME   : 'Three Note',
+            FINGERING_4_NAME   : 'Four Note',
+            FINGERING_3_1_NAME : 'Three-One Note',
+            FINGERING_1_3_NAME : 'One-Three Note',
             getEntireFretDiagramDef  : getEntireFretDiagramDef,
             getParaFretDiagramDef    : getParaFretDiagramDef,
             getFretDiagramDef        : getFretDiagramDef,
@@ -1594,15 +1605,13 @@ function batch() {
     c.disable();
 
     {
-
         // DORIAN 3
-        c.enable();
         gftk.autoFretDiagram({
             scale : '\\abs do re me fa sol la te',
             scaleName : 'Dorian',
             fingering : gftk.FINGERING_3,
-            fingeringName : 'Three Note',
-            staticLength : 14,
+            fingeringName : gftk.FINGERING_3_NAME,
+            // staticLength : 14,
             displayAlgorithm : 'full', 
             positionName : ( rootIndex, posIndex ) =>{
                 switch ( rootIndex ) {
@@ -1618,187 +1627,553 @@ function batch() {
                 }
             },
         });
-        c.disable();
-
-        // DORIAN 3
-        if ( false ) {
-            c.writeHeader0( "Dorian Scale with Three Note Fingering" );
-
-            gftk.allKeys( (k)=>{
-                var scale  = '@' + k + ' \\abs do re me fa sol la te';
-                var fingering = gftk.FINGERING_3;
-
-                c.writeHeader1( '[' + k + ']' + '-Dorian' );
-                c.writeScore( k + '-entire', scale, gftk.getEntireFretDiagramDef() );
-                c.writeNewLine();
-
-                var length = 12;
-
-                for ( var i=0; i<length; i++ ) {
-                    var def = gftk.getFretDiagramDef( i, fingering );
-
-                    var fingeringNotes = 
-                        c.queryFretDiagram( 'VisibleNotes', scale,   def ).fingeringNotes;
-
-                    var rootIndex = 
-                        fingeringNotes.findIndex((e)=>( k === e.replace( /[,']/gm, '' ).trim() ) );
-
-                    var positionName = ( rootIndex, posIndex ) =>{
-                        switch ( rootIndex ) {
-                            case 0 : return "Root-on-Left-6th-String";
-                            case 1 : return "Root-on-Center-6th-String";
-                            case 2 : return "Root-on-Right-6th-String";
-                            case 3 : return "Root-on-Left-5th-String";
-                            case 4 : return "Root-on-Center-5th-String";
-                            case 5 : return "Root-on-Right-5th-String";
-                            case 6 : return "Root-on-Left-4th-String";
-                            default :
-                                return "Position-" + posIndex;
-                        }
-                    };
-
-                    c.writeHeader2( 'Three-Note Fingering - ' + positionName( rootIndex, i )  + ' on [ ' + k + ' ] Dorian' );
-                    c.writeScore( k + '-' + i, scale, def );
-                    c.writeNewLine();
-                }
-            });
-        }
 
         // DORIAN 4
-        if ( c.valid ) {
-            c.writeHeader0( "Dorian Scale with Three Note Fingering" );
-
-            gftk.allKeys( (k)=>{
-                var scale  = '@' + k + ' \\abs do re me fa sol la te';
-                var fingering = gftk.FINGERING_4;
-
-                c.writeHeader1( '[' + k + ']' + '-Dorian' );
-                c.writeScore( k + '-entire', scale, gftk.getEntireFretDiagramDef() );
-                c.writeNewLine();
-
-                var length = 
-                    c.queryFretDiagram( 'Range', scale,  gftk.getParaFretDiagramDef( 0, fingering ) ).length;
-
-
-                for ( var i=0; i<length; i++ ) {
-                    var def = gftk.getParaFretDiagramDef( i, fingering );
-
-                    var fingeringNotes = 
-                        c.queryFretDiagram( 'VisibleNotes', scale,   def ).fingeringNotes;
-
-                    var rootIndex = 
-                        fingeringNotes.findIndex((e)=>( k === e.replace( /[,']/gm, '' ).trim() ) );
-
-                    var positionName = ( rootIndex, posIndex ) =>{
-                        switch ( rootIndex ) {
-                            case 0 : return "Root-on-1st-Fret-6th-String";
-                            case 1 : return "Root-on-2nd-Fret-6th-String";
-                            case 2 : return "Root-on-3rd-Fret-6th-String";
-                            case 3 : return "Root-on-4th-Fret-6th-String";
-                            case 4 : return "Root-on-1st-Fret-5th-String";
-                            case 5 : return "Root-on-2nd-Fret-5th-String";
-                            case 6 : return "Root-on-3rd-Fret-5th-String";
-                            case 7 : return "Root-on-4th-Fret-5th-String";
-                            default :
-                                return "Position-" + posIndex;
-                        }
-                    };
-
-                    c.writeHeader2( 'Four-Note Fingering - ' + positionName( rootIndex, i )  + ' on [ ' + k + ' ] Dorian' );
-                    c.writeScore( k + '-' + i, scale, def );
-                    c.writeNewLine();
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me fa sol la te',
+            scaleName : 'Dorian',
+            fingering : gftk.FINGERING_4,
+            fingeringName : gftk.FINGERING_4_NAME,
+            displayAlgorithm : 'para', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-1st-Fret-6th-String";
+                    case 1 : return "Root-on-2nd-Fret-6th-String";
+                    case 2 : return "Root-on-3rd-Fret-6th-String";
+                    case 3 : return "Root-on-4th-Fret-6th-String";
+                    case 4 : return "Root-on-1st-Fret-5th-String";
+                    case 5 : return "Root-on-2nd-Fret-5th-String";
+                    case 6 : return "Root-on-3rd-Fret-5th-String";
+                    case 7 : return "Root-on-4th-Fret-5th-String";
+                    default :
+                             return "Position-" + posIndex;
                 }
+            },
+        });
+
+        // MINOR PENTATONIC 2
+        gftk.autoFretDiagram({
+            scale : '\\abs do me fa sol te',
+            scaleName : 'Minor Pentatonic',
+            fingering : gftk.FINGERING_2,
+            fingeringName : gftk.FINGERING_2_NAME,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Left-Root-on-6th-String";
+                    case 1 : return "Right-Root-on-6th-String";
+                    case 2 : return "Left-Root-on-5th-String";
+                    case 3 : return "Right-Root-on-5th-String";
+                    case 4 : return "Left-Root-on-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // MINOR PENTATONIC 3+1
+        gftk.autoFretDiagram({
+            scale : '\\abs do me fa sol te',
+            scaleName : 'Minor Pentatonic',
+            fingering : gftk.FINGERING_3_1,
+            fingeringName : gftk.FINGERING_3_1_NAME,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Left-Root-on-6th-String";
+                    case 1 : return "Center-Root-on-6th-String";
+                    case 2 : return "Right-Root-on-6th-String";
+                    case 3 : return "Center-Root-on-5th-String";
+                    case 4 : return "Left-Root-on-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // MINOR PENTATONIC 1+3
+        gftk.autoFretDiagram({
+            scale : '\\abs do me fa sol te',
+            scaleName : 'Minor Pentatonic',
+            fingering : gftk.FINGERING_1_3,
+            fingeringName : gftk.FINGERING_1_3_NAME,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Center-Root-on-6th-String";
+                    case 1 : return "Left-Root-on-5th-String";
+                    case 2 : return "Center-Root-on-5th-String";
+                    case 3 : return "Right-Root-on-5th-String";
+                    case 4 : return "Center-Root-on-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // MINOR PENTATONIC 3
+        gftk.autoFretDiagram({
+            scale : '\\abs do me fa sol te',
+            scaleName : 'Minor Pentatonic',
+            fingering : gftk.FINGERING_3,
+            fingeringName : gftk.FINGERING_3_NAME,
+            displayAlgorithm : 'para', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-Left-6th-String";
+                    case 1 : return "Root-on-Center-6th-String";
+                    case 2 : return "Root-on-Right-6th-String";
+                    case 3 : return "Root-on-Left-5th-String";
+                    case 4 : return "Root-on-Center-5th-String";
+                    case 5 : return "Root-on-Right-5th-String";
+                    case 6 : return "Root-on-Left-4th-String";
+                }
+            },
+        });
+
+
+        if ( false ) {
+            // DORIAN 2
+            gftk.autoFretDiagram({
+                scale : '\\abs do re me fa sol la te',
+                scaleName : 'Dorian',
+                fingering : gftk.FINGERING_2,
+                fingeringName : gftk.FINGERING_2_NAME,
+                displayAlgorithm : 'para', 
+                positionName : ( rootIndex, posIndex ) =>{
+                    switch ( rootIndex ) {
+                        case 0 : return "Root-on-Left-6th-String";
+                        case 1 : return "Root-on-Right-6th-String";
+                        case 2 : return "Root-on-Left-5th-String";
+                        case 3 : return "Root-on-Right-5th-String";
+                        case 4 : return "Root-on-Left-4th-String";
+                        case 5 : return "Root-on-Right-4th-String";
+                        case 6 : return "Root-on-Left-3th-String";
+                        default :
+                                 return "Position-" + posIndex;
+                    }
+                },
             });
         }
 
-
-        // PENTA 2
-        if ( c.valid ) {
-            c.writeHeader0( "Minor Pentatonic with Two  Note Fingering" );
-            gftk.allKeys( (k)=>{
-                var scale  = '@' + k + ' \\abs do me fa sol te';
-                var fingering = gftk.FINGERING_2;
-
-                c.writeHeader1( '[' + k + ']' + '-Minor Pentatonic' );
-                c.writeScore( k + '-entire', scale, gftk.getEntireFretDiagramDef() );
-                c.writeNewLine();
-
-                // var length = 
-                //     c.queryFretDiagram( 'Range', scale,  getParaFretDiagramDef( 0, fingering ) ).length;
-
-                var length = 10;
-                for ( var i=0; i<length; i++ ) {
-                    var def = gftk.getFretDiagramDef( i, fingering );
-
-                    var fingeringNotes = 
-                        c.queryFretDiagram( 'VisibleNotes', scale,   def ).fingeringNotes;
-
-                    var rootIndex = 
-                        fingeringNotes.findIndex((e)=>( k === e.replace( /[,']/gm, '' ).trim() ) );
-
-                    var positionName = ( rootIndex, posIndex ) =>{
-                        switch ( rootIndex ) {
-                            case 0 : return "Left-Root-on-6th-String";
-                            case 1 : return "Right-Root-on-6th-String";
-                            case 2 : return "Left-Root-on-5th-String";
-                            case 3 : return "Right-Root-on-5th-String";
-                            case 4 : return "Left-Root-on-4th-String";
-                            default :
-                                return "Position-" + posIndex;
-                        }
-                    };
-
-                    c.writeHeader2( 'Two-Note Fingering - ' + positionName( rootIndex, i )  + ' on [ ' + k + ' ] Minor-Pentatonic' );
-                    c.writeScore( k + '-' + i, scale, def );
-                    c.writeNewLine();
+        // Diminished 3
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me fa se le la ti',
+            scaleName : 'Diminished',
+            fingering : gftk.FINGERING_3,
+            fingeringName : gftk.FINGERING_3_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-Left-6th-String";
+                    case 1 : return "Root-on-Center-6th-String";
+                    case 2 : return "Root-on-Right-6th-String";
+                    case 3 : return "Root-on-Left-5th-String";
+                    case 4 : return "Root-on-Center-5th-String";
+                    case 5 : return "Root-on-Right-5th-String";
+                    case 6 : return "Root-on-Left-4th-String";
+                    case 7 : return "Root-on-Center-4th-String";
+                    default :
+                             return "Position-" + posIndex;
                 }
-            });
-        }
+            },
+        });
 
-
-        // PENTA 3+1
-        if ( c.valid ) {
-            c.writeHeader0( "Minor Pentatonic with Three-One Note Fingering" );
-            gftk.allKeys( (k)=>{
-                var scale  = '@' + k + ' \\abs do me fa sol te';
-                var scaleName = 'Minor Pentatonic';
-                var fingering = gftk.FINGERING_3_1;
-
-                c.writeHeader1( '[' + k + ']' + '-' + scaleName );
-                c.writeScore( k + '-entire', scale, gftk.getEntireFretDiagramDef() );
-                c.writeNewLine();
-
-                // var length = 
-                //     c.queryFretDiagram( 'Range', scale,  getParaFretDiagramDef( 0, fingering ) ).length;
-
-                var length = 10;
-                for ( var i=0; i<length; i++ ) {
-                    var def = gftk.getFretDiagramDef( i, fingering );
-
-                    var fingeringNotes = 
-                        c.queryFretDiagram( 'VisibleNotes', scale,   def ).fingeringNotes;
-
-                    var rootIndex = 
-                        fingeringNotes.findIndex((e)=>( k === e.replace( /[,']/gm, '' ).trim() ) );
-
-                    var positionName = ( rootIndex, posIndex ) =>{
-                        switch ( rootIndex ) {
-                            case 0 : return "Left-Root-on-6th-String";
-                            case 1 : return "Center-Root-on-6th-String";
-                            case 2 : return "Right-Root-on-6th-String";
-                            case 3 : return "Center-Root-on-5th-String";
-                            case 4 : return "Left-Root-on-4th-String";
-                            default :
-                                return "Position-" + posIndex;
-                        }
-                    };
-
-                    c.writeHeader2( 'Three-One Note Fingering - ' + positionName( rootIndex, i )  + ' on [ ' + k + ' ] Minor-Pentatonic' );
-                    c.writeScore( k + '-' + i, scale, def );
-                    c.writeNewLine();
+        // Diminished 4
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me fa se le la ti',
+            scaleName : 'Diminished',
+            fingering : gftk.FINGERING_4,
+            fingeringName : gftk.FINGERING_4_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'para', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-1st-Fret-6th-String";
+                    case 1 : return "Root-on-2nd-Fret-6th-String";
+                    case 2 : return "Root-on-3rd-Fret-6th-String";
+                    case 3 : return "Root-on-4th-Fret-6th-String";
+                    case 4 : return "Root-on-1st-Fret-5th-String";
+                    case 5 : return "Root-on-2nd-Fret-5th-String";
+                    case 6 : return "Root-on-3rd-Fret-5th-String";
+                    case 7 : return "Root-on-4th-Fret-5th-String";
+                    default :
+                             return "Position-" + posIndex;
                 }
-            });
-        }
+            },
+        });
+
+        c.enable();
+        // Melodic Minor 3
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me fa sol la ti',
+            scaleName : 'Melodic Minor',
+            fingering : gftk.FINGERING_3,
+            fingeringName : gftk.FINGERING_3_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-Left-6th-String";
+                    case 1 : return "Root-on-Center-6th-String";
+                    case 2 : return "Root-on-Right-6th-String";
+                    case 3 : return "Root-on-Left-5th-String";
+                    case 4 : return "Root-on-Center-5th-String";
+                    case 5 : return "Root-on-Right-5th-String";
+                    case 6 : return "Root-on-Left-4th-String";
+                    case 7 : return "Root-on-Center-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Melodic Minor 4
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me fa sol la ti',
+            scaleName : 'Melodic Minor',
+            fingering : gftk.FINGERING_4,
+            fingeringName : gftk.FINGERING_4_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'para', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-1st-Fret-6th-String";
+                    case 1 : return "Root-on-2nd-Fret-6th-String";
+                    case 2 : return "Root-on-3rd-Fret-6th-String";
+                    case 3 : return "Root-on-4th-Fret-6th-String";
+                    case 4 : return "Root-on-1st-Fret-5th-String";
+                    case 5 : return "Root-on-2nd-Fret-5th-String";
+                    case 6 : return "Root-on-3rd-Fret-5th-String";
+                    case 7 : return "Root-on-4th-Fret-5th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Harmonic Minor 3
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me fa sol le ti',
+            scaleName : 'Harmonic Minor',
+            fingering : gftk.FINGERING_3,
+            fingeringName : gftk.FINGERING_3_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-Left-6th-String";
+                    case 1 : return "Root-on-Center-6th-String";
+                    case 2 : return "Root-on-Right-6th-String";
+                    case 3 : return "Root-on-Left-5th-String";
+                    case 4 : return "Root-on-Center-5th-String";
+                    case 5 : return "Root-on-Right-5th-String";
+                    case 6 : return "Root-on-Left-4th-String";
+                    case 7 : return "Root-on-Center-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Harmonic Minor 4
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me fa sol le ti',
+            scaleName : 'Harmonic Minor',
+            fingering : gftk.FINGERING_4,
+            fingeringName : gftk.FINGERING_4_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'para', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-1st-Fret-6th-String";
+                    case 1 : return "Root-on-2nd-Fret-6th-String";
+                    case 2 : return "Root-on-3rd-Fret-6th-String";
+                    case 3 : return "Root-on-4th-Fret-6th-String";
+                    case 4 : return "Root-on-1st-Fret-5th-String";
+                    case 5 : return "Root-on-2nd-Fret-5th-String";
+                    case 6 : return "Root-on-3rd-Fret-5th-String";
+                    case 7 : return "Root-on-4th-Fret-5th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Melodic Minor Sharp 11 - 3
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me fi sol la ti',
+            scaleName : 'Melodic Minor \\sharp 11',
+            fingering : gftk.FINGERING_3,
+            fingeringName : gftk.FINGERING_3_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-Left-6th-String";
+                    case 1 : return "Root-on-Center-6th-String";
+                    case 2 : return "Root-on-Right-6th-String";
+                    case 3 : return "Root-on-Left-5th-String";
+                    case 4 : return "Root-on-Center-5th-String";
+                    case 5 : return "Root-on-Right-5th-String";
+                    case 6 : return "Root-on-Left-4th-String";
+                    case 7 : return "Root-on-Center-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Melodic Minor Sharp 11 - 4
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me fi sol la ti',
+            scaleName : 'Melodic Minor \\sharp 11',
+            fingering : gftk.FINGERING_4,
+            fingeringName : gftk.FINGERING_4_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'para', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-1st-Fret-6th-String";
+                    case 1 : return "Root-on-2nd-Fret-6th-String";
+                    case 2 : return "Root-on-3rd-Fret-6th-String";
+                    case 3 : return "Root-on-4th-Fret-6th-String";
+                    case 4 : return "Root-on-1st-Fret-5th-String";
+                    case 5 : return "Root-on-2nd-Fret-5th-String";
+                    case 6 : return "Root-on-3rd-Fret-5th-String";
+                    case 7 : return "Root-on-4th-Fret-5th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Whole Tone 3
+        gftk.autoFretDiagram({
+            scale : '\\abs do re mi fi si li',
+            scaleName : 'Whole Tone',
+            fingering : gftk.FINGERING_3,
+            fingeringName : gftk.FINGERING_3_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-Left-6th-String";
+                    case 1 : return "Root-on-Center-6th-String";
+                    case 2 : return "Root-on-Right-6th-String";
+                    case 3 : return "Root-on-Left-5th-String";
+                    case 4 : return "Root-on-Center-5th-String";
+                    case 5 : return "Root-on-Right-5th-String";
+                    case 6 : return "Root-on-Left-4th-String";
+                    case 7 : return "Root-on-Center-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Whole Tone - 4
+        gftk.autoFretDiagram({
+            scale : '\\abs do re mi fi si li',
+            scaleName : 'Whole Tone',
+            fingering : gftk.FINGERING_4,
+            fingeringName : gftk.FINGERING_4_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'para', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-1st-Fret-6th-String";
+                    case 1 : return "Root-on-2nd-Fret-6th-String";
+                    case 2 : return "Root-on-3rd-Fret-6th-String";
+                    case 3 : return "Root-on-4th-Fret-6th-String";
+                    case 4 : return "Root-on-1st-Fret-5th-String";
+                    case 5 : return "Root-on-2nd-Fret-5th-String";
+                    case 6 : return "Root-on-3rd-Fret-5th-String";
+                    case 7 : return "Root-on-4th-Fret-5th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+
+        /////////////
+
+        // Augumented Scale 3
+        gftk.autoFretDiagram({
+            scale : '\\abs do me mi sol si ti',
+            scaleName : 'Augumented',
+            fingering : gftk.FINGERING_3,
+            fingeringName : gftk.FINGERING_3_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-Left-6th-String";
+                    case 1 : return "Root-on-Center-6th-String";
+                    case 2 : return "Root-on-Right-6th-String";
+                    case 3 : return "Root-on-Left-5th-String";
+                    case 4 : return "Root-on-Center-5th-String";
+                    case 5 : return "Root-on-Right-5th-String";
+                    case 6 : return "Root-on-Left-4th-String";
+                    case 7 : return "Root-on-Center-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Augumented Scale 4
+        gftk.autoFretDiagram({
+            scale : '\\abs do me mi sol si ti',
+            scaleName : 'Augumented',
+            fingering : gftk.FINGERING_4,
+            fingeringName : gftk.FINGERING_4_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'para', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-1st-Fret-6th-String";
+                    case 1 : return "Root-on-2nd-Fret-6th-String";
+                    case 2 : return "Root-on-3rd-Fret-6th-String";
+                    case 3 : return "Root-on-4th-Fret-6th-String";
+                    case 4 : return "Root-on-1st-Fret-5th-String";
+                    case 5 : return "Root-on-2nd-Fret-5th-String";
+                    case 6 : return "Root-on-3rd-Fret-5th-String";
+                    case 7 : return "Root-on-4th-Fret-5th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        /////////////
+
+        // Double Augumented Scale 3
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me mi se sol le te ti',
+            scaleName : 'Double Argumented',
+            fingering : gftk.FINGERING_3,
+            fingeringName : gftk.FINGERING_3_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-Left-6th-String";
+                    case 1 : return "Root-on-Center-6th-String";
+                    case 2 : return "Root-on-Right-6th-String";
+                    case 3 : return "Root-on-Left-5th-String";
+                    case 4 : return "Root-on-Center-5th-String";
+                    case 5 : return "Root-on-Right-5th-String";
+                    case 6 : return "Root-on-Left-4th-String";
+                    case 7 : return "Root-on-Center-4th-String";
+                    case 8 : return "Root-on-Right-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Double Augumented Scale 4
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me mi se sol le te ti',
+            scaleName : 'Double Augumented',
+            fingering : gftk.FINGERING_4,
+            fingeringName : gftk.FINGERING_4_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'para', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-1st-Fret-6th-String";
+                    case 1 : return "Root-on-2nd-Fret-6th-String";
+                    case 2 : return "Root-on-3rd-Fret-6th-String";
+                    case 3 : return "Root-on-4th-Fret-6th-String";
+                    case 4 : return "Root-on-1st-Fret-5th-String";
+                    case 5 : return "Root-on-2nd-Fret-5th-String";
+                    case 6 : return "Root-on-3rd-Fret-5th-String";
+                    case 7 : return "Root-on-4th-Fret-5th-String";
+                    case 8 : return "Root-on-1th-Fret-4th-String";
+                    case 9 : return "Root-on-2th-Fret-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Half Augumented Scale 3
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me mi se le la te',
+            scaleName : 'Half Argumented',
+            fingering : gftk.FINGERING_3,
+            fingeringName : gftk.FINGERING_3_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'full', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-Left-6th-String";
+                    case 1 : return "Root-on-Center-6th-String";
+                    case 2 : return "Root-on-Right-6th-String";
+                    case 3 : return "Root-on-Left-5th-String";
+                    case 4 : return "Root-on-Center-5th-String";
+                    case 5 : return "Root-on-Right-5th-String";
+                    case 6 : return "Root-on-Left-4th-String";
+                    case 7 : return "Root-on-Center-4th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        // Half Augumented Scale 4
+        gftk.autoFretDiagram({
+            scale : '\\abs do re me mi se sol le te ti',
+            scaleName : 'Half Augumented',
+            fingering : gftk.FINGERING_4,
+            fingeringName : gftk.FINGERING_4_NAME,
+            // staticLength : 14,
+            displayAlgorithm : 'para', 
+            positionName : ( rootIndex, posIndex ) =>{
+                switch ( rootIndex ) {
+                    case 0 : return "Root-on-1st-Fret-6th-String";
+                    case 1 : return "Root-on-2nd-Fret-6th-String";
+                    case 2 : return "Root-on-3rd-Fret-6th-String";
+                    case 3 : return "Root-on-4th-Fret-6th-String";
+                    case 4 : return "Root-on-1st-Fret-5th-String";
+                    case 5 : return "Root-on-2nd-Fret-5th-String";
+                    case 6 : return "Root-on-3rd-Fret-5th-String";
+                    case 7 : return "Root-on-4th-Fret-5th-String";
+                    default :
+                             return "Position-" + posIndex;
+                }
+            },
+        });
+
+        c.disable();
+
+
+
+
+
+            // c.writeHeader2( "Dorian Scale" );
+            // c.writeScore(  "dorian-basic",                           "do(do,re,me,fa,sol,la,te)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
+            // c.writeHeader2( "Diminished Scale" );
+            // c.writeScore(  'diminished-basic',                       "do(do,re,me,fa,se,le,la,ti)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 "  );
+            // c.writeHeader2( "Melodic Minor Scale" );
+            // c.writeScore(  'melodic-basic',                          "do(do,re,me,fa,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
+            // c.writeHeader2( "Harmonic Minor Scale" );
+            // c.writeScore(  'harmonic-basic',                         "do(do,re,me,fa,sol,le,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
+            // c.writeHeader2( "Melodic Minor \\sharp 11 Scale" );
+            // c.writeScore(  'melodic-s11-basic',                      "do(do,re,me,fi,sol,la,ti)        1 2 3 4 5 6 7     1 s 1     7 6 5 4 3 2 1 "  );
+            // c.writeHeader2( "Wholetone Scale" );
+            // c.writeScore(  'wholetone-basic',                        "do(do,re,mi,fi,si,li)            1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
+            // c.writeHeader2( "Augumented Scale" );
+            // c.writeScore(  'augmented-basic',                        "do(do,me,mi,sol,le,ti)           1 2 3 4 5 6       1 s 1       6 5 4 3 2 1 "  );
+            // c.writeHeader2( "Augumented Minor Major 7th Scale" );
+            // c.writeScore(  'augmented-ma7-basic',                    "do(do,re,me,mi,se,sol,le,te,ti)  1 2 3 4 5 6 7 8 9 1 s 1 9 8 7 6 5 4 3 2 1 "  );
+            // c.writeHeader2( "Augumented Natural 13th Scale" );
+            // c.writeScore(  'augmented-n13-basic',                    "do(do,re,me,mi,se,le,la,te)      1 2 3 4 5 6 7 8   1 s 1   8 7 6 5 4 3 2 1 "  );
+
 
 
 //         for ( var k of keys ) {
