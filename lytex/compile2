@@ -152,6 +152,7 @@ done
 
 vlc "${WAV_OUTPUT_FILES[@]}" &
 
+date
 
 
 # lilypond -I /home/ats/Documents/lilypond/include/ *.ly
