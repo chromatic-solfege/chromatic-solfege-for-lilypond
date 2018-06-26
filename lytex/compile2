@@ -1,11 +1,18 @@
 #!/bin/bash
 shopt -s nullglob
+START_TIME=$(date)
 
 VOICE=$( nodejs -e 'console.log( require("local/settings").scmFestivalVoice ) ')
 # FILES=( "$@" )
 FILES=()
 FLG_VOICE="YES"
+# LY='lilypond -I /home/ats/Documents/lilypond/include/ --output=temp'
+# LY='../ly'
 
+LOGDIR=LOG
+
+mkdir out
+# mkdir out/LOG
 
 while [[ 0 < "$#"  ]]; 
 do 
@@ -63,6 +70,8 @@ fi
 	done
 } > out/all-output.tex
 
+
+
 # echo ${#FILES[@]}
 # echo ${FILES[*]}
 echo
@@ -88,7 +97,14 @@ do
 		# echo $i
 		max_proc_count 5
 		echo "${i##*/}"
-		lilypond -I /home/ats/Documents/lilypond/include/ "${i##*/}" 2> "${i##*/}.LOG" &
+        ( 
+          FILENAME="${i##*/}"; 
+          TMPDIR="TEMP-${FILENAME%%.ly}"
+          mkdir $TMPDIR
+          lilypond -I /home/ats/Documents/lilypond/include/ --output="$TMPDIR/" "$FILENAME"
+          mv "$TMPDIR/${FILENAME%%.ly}.pdf" .
+          rm -r "$TMPDIR"
+        ) 2> "${i##*/}.LOG" &
 	done;
 	echo 
 	echo 
@@ -150,9 +166,12 @@ do
 	echo "${WAV_OUTPUT_FILES[@]}"
 done
 
-vlc "${WAV_OUTPUT_FILES[@]}" &
+# vlc "${WAV_OUTPUT_FILES[@]}" &
 
-date
+END_TIME=$(date)
+
+echo "start  $START_TIME"
+echo "end    $END_TIME"
 
 
 # lilypond -I /home/ats/Documents/lilypond/include/ *.ly
