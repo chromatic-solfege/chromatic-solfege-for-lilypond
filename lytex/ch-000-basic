@@ -302,6 +302,7 @@ function batch() {
 
     c.writeNewPage();
 
+    c.enable();
     c.writeHeader0( "Notes" );
     {
         c.t_textBody`
@@ -345,6 +346,7 @@ function batch() {
         c.writeTextBody( 'Notes with triple sharp are called similarily with notes with double sharp, except their names end with “f”.' );
         c.writeScore(  "example", "@do  dao  rao mao fao sao lao tao dao" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
     }
+    c.disable();
 
     c.writeHeader0( "Chromatic Scales" );
     {
@@ -1596,7 +1598,8 @@ function batch() {
         };
     })();
 
-    c.enable();
+    // c.enable();
+    c.writeCommands( "\\setcounter{section}{0}\n" );
     c.writeHeaderPart( "Appendix for Guitarists" );
     // TODO
     c.writeTextBody( 
@@ -1605,7 +1608,7 @@ function batch() {
         );
     c.disable();
 
-    {
+    if ( false ) {
 
 
         // PENTATONIC
@@ -1820,7 +1823,7 @@ function batch() {
         // MELODIC MINOR SCALE
         c.writeHeader0( 'Melodic-Scale' );
 
-        c.enable();
+        // c.enable();
         // Melodic Minor 3
         gftk.autoFretDiagram({
             scale : '\\abs do re me fa sol la ti',
@@ -2182,7 +2185,7 @@ function batch() {
             },
         });
 
-        c.disable();
+        // c.disable();
 
 
 
