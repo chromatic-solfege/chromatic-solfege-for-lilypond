@@ -104,7 +104,7 @@ do
           FILENAME="${i##*/}"; 
           TMPDIR="TEMP-${FILENAME%%.ly}"
           mkdir $TMPDIR
-          `lilypond_cmd` --output="$TMPDIR/" "$FILENAME"
+          eval `../lilypond_cmd` "--output=\"$TMPDIR/\" \"$FILENAME\""
           mv "$TMPDIR/${FILENAME%%.ly}.pdf" .
           rm -r "$TMPDIR"
         ) 2> "${i##*/}.LOG" &
@@ -130,7 +130,7 @@ if [[ $FLG_VOICE == "YES" ]]; then
           # echo $i
           max_proc_count 5
           echo "${i##*/}"
-          text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" 2> /dev/null & # &
+          text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" # 2> /dev/null & # &
       done;
       echo 
       echo 
