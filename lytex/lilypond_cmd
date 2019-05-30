@@ -1,3 +1,5 @@
 #!/usr/bin/nodejs
 
-require("local/chromatic/lilyutils.js").commandInterface();
+require("chromatic" ).init( require('local/settings') );
+
+require( "chromatic/lilyutils" ).commandInterface();
