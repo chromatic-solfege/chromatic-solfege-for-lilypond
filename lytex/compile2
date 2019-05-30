@@ -2,6 +2,15 @@
 shopt -s nullglob
 START_TIME=$(date)
 
+function max_proc_count {
+   while [ `jobs | wc -l` -gt $1 ]
+   do
+      # echo "PC:`jobs | wc -l`"
+      # jobs
+      sleep 0.1
+   done
+}
+
 VOICE=$( nodejs -e 'console.log( require("local/settings").scmFestivalVoice ) ')
 # FILES=( "$@" )
 FILES=()
@@ -41,35 +50,36 @@ echo
 # If no file is specified to the arguments, it should default to all scale generators.
 if [ ${#FILES[@]} -eq 0 ]; then
   FILES=( ./ch-* )
+  # Remove the old generated files.
   if [[ $FLG_VOICE == "YES" ]]; then
     rm out/*
   fi
 fi
 
-# Remove the old generated files.
 if [[ $FLG_VOICE == "YES" ]]; then
   for  i in  "${FILES[@]}" # "$@";
   do
       # echo "${i##*/}"
-      NAME="${i##*/}"
-      echo "Processing ${NAME} ..."
-      # echo "out/${NAME}"-[0-9]*
-      rm -v "out/${NAME}"-[0-9]*
-      ./${NAME}
+      {
+        NAME="${i##*/}"
+        echo "Processing ${NAME} ..."
+        # echo "out/${NAME}"-[0-9]*
+        rm -v "out/${NAME}"-[0-9]*
+        ./${NAME}
+      }
       echo 
       echo 
   done
 fi
 
-# Create the file that include everything
-{
-	ALL=( ./ch-* )
-	for  i in  "${ALL[@]}" 
-	do
-		echo "\\input{ly-generated/$(basename $i)-output.tex}"
-	done
-} > out/all-output.tex
-
+# # Create the file that include everything
+# {
+# 	ALL=( ./ch-* )
+# 	for  i in  "${ALL[@]}" 
+# 	do
+# 		echo "\\input{ly-generated/$(basename $i)-output.tex}"
+# 	done
+# } > out/all-output.tex
 
 
 # echo ${#FILES[@]}
@@ -80,34 +90,27 @@ echo 'Compiling the generated files...'
 echo '================================'
 echo
 
-function max_proc_count {
-   while [ `jobs | wc -l` -gt $1 ]
-   do
-      sleep 0.1
-   done
-}
-
 cd out
 
 for NAME in  "${FILES[@]}" # "$@";
 do
-	echo "Compiling ${NAME} ..."
-	for  i in "${NAME}"-[0-9]*.ly # "$@";
-	do
-		# echo $i
-		max_proc_count 5
-		echo "${i##*/}"
+    echo "Compiling ${NAME} ..."
+    for  i in "${NAME}"-[0-9]*.ly # "$@";
+    do
+        # echo $i
+        max_proc_count 5
+        echo "${i##*/}"
         ( 
           FILENAME="${i##*/}"; 
           TMPDIR="TEMP-${FILENAME%%.ly}"
           mkdir $TMPDIR
-          lilypond -I /home/ats/Documents/lilypond/include/ --output="$TMPDIR/" "$FILENAME"
+          `lilypond_cmd` --output="$TMPDIR/" "$FILENAME"
           mv "$TMPDIR/${FILENAME%%.ly}.pdf" .
           rm -r "$TMPDIR"
         ) 2> "${i##*/}.LOG" &
-	done;
-	echo 
-	echo 
+    done;
+    echo 
+    echo 
 done;
 
 max_proc_count 1
@@ -127,7 +130,7 @@ if [[ $FLG_VOICE == "YES" ]]; then
           # echo $i
           max_proc_count 5
           echo "${i##*/}"
-          text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" &  # 2> /dev/null &
+          text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" 2> /dev/null & # &
       done;
       echo 
       echo 
@@ -142,28 +145,28 @@ fi;
 # 
 # for NAME in  "${FILES[@]}"
 # do
-# 	echo "Compiling ${NAME} ..."
-# 	for  i in "${NAME}"-[0-9]*.ftxt
-# 	do
-# 		# echo $i
-# 		max_proc_count 5
-# 		echo "${i##*/}"
-# 		text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" &  # 2> /dev/null &
-# 	done;
-# 	echo 
-# 	echo 
+#   echo "Compiling ${NAME} ..."
+#   for  i in "${NAME}"-[0-9]*.ftxt
+#   do
+#       # echo $i
+#       max_proc_count 5
+#       echo "${i##*/}"
+#       text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" &  # 2> /dev/null &
+#   done;
+#   echo 
+#   echo 
 # done;
 
 
-max_proc_count 1
+max_proc_count 4
 
 beep
 
 WAV_OUTPUT_FILES=()
 for NAME in  "${FILES[@]}" 
 do
-	WAV_OUTPUT_FILES+=( $NAME-[0-9]*.wav )
-	echo "${WAV_OUTPUT_FILES[@]}"
+    WAV_OUTPUT_FILES+=( $NAME-[0-9]*.wav )
+    echo "${WAV_OUTPUT_FILES[@]}"
 done
 
 # vlc "${WAV_OUTPUT_FILES[@]}" &
