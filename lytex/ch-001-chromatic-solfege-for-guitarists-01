@@ -1,0 +1,93 @@
+#!/usr/bin/nodejs
+
+// Names of Toolkits
+// chtk ... Chromatic Tool Kit (CHTK)
+// ditk ... Diatonic Interval Tool Kit (DITK)
+// eitk ... Enharmonic Interval Tool kit(EITK)
+// fctk ... Fret-diagram Chromatic Tool kit(FCTK)
+
+// Initialization.
+require( 'chromatic' ).globalSettings( require( 'local/settings' ) );
+
+// Create the formatter.
+var ScaleGenerator = require( 'chromatic/formatter' );
+
+
+// Common Constant Values
+var OUTPUT_PATH = 'out/'
+var MSG_HARMONIC_TO_ENHARMONIC = 'Harmonic First, Enharmonic Last';
+var MSG_ENHARMONIC_TO_HARMONIC = 'Enharmonic First, Harmonic Last';
+
+var COMMON_WORD_01 = "Read them aloud repeatedly until you can recite without seeing the actual notes. ";
+
+function batch() {
+    // var DEBUG = true;
+    var DEBUG = false;
+    var c = new ScaleGenerator( OUTPUT_PATH /*, 'basic' */ );
+
+    // c.writeNewPage();
+    // c.t_abstract`Hey foo bar`;
+    // c.writeNewPage();
+
+    if ( DEBUG ) {
+        c.setDevelopmentMode( true );
+    }
+    // c.disable();
+    // c.setAlwaysOutputHeader( true );
+
+    c.enable();
+    c.writeHeader0( "Notes" );
+    {
+        c.t_textBody`
+            Welcome to the world of the chromatic solfège. The chromatic
+            solfege system helps to acquire better understanding of the
+            principles of beauties which is hidden behind the harmony.  This
+            section introduces note names which are used in this chromatic
+            solfege system.
+
+            In this section, all of note names which are used in the chromatic
+            solfege are shown.
+        `;
+        // This section introduces some exercises to build fluency for the note names with accidentals.
+        // Read them aloud repeatedly until you can recite without seeing the actual spells.
+
+        c.writeHeader1( "Natural" );
+        c.writeTextBody( 'The diatonic notes are named as the traditional solfège.' );
+        c.writeScore(  "example", "@do  do  re mi fa sol la ti do" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
+
+        c.writeHeader1( "Flat" );
+        c.writeTextBody( 'When flat is added to a note, the name of the note alters. The vowel part of the name will be replaced to “\\textit{e}”. In case the vowel is already “\\textit{e}”, it will be replaced with “\\textit{a}”.' );
+        c.writeScore(  "example", "@do  de  ra me fe se  le te de" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
+
+        c.writeHeader1( "Sharp" );
+        c.writeTextBody( 'Sharp is treated in the same manner except it will be replaced with “i”. In case the vowel is already “i”, it will be replaced with “a” as well as flat.' );
+        c.writeScore(  "example", "@do  di  ri ma fi si  li ta di" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
+
+        c.writeHeader1( "Double Flat" );
+        c.writeTextBody( 'Double flat is also treated in the same manner as flat and sharp, except the vowel is replaced with “aw”.' );
+        c.writeScore(  "example", "@do  daw raw maw faw saw law taw daw" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
+
+        c.writeHeader1( "Double Sharp" );
+        c.writeTextBody( 'Double sharp is also treated in the same manner as double flat, except the vowel is replaced with “ai”.' );
+        c.writeScore(  "example", "@do  dai rai mai fai sai lai tai dai" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
+
+        c.writeHeader1( "Triple Flat" );
+        c.writeTextBody( 'Notes with triple flat are called similarily with notes with double flats, except their names end with “f”.' );
+        c.writeScore(  "example", "@do  dae  rae mae fae sae lae tae dae" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
+
+        c.writeHeader1( "Triple Sharp" );
+        c.writeTextBody( 'Notes with triple sharp are called similarily with notes with double sharp, except their names end with “f”.' );
+        c.writeScore(  "example", "@do  dao  rao mao fao sao lao tao dao" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
+    }
+    c.disable();
+
+    c.close();
+}
+
+batch();
+
+
+
+
+// vim: spell expandtab filetype=javascript foldmethod=manual:
+

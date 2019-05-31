@@ -32,111 +32,6 @@ function batch() {
     if ( DEBUG ) {
         c.setDevelopmentMode( true );
     }
-    // c.disable();
-    // c.setAlwaysOutputHeader( true );
-    
-    // TODO Write descriptions to every harmonic intervals.
-    // TODO Scales with Guitar Diagram
-
-    c.enable();
-    c.writeHeaderPart( "Note Names" );
-    c.disable();
-
-    c.t_abstract`
-            \textbf{\textit{ UNFINISHED 2 Jun 2018 }} \\
-
-            In modern music, many compositions are polymodal. In order to obtain better
-            understanding for polymodality, let’s extend traditional diatonic solfège to
-            chromatic. This article will explain a method to extend the traditional solfège
-            into chromatic by introducing new note names which was invented by Aaron
-            Shearer and show how to build fluency with the notes by enumerating all the
-            irregular cases which the current diatonic based interval system consists.
-        `;
-
-    c.t_header0`Introduction`;
-    c.t_textBody`
-            In the modern diatonic based interval system, there are certain missing
-            intervals which do not exist without irregular accidentals such as
-            double flat, double sharp, C\cflat , F\cflat. E\csharp and B\csharp.
-            For example G\cflat does not have the perfect 4th interval without an
-            irregular flatted note C\cflat.  Enharmonically speaking, C\cflat is
-            B\cnatural; but harmonically speaking, B\cnatural from G\cflat is the
-            augmented major 3rd rather than the perfect 4th. 
-
-            In modern music, most tunes are played in equal temperament. Especially
-            in jazz music in 1980’s or later, the scales are premised equal
-            temperament and players frequently modulate tonality of tunes. However,
-            the music notation is still using the diatonic based interval system;
-            therefore it is still necessary to go through the complication of the
-            missing intervals.
-
-            In general, it is preferable to write intervals with harmonically
-            correct name; for example, writing G\cflat major scale’s 4th note as
-            C\cflat rather than B\cnatural is preferable because B\cnatural is not
-            4th but augmented major 3rd. In practical use,  However, harmonic
-            correctness is often intentionally disregarded because it does not
-            employ how to play on musical instruments; therefore it is also very
-            common to write C\cflat as B\cnatural in this case. The modern musical
-            instruments are based on equal temperament; in spite of the note that a
-            player should play is harmonically C\cflat, the player has to
-            manipulate their instrument as if the note is B\cnatural.
-
-            There are many inconsistently written notes in practical world. In
-            order to obtain faster reading ability, let’s name all the intervals
-            chromatically at first; then enumerate all the possible irregular
-            intervals, and we categorize them into three classes, and train
-            ourselves to build fluency to irregularity.
-        `;
-
-    c.writeNewPage();
-    c.writeTOC();
-    c.writeNewPage();
-
-    c.enable();
-    c.writeHeader0( "Notes" );
-    {
-        c.t_textBody`
-            Welcome to the world of the chromatic solfège. The chromatic
-            solfege system helps to acquire better understanding of the
-            principles of beauties which is hidden behind the harmony.  This
-            section introduces note names which are used in this chromatic
-            solfege system.
-
-            In this section, all of note names which are used in the chromatic
-            solfege are shown.
-        `;
-        // This section introduces some exercises to build fluency for the note names with accidentals.
-        // Read them aloud repeatedly until you can recite without seeing the actual spells.
-
-        c.writeHeader1( "Natural" );
-        c.writeTextBody( 'The diatonic notes are named as the traditional solfège.' );
-        c.writeScore(  "example", "@do  do  re mi fa sol la ti do" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
-
-        c.writeHeader1( "Flat" );
-        c.writeTextBody( 'When flat is added to a note, the name of the note alters. The vowel part of the name will be replaced to “\\textit{e}”. In case the vowel is already “\\textit{e}”, it will be replaced with “\\textit{a}”.' );
-        c.writeScore(  "example", "@do  de  ra me fe se  le te de" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
-
-        c.writeHeader1( "Sharp" );
-        c.writeTextBody( 'Sharp is treated in the same manner except it will be replaced with “i”. In case the vowel is already “i”, it will be replaced with “a” as well as flat.' );
-        c.writeScore(  "example", "@do  di  ri ma fi si  li ta di" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
-
-        c.writeHeader1( "Double Flat" );
-        c.writeTextBody( 'Double flat is also treated in the same manner as flat and sharp, except the vowel is replaced with “aw”.' );
-        c.writeScore(  "example", "@do  daw raw maw faw saw law taw daw" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
-
-        c.writeHeader1( "Double Sharp" );
-        c.writeTextBody( 'Double sharp is also treated in the same manner as double flat, except the vowel is replaced with “ai”.' );
-        c.writeScore(  "example", "@do  dai rai mai fai sai lai tai dai" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
-
-        c.writeHeader1( "Triple Flat" );
-        c.writeTextBody( 'Notes with triple flat are called similarily with notes with double flats, except their names end with “f”.' );
-        c.writeScore(  "example", "@do  dae  rae mae fae sae lae tae dae" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
-
-        c.writeHeader1( "Triple Sharp" );
-        c.writeTextBody( 'Notes with triple sharp are called similarily with notes with double sharp, except their names end with “f”.' );
-        c.writeScore(  "example", "@do  dao  rao mao fao sao lao tao dao" , { texGraphicWidth : 0.8 , lyTextAfter : [5,3]} );
-    }
-    c.disable();
 
     // fctk ... Fret-diagram Chromatic Tool kit(FCTK)
     var fctk = {
@@ -390,8 +285,9 @@ function batch() {
     })();
 
     // c.enable();
-    c.writeCommands( "\\setcounter{section}{0}\n" );
-    c.writeHeaderPart( "Appendix for Guitarists" );
+    // c.writeCommands( "\\setcounter{section}{0}\n" );
+    // c.writeHeaderPart( "Appendix for Guitarists" );
+
     // TODO
     c.writeTextBody( 
             "This section introduces some exercises to build fluency. " +
@@ -1162,12 +1058,14 @@ function batch() {
         }
     }
 
-    c.writeHeader0( `Conclusion` );
-    c.t_textBody`
-        Conclusion.
-        `;
-    {
+    if ( false ) {
+        c.writeHeader0( `Conclusion` );
+        c.t_textBody`
+            Conclusion.
+            `;
+        {
 
+        }
     }
 
     c.close();
