@@ -42,12 +42,22 @@ function batch() {
 
     // \textbf{\textit{ UNFINISHED 29 May 2019 }} \\
     c.t_abstract`
-            In modern music, many compositions are polymodal. In order to
-            obtain better understanding for polymodality, let’s extend the
-            traditional diatonic solfège into chromatic solfège.  This article
-            will explain a method to implement chromatic solfège by introducing
-            additional note names and show how to build fluency with the new 
-            system by mechanically enumerating all possible intervals 
+            In modern music, many compositions are polymodal. Now many
+            contemporary compositions are not easily written by the traditional
+            notation system.  In order to obtain better understanding for
+            polymodality, let’s extend the traditional diatonic solfège into
+            chromatic solfège. 
+            
+            This article will explain how to implement new chromatic solfège by
+            introducing additional note names, and then it will show how to
+            build fluency with the new solfege system by mechanically
+            enumerating all possible intervals.
+
+            Not only does this article provide written materials, it also
+            provides audible materials. Every examples in this article
+            including explanations and notes can be listen.  It takes
+            approximately one hour to listen through the whole article.
+            
             `;
 
     c.t_header0`Introduction`;
@@ -79,10 +89,10 @@ function batch() {
             manipulate their instrument as if the note is B\cnatural.
 
             There are many inconsistently written notes in practical world. In
-            order to obtain faster reading ability, let’s name all the intervals
-            chromatically; then enumerate all the possible irregular
-            intervals, and we categorize them into three classes, and train
-            ourselves to build fluency to irregularity.
+            order to obtain better and faster reading ability, let’s name all
+            the intervals chromatically, and then enumerate all the possible
+            irregular intervals, and we categorize them into three classes, and
+            train ourselves to build fluency to the irregularity.
         `;
 
     c.writeNewPage();
@@ -156,9 +166,9 @@ function batch() {
         Diminished fifth is an interval which consists six semitones. And so is
         augmented fourth; it is an interval which consists same six semitones. 
 
-        But those two differ in context. Diminished fifth has a function to
-        provoke listeners want to hear smaller intervals such as major third at
-        the next.
+        But those two have different functions and are used in different
+        context. Diminished fifth has a function to provoke listeners want to
+        hear smaller intervals such as major third at the next.
 
         \\~
         `;
@@ -199,13 +209,13 @@ function batch() {
         in order to obtain the actual notes.  In such instruments, interval
         correctness does not employ how to play it.
 
-        Guitars are exception.  Rarely are guitarists aware what note they
-        are playing. In most of time, the only thing what guitarists care is
-        what "intervals" they are playing. 
+        At this point, guitars are different. Rarely are guitarists aware what
+        note they are actually playing. In most of time, the only thing what
+        guitarists care is what "intervals" they are playing. 
 
         On guitars, musical intervals are always appearing as the same
         configuration no matter what key the notes are belong to.  The
-        configuration of musical notes in a fretboard of a guitar is
+        configuration of musical notes on a fretboard of a guitar is
         enharmonically normalized and consistently aligned. Unlike piano, there
         are no duplicated notes which comes from note alternation.  
         
@@ -217,6 +227,7 @@ function batch() {
         \\~
         `;
 
+    // FIXME this does not generate pictures correctly.
     var settings_SmallScaleChart ={ 
         texGraphicWidth : 0.4 , lyTextAfter : [3,3], scmFestivalTempo:150, 
         scmShowScaleDiagram:true, scmAlwaysShowZeroFret:true, scmFretRange : "(1 . 12)", scmFretPositions : "( 5 4 4 3 )" 
@@ -234,11 +245,11 @@ function batch() {
     c.t_commands`\end{figure}`;
 
     c.t_textBody`
-        Therefore, intervals are the first thing to come into their minds for
+        Therefore, intervals are the first thing to come into minds of 
         guitarists and rarely do guitarists aware what notes they are playing.
         Pianists tent to respell notes with irregular accidentals into
         enharmonic equivalent notes. But Enharmonically respelled musical notes
-        are meaningless for guitarists because they do not employ how to play
+        do not make much sense for guitarists because they do not employ how to play
         on guitars. Rather, guitarists prefer harmonically consistent note
         spelling as following :
 
