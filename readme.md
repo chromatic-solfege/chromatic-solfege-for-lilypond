@@ -4,14 +4,20 @@ Chromatic Solfege Documenting Toolkit
 
 ## Introduction
 
-This toolkit contains some programs for writing documentation about chromatic
-solfege. Chromatic solfege is an extension of traditional solfege system which
-is generally known as *"do re mi"*. Solfege is using name system which is based
-on the diatonic scale while chromatic solfege is based on the twelve note
-chromatic scale. Note names of chromatic solfege go as *"do di re ri mi ..."*
+This toolkit contains a programs for writing documentation about Chromatic
+Solfege. 
 
-This system is designed for describing this new solfege system. This system
-contains programs to perform following tasks : 
+Chromatic Solfege is an extension of traditional solfege system which is
+generally known as *"do re mi"*. Solfege is using name system which is based on
+the diatonic scale while Chromatic Solfege is based on the twelve note
+chromatic scale. Note names of Chromatic Solfege go as *"do di re ri mi ..."*
+
+This system is designed for describing this new solfege system.  This system
+automates writing documents which consists both normal text data and musical
+score written by Chromatic Solfege's note names. This system implements the
+automation by writing JavaScript script programs.
+
+This system contains programs to perform following tasks : 
 
 - Automatically generating TeX file.
 - Transposing chromatic note names.
@@ -24,11 +30,11 @@ contains programs to perform following tasks :
 ## System Requirement
 
 This system is built on following systems :
+	- bash
+	- nodejs 
+	- xelatex
 	- Lilypond
 	- Scheme
-	- notejs 
-	- bash
-	- xelatex
 	- Festival Speech Synthesis System
 
 Although this system is partially written by nodejs, this system does not depend on npm.
@@ -36,6 +42,15 @@ Although this system is partially written by nodejs, this system does not depend
 ## Directories
 
 + chromatic
+	- readme.md
+		The file which you are now reading. In case you did not notice, please
+		confirm that what you are reading is actually this file.
+
+	- source-this-and-get-started
+		A bash script file that initializes this system to start.  Currently
+		this file just add ./chromatic/sh/ directory to your PATH environment
+		variable.
+
 	+ js 
 		A directory for subsystems which are written by JavaScirpt.
 
@@ -102,25 +117,8 @@ Although this system is partially written by nodejs, this system does not depend
 		- include-scm.ly
 			An utility to include Scheme scripts from Lilypond scripts. This is
 			currently not used.
-
-	+ lytex
-		- out
-			The directory where all output files go. 
-
-		- ch-???-\*
-			We call these files as ``ch-scripts''. A ch-scripts contains document
-			data and creates tex, lilypond, festival and other scripts.
-
-		- ch-000-chromatic-solfege
-			A ch-script to output the data for the book of "Chromatic Solfege"
-
-		- ch-001-chromatic-solfege-for-guitarists-01
-		- ch-002-chromatic-solfege-for-guitarists-02
-			A ch-script to output the data for the book of "Chromatic Solfege for
-			Guitarists". The script file was very large that it took hours to compile;
-			it divided into two files. the file-01 consists the description and file-02
-			consists fretboard-charts.
-
+	+ sh
+		A directory to keep some shell scripts.
 		- compile2
 			This automates all compilation process. This executes the specified
 			ch-scripts and then compiles all files that the ch-scripts created.
@@ -141,15 +139,42 @@ Although this system is partially written by nodejs, this system does not depend
 			- local
 				- settings.js
 					This overrides the setting of "chromatic" node module.
-			
+		- scale-generator
+			An old unused file. This could be deleted.
+
+	+ lytex
+		The files in this directory are script files that generate the book
+		data for "Chromatic Solfege" and "Chromatic Solfege for Guitarists".
+		The files are not a part of the system but actual scripts that use the
+		system. Please take these as examples to grasp the usage of the system.
+		
+		- out
+			The directory where all output files go. 
+
+		- ch-???-\*
+			We call these files as ``ch-scripts''. A ch-scripts contains document
+			data and creates tex, lilypond, festival and other scripts.
+
+		- ch-000-chromatic-solfege
+			A ch-script to output the data for the book of "Chromatic Solfege"
+
+		- ch-001-chromatic-solfege-for-guitarists-01
+		- ch-002-chromatic-solfege-for-guitarists-02
+			A ch-script to output the data for the book of "Chromatic Solfege for
+			Guitarists". The script file was very large that it took hours to compile;
+			it divided into two files. the file-01 consists the description and file-02
+			consists fretboard-charts.
+
 		- query-fretdiagram-systems-\*
 			Temporary files that the node module "chromatic" creates. These file
 			can safely be deleted.
 
-		- scale-generator
-			An old unused file. This could be deleted.
 
 	+ tex
+		The files in this directory are tex files of "Chromatic Solfege" and
+		"Chromatic Solfege for Guitarists".  The files are not a part of the
+		system. Please take these as practical applications of the system.
+
 		- chromatic-solfege.tex
 			The main file for the book "Chromatic Solfege".
 
@@ -165,5 +190,77 @@ Although this system is partially written by nodejs, this system does not depend
 			"chromatic-solfege-for-guitarists.tex"
 
 
-## How to Use the System
+## Usage
+
+First of all, open your terminal application with bash as its shell and go to
+the root directory of the Chromatic Solfege Documentation System and source
+"source-this-and-get-started".
+
+	. source-this-and-get-started
+
+This will add ./sh/ directory to your $PATH environment variable. 
+
+The main task of using this system is writing JavaScript that uses
+"chromatic.js" and "chromatic-formatter.js".
+
+	#!/usr/bin/nodejs
+
+	var Chromatic = require('chromatic');
+	var ChromaticFormatter = require('chromatic/formatter');
+
+ChromaticFormatter is a class which capsulates a session to output tex and
+lilypond scripts; it has to be instantiated.
+
+	var cf = new ChromaticFormatter( "./output/" );
+
+The only argument of the constructor is to specify a path to a directory where
+every output file goes.
+
+    c.t_abstract`
+		This document presents how to use the Chromatic-Solfege Documentation
+		System. Brab rab rabra ...
+	`;
+
+	c.t_header0`Introduction`;
+	c.t_textBody`
+		This system is so-and-so and such-and-such.
+	`;
+
+    c.writeNewPage();
+	// Ouput Table of Contents
+    c.writeTOC();
+    c.writeNewPage();
+
+    c.writeScore( 'example01', `@do do4 re mi `, {} );
+	
+    c.close();
+
+Note that this system heavily depends on JavaScript's new feature "template
+string" that enables users to use JavaScript as documentation tool.
+
+After writing the script file, save it as "ch-000-example".
+
+The file you wrote can be simply executed; it outputs a number of tex scripts
+and lilypond scripts. But you usually have to properly compile these files
+before you use them in your tex document.  In order to simplify the compilation
+process, use `compile2`.
+
+	> compile2 ch-000-example
+
+`compile2` clears the output directory and then executes the specified
+JavaScript file and invokes Lilypond and Festival Speech System to the created
+files.
+
+## Further Information
+
+For further information, please refer the documents of the respective
+modules/commands.
+
+
+
+
+
+
+
+
 
