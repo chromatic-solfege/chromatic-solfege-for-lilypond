@@ -104,7 +104,7 @@ do
           FILENAME="${i##*/}"; 
           TMPDIR="TEMP-${FILENAME%%.ly}"
           mkdir $TMPDIR
-          eval `../lilypond_cmd` "--output=\"$TMPDIR/\" \"$FILENAME\""
+          eval `lilypond_cmd` "--output=\"$TMPDIR/\" \"$FILENAME\""
           mv "$TMPDIR/${FILENAME%%.ly}.pdf" .
           rm -r "$TMPDIR"
         ) 2> "${i##*/}.LOG" &
