@@ -1,4 +1,5 @@
 #!/bin/bash
 
 PATH=$PATH:`realpath ./lib/sh/`
+LILYPOND_INCLUDE_DIR=`realpath ./lib/ly/`
 
