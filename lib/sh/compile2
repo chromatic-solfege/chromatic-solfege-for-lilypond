@@ -11,7 +11,7 @@ function max_proc_count {
    done
 }
 
-VOICE=$( nodejs -e 'console.log( require("local/settings").scmFestivalVoice ) ')
+VOICE=$( nodejs -e 'console.log( require("chromatic/local-settings").scmFestivalVoice ) ')
 # FILES=( "$@" )
 FILES=()
 FLG_VOICE="YES"
@@ -107,10 +107,8 @@ do
           eval `lilypond_cmd` "--output=\"$TMPDIR/\" \"$FILENAME\""
           mv "$TMPDIR/${FILENAME%%.ly}.pdf" .
           rm -r "$TMPDIR"
-        ) 2> "${i##*/}.LOG" &
+        ) 2>&1 | tee "${i##*/}.LOG" &
     done;
-    echo 
-    echo 
 done;
 
 max_proc_count 1
@@ -130,7 +128,8 @@ if [[ $FLG_VOICE == "YES" ]]; then
           # echo $i
           max_proc_count 5
           echo "${i##*/}"
-          text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" # 2> /dev/null & # &
+          # text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" 2> "${i##*/}.wav.LOG" &
+          text2wave -eval "($VOICE)"  "${i##*/}" > "${i##*/}.wav" &
       done;
       echo 
       echo 
