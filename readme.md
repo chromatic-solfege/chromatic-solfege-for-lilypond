@@ -50,97 +50,91 @@ Although this system is partially written by nodejs, this system does not depend
 		A bash script file that initializes this system to start. Currently
 		this script just adds ./lib/ directory to your PATH environment
 		variable and set the include directory for Lilypond to the environment variable
-		'LILYPOND_INCLUDE_DIR'.
+		`LILYPOND_INCLUDE_DIR`.
 
 	+ lib
 		A directory for placing script files.
 
-		- chromatic 
+		- `chromatic` 
 			A commandline interface of a subsystem to transpose notes based on the
 			chromatic solfege.
 
-		- test_chromatic.js
+		- `test_chromatic.js`
 			A simple test program for `chromatic` module.
 
-		- test_chromatic_html.js
+		- `test_chromatic_html.js`
 			A simple test program for `chromatic` module.
 
-		- makech
+		- `makech`
 			This automates all compilation process. This executes the specified
 			ch-scripts and then compiles all files that the ch-scripts created.
 
-		- lilypond_cmd
+		- `lilypond_cmd`
 			A commandline program which outputs a commandline string to execute
 			Lilypond.
 
-		- music2mp3
+		- `music2mp3`
 			A bash script file to convert all wave files in the 'out' directory
 			into mp3.
-		- openwav
+		- `openwav`
 			This scirpt opens all wave files by calling `gnome-open` command.
 
-		- node_modules
-			- chromatic
-				A symbolic link to a node module directory `chromatic/js/chromatic`.
-			- local
-				- settings.js
-					This overrides the setting of `chromatic` node module.
-		- scale-generator
+		- `scale-generator`
 			An old unused file. This could be deleted.
 
-		+ node_modules
+		+ `node_modules`
 			A directory which includes libraries for node.js 
 
-			+ chromatic 
+			+ `chromatic `
 				This is a node module to implement Chromatic-Solfege. This module
 				contains various modules to handle Chromatic-Solfege specific
 				problems.
 
-				- chromatic-formatter.js
+				- `chromatic-formatter.js`
 					A module to output tex script that simplifies writing documents
 					which consist both lilypond scripts and tex scripts.
 					  
-				- chromatic.js
+				- `chromatic.js`
 					A subsystem to transpose notes based on the chromatic solfege.
 
-				- chromatic-template.js
+				- `chromatic-template.js`
 					A templating system for writing Lilypond scripts.
 
-				- lilyutils.js
+				- `lilyutils.js`
 					This keeps a command line string to execute Lilypond.
 
-				- settings.js
+				- `settings.js`
 					This keeps various setting of the system.
 
-				- formatter.js
+				- `formatter.js`
 					A stub to call "chromatic-formatter.js".
-				- template.js
+				- `template.js`
 					A stub to call "chromatic-template.js".
 
-				- index.js
+				- `index.js`
 					This is the default script file for the chromatic package and a
 					stub to "chromatic.js"
 
-	+ lib-ly 
+	+ `lib-ly `
 		A directory to keep utilities which are written by Lilypond or Scheme.
 
-		- aaron.ly
+		- `aaron.ly`
 			A library that defines note names which are based on the chromatic
 			solfege.
 
-		- chromatic-festival.scm
+		- `chromatic-festival.scm`
 			A library which enables Festival to read the note names which are based
 			on the chromatic solfege correctly.
 
-		- chromatic-template.ly
+		- `chromatic-template.ly`
 			This defines a Scheme function which outputs a music staff and other
 			utilities.
 
-		- guitar-scale-diagram.ly
+		- `guitar-scale-diagram.ly`
 			This defines Scheme functions to implement displaying fingerboard-chart
 			of guitar.
 		
-		- include-scm.ly
+		- `include-scm.ly`
 			An utility to include Scheme scripts from Lilypond scripts. This is
 			currently not used.
 
@@ -210,8 +204,6 @@ files.
 
 For further information, please refer the documents of the respective
 modules/commands.
-
-
 
 
 
