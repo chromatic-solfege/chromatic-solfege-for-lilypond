@@ -1,5 +1,5 @@
 #!/usr/bin/nodejs
 
-require( "chromatic" ).globalSettings( require( 'local/settings' ) );
+require( "chromatic" ).globalSettings( require( 'chromatic/settings' ) );
 
 require( "chromatic/lilyutils" ).commandInterface();
