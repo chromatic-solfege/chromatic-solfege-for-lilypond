@@ -30,16 +30,17 @@ This system contains programs to perform following tasks :
 ## System Requirement
 
 This system is built on following systems :
-	- bash
-	- nodejs 
-	- xelatex
-	- Lilypond
-	- Scheme
-	- Festival Speech Synthesis System
+
+- bash
+- nodejs 
+- xelatex
+- Lilypond
+- Scheme
+- Festival Speech Synthesis System
 
 Although this system is partially written by nodejs, this system does not depend on NPM.
 
-## Directories
+## The Directory Structure
 
 + chromatic
 	- readme.md
