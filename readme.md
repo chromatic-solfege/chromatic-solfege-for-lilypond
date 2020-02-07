@@ -5,17 +5,20 @@ Chromatic-Solfege Documentation Toolkit
 ## Introduction
 
 This toolkit contains a set of programs for writing documentation with a 
-new musical notation which name is Chromatic-Solfege. 
+new musical notation which is named *Chromatic-Solfege*.
 
 Chromatic-Solfege is an extension of traditional solfege system which is
-generally known as *"do re mi"*. Solfege is using name system which is based on
-the diatonic scale while Chromatic-Solfege is based on the twelve note
-chromatic scale. Note names of Chromatic-Solfege go as *"do di re ri mi ..."*
+generally known as *"do re mi"*. The traditional solfege is using name system
+which is based on the diatonic scale. On the other hand, Chromatic-Solfege is
+based on the twelve-tone chromatic scale. Every tone in the Chromatic-Solfege
+are independently named as *"do di re ri me mi fa ..."*.
 
-This system is designed for describing this new solfege system.  This system
-automates writing documents which consists both normal text data and musical
-score written by Chromatic-Solfege's note names. This system implements the
-automation by writing JavaScript script programs.
+This toolkit helps to write documents which contains this new solfege notation.
+With this toolkit, the notation which is written by the Chromatic-Solfege is
+embeddable to a document. The notations which are embedded to the document are
+automatically compiled to sheets of music. The compiler also automatically
+generates singing voice of every embedded notations and can be used for other
+purposes.
 
 This system contains programs to perform following tasks : 
 
@@ -58,7 +61,7 @@ Although this system is partially written by nodejs, this system does not depend
 
 		- `chromatic` 
 			A commandline interface of a subsystem to transpose notes based on the
-			chromatic solfege.
+			chromatic solfege.  [documentation](./lib/chromatic.md)
 
 		- `test_chromatic.js`
 			A simple test program for `chromatic` module.
@@ -67,8 +70,9 @@ Although this system is partially written by nodejs, this system does not depend
 			A simple test program for `chromatic` module.
 
 		- `makech`
-			This automates all compilation process. This executes the specified
-			ch-scripts and then compiles all files that the ch-scripts created.
+			This automates compilation of Chromatic-Solfege documents. This
+			executes the specified ch-scripts and then compiles all files that
+			the ch-scripts created.
 
 		- `lilypond_cmd`
 			A commandline program which outputs a commandline string to execute
