@@ -1,4 +1,4 @@
 #!/bin/bash
 
-export PATH=$PATH:`realpath ./lib/sh/`
-export LILYPOND_INCLUDE_DIR=`realpath ./lib/ly/`
+export PATH=$PATH:`realpath ./lib/`
+export LILYPOND_INCLUDE_DIR=`realpath ./lib-ly/`
