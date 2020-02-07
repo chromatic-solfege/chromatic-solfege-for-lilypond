@@ -4,8 +4,8 @@ Chromatic-Solfege Documentation Toolkit
 
 ## Introduction
 
-This toolkit contains a programs for writing documentation about Chromatic
-Solfege. 
+This toolkit contains a set of programs for writing documentation with a 
+new musical notation which name is Chromatic-Solfege. 
 
 Chromatic-Solfege is an extension of traditional solfege system which is
 generally known as *"do re mi"*. Solfege is using name system which is based on
