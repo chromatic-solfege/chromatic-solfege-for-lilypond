@@ -60,10 +60,10 @@ Although this system is partially written by nodejs, this system does not depend
 			chromatic solfege.
 
 		- test_chromatic.js
-			A simple test program for "chromatic" module.
+			A simple test program for `chromatic` module.
 
 		- test_chromatic_html.js
-			A simple test program for "chromatic" module.
+			A simple test program for `chromatic` module.
 
 		- makech
 			This automates all compilation process. This executes the specified
@@ -77,14 +77,14 @@ Although this system is partially written by nodejs, this system does not depend
 			A bash script file to convert all wave files in the 'out' directory
 			into mp3.
 		- openwav
-			This scirpt opens all wave files by calling ``gnome-open'' command.
+			This scirpt opens all wave files by calling `gnome-open` command.
 
 		- node_modules
 			- chromatic
-				A symbolic link to a node module directory 'chromatic/js/chromatic'.
+				A symbolic link to a node module directory `chromatic/js/chromatic`.
 			- local
 				- settings.js
-					This overrides the setting of "chromatic" node module.
+					This overrides the setting of `chromatic` node module.
 		- scale-generator
 			An old unused file. This could be deleted.
 
@@ -156,7 +156,7 @@ script file which name is "source-this-to-get-started".
 This will set up a number of environment variables. 
 
 The main task of using this system is writing JavaScript programs upon
-"chromatic.js" and "chromatic-formatter.js".
+`chromatic.js` and `chromatic-formatter.js`.
 
 	#!/usr/bin/nodejs
 
