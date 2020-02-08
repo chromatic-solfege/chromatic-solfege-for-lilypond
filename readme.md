@@ -13,22 +13,24 @@ which is based on the diatonic scale. On the other hand, Chromatic-Solfege is
 based on the twelve-tone chromatic scale. Every tone in the Chromatic-Solfege
 are independently named as *"do di re ri me mi fa ..."*.
 
-This toolkit helps to write documents which contains this new solfege notation.
-With this toolkit, the notation which is written by the Chromatic-Solfege is
-embeddable to a document. The notations which are embedded to the document are
-automatically compiled to sheets of music. The compiler also automatically
-generates singing voice of every embedded notations and can be used for other
-purposes.
+This toolkit helps to write documents which contains Chromatic-Solfege
+notation. With this toolkit, the notation which is written by the
+Chromatic-Solfege is embeddable to a document. The notations which are embedded
+to the document are automatically compiled to sheets of music and embedded to
+the main document.  The compiler also automatically generates singing voice
+data of every embedded notations and can be used for other purposes.
 
-This system contains programs to perform following tasks : 
+Let's call a document contains Chromatic-Solfege notation **chromadoc**.
 
-- Automatically generating TeX file.
+This toolkit contains programs to perform following tasks : 
+
+- Automatically generating TeX file from a chromadoc.
 - Transposing chromatic note names.
-- Creating scores from chromatic note names.
-- Creating singing voice data from chromatic note names.
-- Automatically generating mechanical scale practice patterns.
-- Enumerating all possible fingering pattern for guitar from chromatic note
-  names and generating fingerboard charts.
+- Creating a sheet of music from a sequence of Chromatic-Solfege note names.
+- Creating singing voice data from a sequence of Chromatic-Solfege note names.
+- Automatically generating patterns of a mechanical scale practice.
+- Enumerating all possible fingering pattern for the guitar from a sequence of
+  Chromatic-Solfege note names and generating fingerboard charts.
 
 ## System Requirement
 
