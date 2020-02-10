@@ -7,7 +7,11 @@ IN_BACKGROUND_IMG="$3"
 OUT_MOV="$4"
 MERGED_IMG="$IN_IMG"-merged.png
 
-sox "$IN_AUDIO" "$MODIFIED_AUDIO" pad 1.0 1.0 # reverb 10 1 50  100 0
+FADE_DURATION="1"
+AUDIO_PADDING_LENGTH="0.1"
+
+# sox "$IN_AUDIO" "$MODIFIED_AUDIO" pad $AUDIO_PADDING_LENGTH $AUDIO_PADDING_LENGTH # reverb 10 1 50  100 0
+cp "$IN_AUDIO" "$MODIFIED_AUDIO" 
 
 
 
@@ -31,13 +35,16 @@ IN_AUDIO_LENGTH=$( echo "scale=3; ($IN_AUDIO_LENGTH - 1)/1" | bc )
 
 echo "length is " $IN_AUDIO_LENGTH;
 
+
+# without alpha=1, there are some cases that it does not work properly.
+
 ffmpeg \
     -loop 1 -i "$MERGED_IMG" \
     -loop 1 -i "$IN_BACKGROUND_IMG" \
     -i "$MODIFIED_AUDIO" \
     -filter_complex \
     " \
-    [0:v]fade=t=in:st=0:d=1:alpha=1,fade=t=out:st=$IN_AUDIO_LENGTH:d=1:alpha=1[v0]; \
+    [0:v]fade=t=in:st=0:d=$FADE_DURATION:alpha=1,fade=t=out:st=$IN_AUDIO_LENGTH:d=$FADE_DURATION:alpha=1[v0]; \
     [1:v]scale=1280:720:force_original_aspect_ratio=decrease[v1]; \
     [v1][v0]overlay=0:0[v2];\
     [v2]concat=n=1:v=1:a=0,format=yuv420p[v] \
