@@ -1,0 +1,13 @@
+#!/bin/bash
+
+IN_FILE="$1"
+OUT_FILE="$2"
+
+# convert -density 600 "$IN_FILE" -background white -alpha remove -quality 100 $OUT_FILE
+convert -density 400 "$IN_FILE" -quality 100 \
+    -gravity NORTH -background transparent -splice 0x200  \
+    -gravity SOUTH -background transparent -splice 0x200  \
+    -gravity EAST  -background transparent -splice 200x0  \
+    -gravity WEST  -background transparent -splice 200x0  \
+    $OUT_FILE
+

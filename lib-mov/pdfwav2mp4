@@ -1,0 +1,28 @@
+#!/bin/bash
+
+PDF_FILE="$1"
+PNG_FILE="${PDF_FILE%.pdf}".png
+PNG_TRIMMED_FILE="${PDF_FILE%.pdf}"-trimmed.png
+WAVE_FILE="$2"
+BACKGROUND_IMG="$3"
+OUT_FILE="$4"
+
+lypdf2png $PDF_FILE $PNG_FILE
+# convert -trim "$PNG_FILE" "$PNG_TRIMMED_FILE"
+
+cp "$PNG_FILE" "$PNG_TRIMMED_FILE"
+
+# creating a blurred image
+
+# ALL COMMENTED OUT (Mon, 10 Feb 2020 08:24:50 +0900) >>>
+# BLURRED_PNG_FILE="$PNG_FILE"_BLUR.png
+# # convert "$PNG_FILE" -negate -evaluate Multiply 1.9 -channel RGBA  -blur 15x15 "$BLURRED_PNG_FILE" 
+# # convert "$PNG_FILE" -channel RGB +negate "$BLURRED_PNG_FILE" 
+# 
+# # merge the blurred image to the original
+# # composite -compose atop -geometry -13-17 "$PNG_FILE" "$BLURRED_PNG_FILE" "$PNG_TRIMMED_FILE"
+# ALL COMMENTED OUT (Mon, 10 Feb 2020 08:24:50 +0900) <<<
+
+
+
+pngwav2mp4 "$PNG_TRIMMED_FILE" "$WAVE_FILE" "$BACKGROUND_IMG" "$OUT_FILE"

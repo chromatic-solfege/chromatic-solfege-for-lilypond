@@ -1,0 +1,52 @@
+#!/bin/bash
+
+IN_IMG="$1"
+IN_AUDIO="$2"
+MODIFIED_AUDIO="${2%.wav}"-modified.wav
+IN_BACKGROUND_IMG="$3"
+OUT_MOV="$4"
+MERGED_IMG="$IN_IMG"-merged.png
+
+sox "$IN_AUDIO" "$MODIFIED_AUDIO" pad 1.0 1.0 # reverb 10 1 50  100 0
+
+
+
+# convert -size 1280x720 xc:white "$IN_BACKGROUND_IMG" -geometry 1280x720 -composite "$IN_IMG" -gravity Center -resize 1280x720 -composite "$MERGED_IMG"
+convert -size 1280x720 xc:none  "$IN_IMG" -gravity Center -resize 1280x720 -composite "$MERGED_IMG"
+
+# ffmpeg \
+#     -loop 1 -i "$MERGED_IMG" \
+#     -i "$IN_AUDIO" \
+#     -c:v libx264 -tune stillimage -c:a libvo_aacenc -b:a 192k -pix_fmt yuv420p -shortest \
+#     "$OUT_MOV"
+    #"[0:v]fade=t=in:st=0:d=1,fade=t=out:st=4:d=1[v0]" \
+    # -c:v libx264 -tune stillimage -c:a libvo_aacenc -b:a 192k -pix_fmt yuv420p -shortest \
+    # -i "$IN_AUDIO" \
+
+IN_AUDIO_LENGTH=$( ffprobe -v error -show_entries format=duration \
+    -of default=noprint_wrappers=1:nokey=1 \
+    $MODIFIED_AUDIO)
+
+IN_AUDIO_LENGTH=$( echo "scale=3; ($IN_AUDIO_LENGTH - 1)/1" | bc )
+
+echo "length is " $IN_AUDIO_LENGTH;
+
+ffmpeg \
+    -loop 1 -i "$MERGED_IMG" \
+    -loop 1 -i "$IN_BACKGROUND_IMG" \
+    -i "$MODIFIED_AUDIO" \
+    -filter_complex \
+    " \
+    [0:v]fade=t=in:st=0:d=1:alpha=1,fade=t=out:st=$IN_AUDIO_LENGTH:d=1:alpha=1[v0]; \
+    [1:v]scale=1280:720:force_original_aspect_ratio=decrease[v1]; \
+    [v1][v0]overlay=0:0[v2];\
+    [v2]concat=n=1:v=1:a=0,format=yuv420p[v] \
+    " \
+    -map "[v]" \
+    -map "2:a" \
+    -c:v libx264 -tune stillimage -c:a libvo_aacenc -b:a 192k -pix_fmt yuv420p \
+    -shortest \
+    -loglevel verbose \
+    "$OUT_MOV"
+
+echo ffmpeg -loop 1 -i "$MERGED_IMG" -i "$IN_AUDIO" -c:v libx264 -tune stillimage -preset fast -c:a aac -b:a 192k -pix_fmt yuv420p  "$OUT_MOV"

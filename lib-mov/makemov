@@ -1,0 +1,46 @@
+#!/bin/bash
+
+IN_DIR="$1"
+BACKGROUND_IMG="$2"
+OUT_DIR="$3"
+
+function usage {
+    echo "usage:";
+    echo "makemov [IN_DIR] [BACKGROUND_IMG] [OUT_DIR]";
+    exit;
+}
+
+if [[ ! -d "$IN_DIR" ]]; then
+    echo "IN_DIR does not exist"
+    usage
+fi
+if [[ ! -d "$OUT_DIR" ]]; then
+    echo "OUT_DIR does not exist"
+    usage
+fi
+if [[ ! -f "$BACKGROUND_IMG" ]]; then
+    echo "BACKGROUND_IMG does not exist"
+    usage
+fi
+
+
+for i in "$IN_DIR"/*.wav
+do
+    echo $i
+    if [[ "$i" == *.ftxt.wav ]]
+    then
+        TEXT_FILE="${i%.wav}"
+        WAVE_FILE="$i"
+        OUT_FILE=$OUT_DIR/`basename "${i##*/%.ftxt.wav}".mp4`
+        txtwav2mp4 "$TEXT_FILE" "$WAVE_FILE" "$BACKGROUND_IMG" "$OUT_FILE"
+    elif [[ "$i" == *.xml.wav ]]
+    then
+        PDF_FILE="${i%.ly.xml.wav}".pdf
+        WAVE_FILE="$i"
+        OUT_FILE=$OUT_DIR/`basename "${i##*/%.ly.xml.wav}".mp4`
+        pdfwav2mp4 "$PDF_FILE" "$WAVE_FILE" "$BACKGROUND_IMG" "$OUT_FILE"
+    else
+        echo "unknown file type $i" 
+    fi
+done
+
