@@ -1,4 +1,29 @@
 #!/bin/bash
 
-export PATH=$PATH:`realpath ./lib/`
-export LILYPOND_INCLUDE_DIR=`realpath ./lib-ly/`
+BASE_PATH=$(realpath -e $(dirname ${BASH_SOURCE}))
+LIB="$BASE_PATH/lib/"
+LIB_MOV="$BASE_PATH/lib-mov/"
+LIB_LY="$BASE_PATH/lib-ly/"
+
+echo "Initialized path : $BASE_PATH"
+echo "lib     : $LIB"
+echo "lib-mov : $LIB_MOV"
+echo "lib-ly  : $LIB_LY"
+
+if [[ ! -d $BASE_PATH ]]; then
+    echo "error $BASE_PATH does not exist"
+    return
+elif [[ ! -d $LIB ]]; then
+    echo "error $LIB does not exist"
+    return
+elif [[ ! -d $LIB_MOV ]];then
+    echo "error $LIB_MOV does not exist"
+    return
+elif [[ ! -d $LIB_LY ]];then
+    echo "error $LIB_LY does not exist"
+    return
+fi
+
+export PATH="$PATH:$LIB:$LIB_MOV"
+export LILYPOND_INCLUDE_DIR="$LIB_LY"
+
