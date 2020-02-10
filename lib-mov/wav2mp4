@@ -1,0 +1,40 @@
+#!/bin/bash
+
+IN_WAVE=$1
+IN_BACKGROUND_IMG="$2"
+OUT_DIR="$3"
+
+function usage {
+    echo "usage:";
+    echo "${0##*/} [IN_WAVE] [IN_BACKGROUND_IMG] [OUT_DIR]";
+    exit;
+}
+
+if [[ ! -d "$IN_WAVE" ]]; then
+    echo "IN_WAVE does not exist"
+    usage
+elif [[ ! -f "$IN_BACKGROUND_IMG" ]]; then
+    echo "IN_BACKGROUND_IMG does not exist"
+    usage
+elif [[ ! -d "$OUT_DIR" ]]; then
+    echo "OUT_DIR does not exist"
+    usage
+fi
+
+
+if [[ "$IN_WAVE" == *.ftxt.wav ]]
+then
+    TEXT_FILE="${IN_WAVE%.wav}"
+    WAVE_FILE="$IN_WAVE"
+    OUT_FILE=$OUT_DIR/`basename "${IN_WAVE##*/%.ftxt.wav}".mp4`
+    txtwav2mp4 "$TEXT_FILE" "$WAVE_FILE" "$IN_BACKGROUND_IMG" "$OUT_FILE"
+elif [[ "$IN_WAVE" == *.xml.wav ]]
+then
+    PDF_FILE="${IN_WAVE%.ly.xml.wav}".pdf
+    WAVE_FILE="$IN_WAVE"
+    OUT_FILE=$OUT_DIR/`basename "${IN_WAVE##*/%.ly.xml.wav}".mp4`
+    pdfwav2mp4 "$PDF_FILE" "$WAVE_FILE" "$IN_BACKGROUND_IMG" "$OUT_FILE"
+else
+    echo "unknown file type $IN_WAVE" 
+fi
+
