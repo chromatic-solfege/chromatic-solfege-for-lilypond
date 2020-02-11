@@ -31,7 +31,7 @@ IN_AUDIO_LENGTH=$( ffprobe -v error -show_entries format=duration \
     -of default=noprint_wrappers=1:nokey=1 \
     $MODIFIED_AUDIO)
 
-IN_AUDIO_LENGTH=$( echo "scale=3; ($IN_AUDIO_LENGTH - 1)/1" | bc )
+IN_AUDIO_LENGTH=$(printf "%0.1f" $( echo "scale=3; ($IN_AUDIO_LENGTH - $FADE_DURATION)/1" | bc ) )
 
 echo "length is " $IN_AUDIO_LENGTH;
 

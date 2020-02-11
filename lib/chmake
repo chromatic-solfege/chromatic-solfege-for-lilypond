@@ -11,10 +11,11 @@ function max_proc_count {
    done
 }
 
-VOICE=$( nodejs -e 'console.log( require("chromatic/local-settings").scmFestivalVoice ) ')
+VOICE=$( nodejs -e 'console.log( require("chromatic/settings").scmFestivalVoice ) ')
 # FILES=( "$@" )
 FILES=()
 FLG_VOICE="YES"
+FLG_COMPILE_VOICE="NO"
 # LY='lilypond -I /home/ats/Documents/lilypond/include/ --output=temp'
 # LY='../ly'
 
@@ -136,6 +137,34 @@ if [[ $FLG_VOICE == "YES" ]]; then
   done;
 fi;
 
+max_proc_count 1
+
+
+# (Wed, 12 Feb 2020 01:30:34 +0900)
+# CAREFUL : NO THIS FLAG IS SET TO "NO"
+if [[ $FLG_COMPILE_VOICE == "YES" ]]; then
+  echo
+  echo '====================================='
+  echo 'Compiling the Festival Singing Voice (new)'
+  echo '====================================='
+  echo
+  for NAME in  "${FILES[@]}"
+  do
+      echo "Compiling ${NAME} ..."
+      for  i in "${NAME}"*-compile.sh
+      do
+          # echo $i
+          max_proc_count 5
+          echo "${i##*/}"
+          bash "$i" &
+      done;
+      echo 
+      echo 
+  done;
+  max_proc_count 1
+fi;
+
+
 # echo
 # echo '================================================'
 # echo 'Compiling the Festival Header Voice SINGING MODE'
@@ -154,19 +183,19 @@ fi;
 #   done;
 #   echo 
 #   echo 
+#   max_proc_count 4
 # done;
-
-
-max_proc_count 4
 
 beep
 
-WAV_OUTPUT_FILES=()
-for NAME in  "${FILES[@]}" 
-do
-    WAV_OUTPUT_FILES+=( $NAME-[0-9]*.wav )
-    echo "${WAV_OUTPUT_FILES[@]}"
-done
+if false; then
+  WAV_OUTPUT_FILES=()
+  for NAME in  "${FILES[@]}" 
+  do
+      WAV_OUTPUT_FILES+=( $NAME-[0-9]*.wav )
+      echo "${WAV_OUTPUT_FILES[@]}"
+  done
+fi
 
 # vlc "${WAV_OUTPUT_FILES[@]}" &
 

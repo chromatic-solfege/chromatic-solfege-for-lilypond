@@ -4,6 +4,8 @@ TEXT_FILE="$1"
 TEMPLATE_DIR=$(dirname  $(realpath $BASH_SOURCE))
 if [[ "$TEXT_FILE" =~ [0-9]+-Header.*$ ]]; then 
     TEMPLATE_FILE="$TEMPLATE_DIR/txtwav2mp4-header-template.svg"
+elif [[ "$TEXT_FILE" =~ [0-9]+-Abstract.*$ ]]; then 
+    TEMPLATE_FILE="$TEMPLATE_DIR/txtwav2mp4-header-template.svg"
 else
     TEMPLATE_FILE="$TEMPLATE_DIR/txtwav2mp4-template.svg"
 fi

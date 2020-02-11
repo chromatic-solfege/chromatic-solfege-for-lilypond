@@ -21,10 +21,20 @@ elif [[ ! -d "$OUT_DIR" ]]; then
     usage
 fi
 
+function max_proc_count {
+   while [ `jobs | wc -l` -gt $1 ]
+   do
+      # echo "PC:`jobs | wc -l`"
+      # jobs
+      sleep 0.1
+   done
+}
+
 
 for IN_WAVE in "$IN_DIR"/*.wav
 do
     echo $IN_WAVE
-    wav2mp4 "$IN_WAVE" "$IN_BACKGROUND_IMG" "$OUT_DIR"
+    wav2mp4 "$IN_WAVE" "$IN_BACKGROUND_IMG" "$OUT_DIR" &
+    max_proc_count 3
 done
 

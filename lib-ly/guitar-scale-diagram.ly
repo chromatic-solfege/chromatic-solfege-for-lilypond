@@ -1149,7 +1149,14 @@ inputmusic = { do' re mi }
 init-this-location = #(define-void-function (parser location)() (set! this-location location))
 \init-this-location
 
+
 #(define compile-festival (lambda* (input-file output-file voice )
+                                   ; ************** BE CAREFUL ************
+                                   ; (Tue, 11 Feb 2020 12:36:25 +0900)
+                                   ; Now this does not compile it but write a script to compile it.
+                                   ; (Wed, 12 Feb 2020 01:28:38 +0900)
+                                   ; Now this creates a script and compile it too.
+                                   ; ************** BE CAREFUL ************
                                    (let* ((source-filename (car (ly:input-both-locations this-location) ) )
                                           (chromatic-festival-filename 
                                             (regexp-substitute/global 
@@ -1162,24 +1169,34 @@ init-this-location = #(define-void-function (parser location)() (set! this-locat
                                      ; (write "voice: ")
                                      ; (write (object->string voice))
                                      ;(newline)
-                                     (system
-                                       (string-append "text2wave -eval \"(begin"
-                                                      "(require '"
-                                                      chromatic-festival-filename        
-                                                      ")"
-                                                      "("
-                                                      voice
-                                                      ")"
-                                                      ")\" -mode singing \""
-                                                      input-file
-                                                      "\" > \""
-                                                      output-file
-                                                      "\" 2> \""
-                                                      output-file
-                                                      ".LOG"
-                                                      "\""
+                                     (let ((compile-command 
+                                             (string-append 
+                                               "text2wave -eval \"(begin"
+                                               "(require '"
+                                               chromatic-festival-filename        
+                                               ")"
+                                               "("
+                                               voice
+                                               ")"
+                                               ")\" -mode singing \""
+                                               input-file
+                                               "\" > \""
+                                               output-file
+                                               "\" 2> \""
+                                               output-file
+                                               ".LOG"
+                                               "\"" )))
 
-                                                      )))))
+                                       ; DO
+                                       (if #t
+                                         (let ((output-port (open-file (string-append output-file "-compile.sh" ) "w" )) )
+                                           (display (string-append compile-command "\n") output-port)
+                                           (force-output output-port)
+                                           (close output-port)))
+
+                                       ; DO
+                                       (if #t
+                                         (system compile-command))))))
 #(define assq-get (lambda( key default alist )
                     (let ((cell (assq key alist)))
                       (if cell (cdr cell) default ))))

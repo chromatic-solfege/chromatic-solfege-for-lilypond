@@ -10,7 +10,7 @@ function usage {
     exit;
 }
 
-if [[ ! -d "$IN_WAVE" ]]; then
+if [[ ! -f "$IN_WAVE" ]]; then
     echo "IN_WAVE does not exist"
     usage
 elif [[ ! -f "$IN_BACKGROUND_IMG" ]]; then
