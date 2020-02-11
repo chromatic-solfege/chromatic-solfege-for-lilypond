@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE_PATH=$(realpath -e $(dirname ${BASH_SOURCE}))
+BASE_PATH=$(dirname $(realpath -e ${BASH_SOURCE}))
 LIB="$BASE_PATH/lib/"
 LIB_MOV="$BASE_PATH/lib-mov/"
 LIB_LY="$BASE_PATH/lib-ly/"
@@ -23,6 +23,8 @@ elif [[ ! -d $LIB_LY ]];then
     echo "error $LIB_LY does not exist"
     return
 fi
+
+return;
 
 export PATH="$PATH:$LIB:$LIB_MOV"
 export LILYPOND_INCLUDE_DIR="$LIB_LY"
