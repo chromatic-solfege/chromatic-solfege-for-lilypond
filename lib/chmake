@@ -186,7 +186,7 @@ fi;
 #   max_proc_count 4
 # done;
 
-beep
+beep &
 
 if false; then
   WAV_OUTPUT_FILES=()
