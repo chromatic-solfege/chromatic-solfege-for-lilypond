@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# https://superuser.com/a/1288646
+if [ "$0" = "$BASH_SOURCE" ]; then
+    echo "Error: this script must be sourced."
+    exit 1
+fi
+
 BASE_PATH=$(dirname $(realpath -e ${BASH_SOURCE}))
 LIB="$BASE_PATH/lib/"
 LIB_MOV="$BASE_PATH/lib-mov/"
