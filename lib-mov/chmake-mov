@@ -4,6 +4,14 @@ IN_DIR="$1"
 IN_BACKGROUND_IMG="$2"
 OUT_DIR="$3"
 
+if [[ "$IN_DIR" = "" ]];then
+    IN_DIR="out"
+fi
+
+if [[ "$OUT_DIR" = "" ]];then
+    OUT_DIR="out-mov"
+fi
+
 function usage {
     echo "usage:";
     echo "${0##*/} [IN_DIR] [IN_BACKGROUND_IMG] [OUT_DIR]";
@@ -13,12 +21,19 @@ function usage {
 if [[ ! -d "$IN_DIR" ]]; then
     echo "IN_DIR does not exist"
     usage
-elif [[ ! -f "$IN_BACKGROUND_IMG" ]]; then
+    exit
+fi
+
+if [[ ! -f "$IN_BACKGROUND_IMG" ]]; then
     echo "IN_BACKGROUND_IMG does not exist"
     usage
-elif [[ ! -d "$OUT_DIR" ]]; then
-    echo "OUT_DIR does not exist"
-    usage
+    exit
+fi
+
+if [[ ! -d "$OUT_DIR" ]]; then
+    # echo "OUT_DIR does not exist"
+    # usage
+    mkdir -p "$OUT_DIR"
 fi
 
 function max_proc_count {
