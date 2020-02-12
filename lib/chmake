@@ -50,7 +50,7 @@ echo
 
 # If no file is specified to the arguments, it should default to all scale generators.
 if [ ${#FILES[@]} -eq 0 ]; then
-  FILES=( ./ch-* )
+  FILES=( ./*.chromadoc )
   # Remove the old generated files.
   if [[ $FLG_VOICE == "YES" ]]; then
     rm out/*
