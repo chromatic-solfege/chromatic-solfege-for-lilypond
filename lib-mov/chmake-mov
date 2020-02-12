@@ -45,6 +45,7 @@ function max_proc_count {
    done
 }
 
+START_TIME=$(date)
 
 for IN_WAVE in "$IN_DIR"/*.wav
 do
@@ -52,4 +53,9 @@ do
     wav2mp4 "$IN_WAVE" "$IN_BACKGROUND_IMG" "$OUT_DIR" &
     max_proc_count 3
 done
+
+END_TIME=$(date)
+
+echo "start  $START_TIME"
+echo "end    $END_TIME"
 
