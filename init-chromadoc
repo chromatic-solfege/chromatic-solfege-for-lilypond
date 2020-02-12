@@ -24,7 +24,6 @@ elif [[ ! -d $LIB_LY ]];then
     return
 fi
 
-return;
 
 export PATH="$PATH:$LIB:$LIB_MOV"
 export LILYPOND_INCLUDE_DIR="$LIB_LY"
