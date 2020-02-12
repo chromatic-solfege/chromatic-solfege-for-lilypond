@@ -1,0 +1,49 @@
+#!/bin/bash
+
+IN_DIR="$1"
+OUT_FILE="$2"
+
+if [[ "$IN_DIR" = "" ]];then
+    IN_DIR="out"
+fi
+
+if [[ "$OUT_FILE" = "" ]];then
+    OUT_FILE="out.wav"
+fi
+
+function usage {
+    echo "usage:";
+    echo "${0##*/} [IN_DIR] [OUT_FILE]";
+    exit;
+}
+
+if [[ ! -d "$IN_DIR" ]]; then
+    echo "IN_DIR does not exist"
+    usage
+    exit
+fi
+
+if [[ -f "$OUT_FILE" ]]; then
+    >&2 echo "$OUT_FILE already exists. Overwrite? (y/n)"
+    read i
+    if [[ ! $i="y" ]];then
+        exit 1;
+    fi
+fi
+
+function max_proc_count {
+   while [ `jobs | wc -l` -gt $1 ]
+   do
+      # echo "PC:`jobs | wc -l`"
+      # jobs
+      sleep 0.1
+   done
+}
+
+LIST_FILE="$OUT_FILE".list.txt
+
+find "$IN_DIR" -name '*.wav' | sort | { while read i; do echo "file '$i'"; done } > $LIST_FILE
+
+ffmpeg -f concat -safe 0 -i "$LIST_FILE" -c copy "$OUT_FILE"
+
+
