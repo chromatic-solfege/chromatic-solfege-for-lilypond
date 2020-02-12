@@ -59,3 +59,5 @@ END_TIME=$(date)
 echo "start  $START_TIME"
 echo "end    $END_TIME"
 
+bebeep
+
