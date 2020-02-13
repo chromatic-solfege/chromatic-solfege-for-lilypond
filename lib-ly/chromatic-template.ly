@@ -174,7 +174,6 @@ mark-irregular-accidentals =
 
 % >>> Added (Fri, 30 Mar 2018 15:29:33 +0900)
   #(use-modules (ice-9 popen))
-  #(use-modules (ice-9 readline))
   #(use-modules (ice-9 rdelim))
   #(use-modules (ice-9 regex))
   #(define (ch:transpose str )
