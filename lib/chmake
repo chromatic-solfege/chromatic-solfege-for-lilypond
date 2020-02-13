@@ -11,6 +11,11 @@ function max_proc_count {
    done
 }
 
+OUTPUT_DIR="out"
+DEBUG="false"
+GENERATOR="c"
+POSITIONAL=()
+
 VOICE=$( nodejs -e 'console.log( require("chromatic/settings").scmFestivalVoice ) ')
 # FILES=( "$@" )
 FILES=()
@@ -21,21 +26,38 @@ FLG_COMPILE_VOICE="NO"
 
 LOGDIR=LOG
 
-mkdir out
-# mkdir out/LOG
+mkdir "$OUTPUT_DIR"
 
-while [[ 0 < "$#"  ]]; 
-do 
+while [[ 0 < "$#"  ]]; do 
   case "$1" in
+    -o|--output)
+      OUTPUT_DIR="$2"
+      shift 
+      shift
+      ;;
+    -d|--debug)
+      DEBUG="$2"
+      shift
+      shift
+      ;;
+    -g|--generator)
+      GENERATOR="$2"
+      shift
+      shift
+      ;;
     -v|--voice) 
-      FLG_VOICE="YES";;
+        FLG_VOICE="YES"
+        shift
+      ;;
     -nv|--no-voice) 
-      FLG_VOICE="NO";;
+      FLG_VOICE="NO"
+      shift;
+      ;;
     *) 
       FILES+=("$1")
+      shift;
       ;;
   esac; 
-  shift; 
 done
 
 
@@ -53,7 +75,7 @@ if [ ${#FILES[@]} -eq 0 ]; then
   FILES=( ./*.chromadoc )
   # Remove the old generated files.
   if [[ $FLG_VOICE == "YES" ]]; then
-    rm out/*
+    rm "$OUTPUT_DIR"/*
   fi
 fi
 
@@ -63,15 +85,19 @@ if [[ $FLG_VOICE == "YES" ]]; then
       # echo "${i##*/}"
       {
         NAME="${i##*/}"
+        NAMEJS="$NAME".js
         echo "Processing ${NAME} ..."
-        # echo "out/${NAME}"-[0-9]*
-        rm -v "out/${NAME}"-[0-9]*
-        ./${NAME}
+        # echo "$OUTPUT_DIR/${NAME}"-[0-9]*
+        rm -v "$OUTPUT_DIR/${NAME}"-[0-9]*
+        chromadoc2js --output "$OUTPUT_DIR" --debug "$DEBUG" --generator "$GENERATOR" "${NAME}" > "${NAMEJS}"
+        nodejs ./${NAMEJS}
       }
       echo 
       echo 
   done
 fi
+
+
 
 # # Create the file that include everything
 # {
@@ -80,7 +106,7 @@ fi
 # 	do
 # 		echo "\\input{ly-generated/$(basename $i)-output.tex}"
 # 	done
-# } > out/all-output.tex
+# } > $OUTPUT_DIR/all-output.tex
 
 
 # echo ${#FILES[@]}
@@ -91,7 +117,7 @@ echo 'Compiling the generated files...'
 echo '================================'
 echo
 
-cd out
+cd $OUTPUT_DIR
 
 for NAME in  "${FILES[@]}" # "$@";
 do
