@@ -1,5 +1,5 @@
 #!/bin/bash
-shopt -s nullglob
+# shopt -s nullglob
 START_TIME=$(date)
 
 function max_proc_count {
@@ -25,8 +25,7 @@ FLG_COMPILE_VOICE="NO"
 # LY='../ly'
 
 LOGDIR=LOG
-
-mkdir "$OUTPUT_DIR"
+FILE_NOT_FOUND=FALSE
 
 while [[ 0 < "$#"  ]]; do 
   case "$1" in
@@ -54,12 +53,33 @@ while [[ 0 < "$#"  ]]; do
       shift;
       ;;
     *) 
-      FILES+=("$1")
-      shift;
+      # this is the input files
+      if [[ -f "$1" ]]; then
+        CHROMADOC_FILES+=("$1")
+        shift;
+      else
+        >&2 echo "file not found : $1"
+        FILE_NOT_FOUND="TRUE"
+        shift;
+      fi
       ;;
   esac; 
 done
 
+mkdir -v -p "$OUTPUT_DIR"
+
+# If no file is specified to the arguments, it should default to all scale generators.
+if [ ${#CHROMADOC_FILES[@]} -eq 0 ]; then
+  if [ $FILE_NOT_FOUND = "TRUE" ]; then
+    exit 1;
+  fi
+
+  CHROMADOC_FILES=( ./*.chromadoc )
+  # Remove the old generated files.
+  if [[ $FLG_VOICE == "YES" ]]; then
+    rm -v "$OUTPUT_DIR"/*
+  fi
+fi
 
 
 echo
@@ -68,29 +88,19 @@ echo 'Generating files...'
 echo '====================='
 echo
 
-
-
-# If no file is specified to the arguments, it should default to all scale generators.
-if [ ${#FILES[@]} -eq 0 ]; then
-  FILES=( ./*.chromadoc )
-  # Remove the old generated files.
-  if [[ $FLG_VOICE == "YES" ]]; then
-    rm "$OUTPUT_DIR"/*
-  fi
-fi
-
 if [[ $FLG_VOICE == "YES" ]]; then
-  for  i in  "${FILES[@]}" # "$@";
+  for FILE in  "${CHROMADOC_FILES[@]}" # "$@";
   do
-      # echo "${i##*/}"
+      # echo "${FILE##*/}"
       {
-        NAME="${i##*/}"
-        NAMEJS="$NAME".js
+        NAME="${FILE##*/}".js
+        FILEJS="$FILE".js
+        FILES+=("$FILEJS")
         echo "Processing ${NAME} ..."
         # echo "$OUTPUT_DIR/${NAME}"-[0-9]*
-        rm -v "$OUTPUT_DIR/${NAME}"-[0-9]*
-        chromadoc2js --output "$OUTPUT_DIR" --debug "$DEBUG" --generator "$GENERATOR" "${NAME}" > "${NAMEJS}"
-        nodejs ./${NAMEJS}
+        rm -v "$OUTPUT_DIR/${NAME}-"*
+        chromadoc2js --output "$OUTPUT_DIR" --debug "$DEBUG" --generator "$GENERATOR" "${FILE}" > "${FILEJS}"
+        nodejs ${FILEJS}
       }
       echo 
       echo 
@@ -109,8 +119,8 @@ fi
 # } > $OUTPUT_DIR/all-output.tex
 
 
-# echo ${#FILES[@]}
-# echo ${FILES[*]}
+# echo ${#CHROMADOC_FILES[@]}
+# echo ${CHROMADOC_FILES[*]}
 echo
 echo '================================'
 echo 'Compiling the generated files...'
