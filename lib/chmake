@@ -129,19 +129,21 @@ echo
 
 cd $OUTPUT_DIR
 
+LILYPOND_CMD=`lilypond_cmd`
+
 for NAME in  "${FILES[@]}" # "$@";
 do
     echo "Compiling ${NAME} ..."
     for  i in "${NAME}"-[0-9]*.ly # "$@";
     do
         # echo $i
-        max_proc_count 5
-        echo "${i##*/}"
+        max_proc_count 10
+        echo "CONVERTING LILYPOND ... ${i##*/}"
         ( 
           FILENAME="${i##*/}"; 
           TMPDIR="TEMP-${FILENAME%%.ly}"
           mkdir $TMPDIR
-          eval `lilypond_cmd` "--output=\"$TMPDIR/\" \"$FILENAME\""
+          eval $LILYPOND_CMD "--output=\"$TMPDIR/\" \"$FILENAME\""
           mv "$TMPDIR/${FILENAME%%.ly}.pdf" .
           rm -r "$TMPDIR"
         ) 2>&1 | tee "${i##*/}.LOG" &
