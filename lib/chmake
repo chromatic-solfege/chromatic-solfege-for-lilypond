@@ -93,14 +93,16 @@ if [[ $FLG_VOICE == "YES" ]]; then
   do
       # echo "${FILE##*/}"
       {
-        NAME="${FILE##*/}".js
-        FILEJS="$FILE".js
-        FILES+=("$FILEJS")
+        BASE_NAME="${FILE}"
+        BASE_NAME="${BASE_NAME##*/}"
+        BASE_NAME="${BASE_NAME%%.*}"
+        NAME="${BASE_NAME}"
+        FILES+=("$NAME")
         echo "Processing ${NAME} ..."
         # echo "$OUTPUT_DIR/${NAME}"-[0-9]*
         rm -v "$OUTPUT_DIR/${NAME}-"*
-        chromadoc2js --output "$OUTPUT_DIR" --debug "$DEBUG" --generator "$GENERATOR" "${FILE}" > "${FILEJS}"
-        nodejs ${FILEJS}
+        chromadoc2js --output "$OUTPUT_DIR" --debug "$DEBUG" --generator "$GENERATOR" "${FILE}" > "${NAME}".js
+        nodejs ${NAME}.js
       }
       echo 
       echo 
@@ -179,7 +181,7 @@ max_proc_count 1
 
 
 # (Wed, 12 Feb 2020 01:30:34 +0900)
-# CAREFUL : NO THIS FLAG IS SET TO "NO"
+# CAREFUL : NOW THIS FLAG IS SET TO "NO"
 if [[ $FLG_COMPILE_VOICE == "YES" ]]; then
   echo
   echo '====================================='

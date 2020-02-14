@@ -54,10 +54,14 @@ do
     max_proc_count 3
 done
 
+max_proc_count 1
+
 END_TIME=$(date)
+
+bebeep
 
 echo "start  $START_TIME"
 echo "end    $END_TIME"
 
-bebeep
+
 
