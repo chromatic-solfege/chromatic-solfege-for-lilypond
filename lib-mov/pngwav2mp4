@@ -39,6 +39,8 @@ echo "length is " $IN_AUDIO_LENGTH;
 # without alpha=1, there are some cases that it does not work properly.
 
 ffmpeg \
+    -y \
+    -nostats \
     -loop 1 -i "$MERGED_IMG" \
     -loop 1 -i "$IN_BACKGROUND_IMG" \
     -i "$IN_AUDIO" \
@@ -56,4 +58,4 @@ ffmpeg \
     -loglevel verbose \
     "$OUT_MOV"
 
-echo ffmpeg -loop 1 -i "$MERGED_IMG" -i "$IN_AUDIO" -c:v libx264 -tune stillimage -preset fast -c:a aac -b:a 192k -pix_fmt yuv420p  "$OUT_MOV"
+echo ffmpeg -nostats -loop 1 -i "$MERGED_IMG" -i "$IN_AUDIO" -c:v libx264 -tune stillimage -preset fast -c:a aac -b:a 192k -pix_fmt yuv420p  "$OUT_MOV"

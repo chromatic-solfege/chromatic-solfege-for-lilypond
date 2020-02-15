@@ -23,18 +23,18 @@ if [[ "${#IN_FILES[@]}" == 0 ]]; then
     exit;
 fi
 
-if [[ -f "$OUT_FILE" ]]; then
-    >&2 echo "$OUT_FILE already exists. Overwrite? (y/n)"
-    read i
-    if [[ ! $i="y" ]];then
-        exit 1;
-    fi
-fi
+# if [[ -f "$OUT_FILE" ]]; then
+#     >&2 echo "$OUT_FILE already exists. Overwrite? (y/n)"
+#     read i
+#     if [[ ! $i="y" ]];then
+#         exit 1;
+#     fi
+# fi
 
 LIST_FILE="$OUT_FILE".txt
 
 printf "%s\n" "${IN_FILES[@]}" | sort | { while read i; do echo "file '$i'"; done } > $LIST_FILE
 
-ffmpeg -f concat -safe 0 -i "$LIST_FILE" -c copy "$OUT_FILE"
+ffmpeg -nostats -y -f concat -safe 0 -i "$LIST_FILE" -c copy "$OUT_FILE"
 
 
