@@ -2,7 +2,7 @@
 
 IN_IMG="$1"
 IN_AUDIO="$2"
-MODIFIED_AUDIO="${2%.wav}"-modified.wav
+# MODIFIED_AUDIO="${2%.wav}"-modified.wav
 IN_BACKGROUND_IMG="$3"
 OUT_MOV="$4"
 MERGED_IMG="$IN_IMG"-merged.png
@@ -11,7 +11,7 @@ FADE_DURATION="1"
 AUDIO_PADDING_LENGTH="0.1"
 
 # sox "$IN_AUDIO" "$MODIFIED_AUDIO" pad $AUDIO_PADDING_LENGTH $AUDIO_PADDING_LENGTH # reverb 10 1 50  100 0
-cp "$IN_AUDIO" "$MODIFIED_AUDIO" 
+# cp "$IN_AUDIO" "$MODIFIED_AUDIO" 
 
 
 
@@ -29,7 +29,7 @@ convert -size 1280x720 xc:none  "$IN_IMG" -gravity Center -resize 1280x720 -comp
 
 IN_AUDIO_LENGTH=$( ffprobe -v error -show_entries format=duration \
     -of default=noprint_wrappers=1:nokey=1 \
-    $MODIFIED_AUDIO)
+    $IN_AUDIO)
 
 IN_AUDIO_LENGTH=$(printf "%0.1f" $( echo "scale=3; ($IN_AUDIO_LENGTH - $FADE_DURATION)/1" | bc ) )
 
@@ -41,7 +41,7 @@ echo "length is " $IN_AUDIO_LENGTH;
 ffmpeg \
     -loop 1 -i "$MERGED_IMG" \
     -loop 1 -i "$IN_BACKGROUND_IMG" \
-    -i "$MODIFIED_AUDIO" \
+    -i "$IN_AUDIO" \
     -filter_complex \
     " \
     [0:v]fade=t=in:st=0:d=$FADE_DURATION:alpha=1,fade=t=out:st=$IN_AUDIO_LENGTH:d=$FADE_DURATION:alpha=1[v0]; \
