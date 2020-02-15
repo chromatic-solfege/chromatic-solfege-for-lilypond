@@ -1,0 +1,47 @@
+#!/bin/bash
+
+WAVE_FILE="an-introduction-to-chromatic-solfege.wav"
+LOG_FILE="${WAVE_FILE%%.*}.log"
+MUSIC_FILE="${WAVE_FILE%%.*}.ogg"
+MOVIE_FILE="${WAVE_FILE%%.*}.mp4"
+IN_DIR=out
+OUT_DIR=out-mov
+
+# exec 1>"${LOG_FILE}"
+# exec 2>&1
+
+TOTAL_START_TIME=$(date)
+START_TIME_01=$(date)
+
+banner "CONCAT WAVE" 
+echo "START TIME : $( date )" 
+chmake-concat $IN_DIR/*.wav "$WAVE_FILE" 
+
+
+START_TIME_02=$(date)
+banner "MAKE MUSIC" 
+echo "START TIME : $( date )" 
+ffmpeg -nostats -y -i "$WAVE_FILE" "${MUSIC_FILE}" 
+
+
+START_TIME_03=$(date)
+banner "MAKE MOV" 
+echo "START TIME : $( date )" 
+rm -v $OUT_DIR/*
+chmake-mp4 $IN_DIR/ movbg.jpeg $OUT_DIR/ 
+
+START_TIME_04=$(date)
+banner "CONCAT MOV" 
+chmake-concat $OUT_DIR/*.mp4 "$WAVE_FILE" 
+
+TOTAL_END_TIME=$(date)
+
+
+echo CONCAT     WAVE  : $START_TIME_01
+echo CREATING   OGG   : $START_TIME_02
+echo CREATING   MOVIE : $START_TIME_03
+echo CONCAT     MOVIE : $START_TIME_04
+echo END CONCAT MOVIE : $TOTAL_END_TIME
+
+echo TOTAL_START_TIME : $TOTAL_START_TIME
+echo TOTAL_END_TIME   : $TOTAL_END_TIME
