@@ -36,10 +36,10 @@ cat <<- EOF
 // on $(date).
 
 // Initialization.
-require( 'chromatic' );
+require( 'chromadoc' );
 
 // Create the formatter.
-var ScaleGenerator = require( 'chromatic/formatter' );
+var ScaleGenerator = require( 'chromadoc/formatter' );
 
 // Common Constant Values
 var OUTPUT_DIR = '$OUTPUT_DIR/';

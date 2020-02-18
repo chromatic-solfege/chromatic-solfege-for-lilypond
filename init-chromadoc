@@ -8,11 +8,13 @@ fi
 
 BASE_PATH=$(dirname $(realpath -e ${BASH_SOURCE}))
 LIB="$BASE_PATH/lib/"
+LIB_TEX="$BASE_PATH/lib-tex/"
 LIB_MOV="$BASE_PATH/lib-mov/"
 LIB_LY="$BASE_PATH/lib-ly/"
 
 echo "Initialized path : $BASE_PATH"
 echo "lib     : $LIB"
+echo "lib-tex : $LIB_TEX"
 echo "lib-mov : $LIB_MOV"
 echo "lib-ly  : $LIB_LY"
 
@@ -25,12 +27,15 @@ elif [[ ! -d $LIB ]]; then
 elif [[ ! -d $LIB_MOV ]];then
     echo "error $LIB_MOV does not exist"
     return
+elif [[ ! -d $LIB_TEX ]];then
+    echo "error $LIB_TEX does not exist"
+    return
 elif [[ ! -d $LIB_LY ]];then
     echo "error $LIB_LY does not exist"
     return
 fi
 
 
-export PATH="$PATH:$LIB:$LIB_MOV"
+export PATH="$PATH:$LIB:$LIB_TEX:$LIB_MOV"
 export LILYPOND_INCLUDE_DIR="$LIB_LY"
 

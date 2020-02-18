@@ -16,7 +16,7 @@ DEBUG="false"
 GENERATOR="c"
 POSITIONAL=()
 
-VOICE=$( nodejs -e 'console.log( require("chromatic/settings").scmFestivalVoice ) ')
+VOICE=$( nodejs -e 'console.log( require("chromadoc/settings").scmFestivalVoice ) ')
 # FILES=( "$@" )
 FILES=()
 FLG_VOICE="YES"

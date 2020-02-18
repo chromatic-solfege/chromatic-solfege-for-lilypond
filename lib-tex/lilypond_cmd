@@ -1,0 +1,4 @@
+#!/usr/bin/nodejs
+
+require( "chromadoc" );
+require( "chromadoc/lilyutils" ).commandInterface();
