@@ -11,7 +11,6 @@ Directory `chromadoc/lib`
   `scale-formatter.js`.
 
 - [chmake](chmake)
-    
 
 
 - [chmake-tex](chmake-tex)
