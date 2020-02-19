@@ -1,5 +1,0 @@
-#!/usr/bin/nodejs
-
-require( 'chromatic' ).commandInterface( Array.prototype.slice.call( process.argv, 2) );
-
-// vim: filetype=javascript :
