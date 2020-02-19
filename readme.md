@@ -10,7 +10,8 @@ with your lilypond document.
 
 ### How to use
 
-Include `chromatic-solfege.ly` then call the `language` directive.
+Include `chromatic-solfege.ly` then call the `language` directive with a
+parameter 'chromatic-solfege'.
 
 ```lilypond
 \version "2.18.2"
