@@ -13,21 +13,23 @@ with your lilypond document.
 Include `chromatic-solfege.ly` then call the `language` directive.
 
 ```lilypond
-    \version "2.18.2"
-    \include "chromatic-solfege.ly"
-    \language "chromatic-solfege"
+\version "2.18.2"
+\include "chromatic-solfege.ly"
+\language "chromatic-solfege"
 
-    \score {
-      \relative do' {
-        \clef treble
-        \time 4/4
-        \key do \major
-        do 4 di re ri
-        mi fa fi sol
-        si la li ti
-        do 2 r2
-      } 
-    }
+\score {
+  \relative do' {
+    \clef treble
+    \time 4/4
+    \key do \major
+    do 4 di re ri
+    mi fa fi sol
+    si la li ti
+    do 2 r2
+  } 
+}
 ```
+
+![Chromatic-Solfege Sample][docs/sample.png]
 
 
