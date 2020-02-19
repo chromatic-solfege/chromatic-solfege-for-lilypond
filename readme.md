@@ -30,6 +30,7 @@ Include `chromatic-solfege.ly` then call the `language` directive.
 }
 ```
 
+#### The Result
 ![Chromatic-Solfege Sample](./docs/sample.png)
 
 
