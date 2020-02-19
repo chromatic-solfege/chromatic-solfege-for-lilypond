@@ -1,5 +1,0 @@
-#!/usr/bin/nodejs
-
-var sg = require( 'scale-generator' );
-
-sg.commandInterface()
