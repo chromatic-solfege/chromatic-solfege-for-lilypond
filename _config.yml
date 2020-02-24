@@ -1,3 +1,5 @@
 theme: jekyll-theme-leap-day
 title: Chromatic Solfege for Lilypond
 description: This library allows you to write Lilypond scores with Chromatic-Solfege.
+show_downloads: true
+
