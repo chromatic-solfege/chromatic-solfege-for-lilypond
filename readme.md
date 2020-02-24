@@ -5,13 +5,13 @@ This `chromatic-solfege.ly` allows you to write Lilypond scores with Chromatic-S
 
 ### How to Install
 
-Place the `chromatic-solfege.ly` to the include directory or the same directory
-with your lilypond document.
+Place the `chromatic-solfege.ly` to your include directory or the same 
+directory with your lilypond document.
 
 ### How to use
 
 Include `chromatic-solfege.ly` then call the `language` directive with a
-parameter 'chromatic-solfege'.
+parameter `chromatic-solfege`.
 
 ```lilypond
 \version "2.18.2"
